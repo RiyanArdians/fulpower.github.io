@@ -146,6 +146,7 @@
       grid-template-columns: 1fr 1fr; /* Kunci jadi 2 kolom */
       gap: 16px;
       width: 100%;
+      margin-bottom: 40px; /* Jarak aman agar tidak menabrak garis footer */
     }
     
     /* Jika layar cukup lebar (tablet/PC), perbanyak kolom */
@@ -247,12 +248,10 @@
       transition: opacity 0.2s;
     }
 
-    .idea-card:hover .btn-delete-card {
+    /* Tombol X HANYA muncul saat di hover atau kotak sedang disentuh (active) */
+    .idea-card:hover .btn-delete-card,
+    .idea-card:active .btn-delete-card {
       opacity: 1;
-    }
-    
-    @media (hover: none) {
-        .btn-delete-card { opacity: 1; }
     }
 
     /* Detail Page */
@@ -677,13 +676,9 @@
         color: randomColor,
         icon: defaultIcon,
         createdDate: today,
-        // Menyimpan history Due Date sebagai Array untuk dicoret nantinya
         dueDatesHistory: [dueDateInput.value], 
         todos: []
       };
-      
-      // Jika data lama belum pakai dueDatesHistory (backward compatibility)
-      // Ini di-handle pas render.
       
       ideas.unshift(newIdea);
       saveToStorage();
@@ -719,10 +714,8 @@
         };
 
         const taskCount = idea.todos ? idea.todos.length : 0;
-        
         const createdDisplay = idea.createdDate ? formatDate(idea.createdDate) : "Terdahulu";
         
-        // Logika History Due Date untuk Tampilan Card (Ambil yang paling akhir/terbaru)
         let latestDue = "-";
         let isRevised = false;
 
@@ -730,11 +723,9 @@
             latestDue = formatDate(idea.dueDatesHistory[idea.dueDatesHistory.length - 1]);
             if (idea.dueDatesHistory.length > 1) isRevised = true;
         } else if (idea.dueDate) {
-            // Backward compatibility
             latestDue = formatDate(idea.dueDate);
         }
 
-        // Tampilan warna date badge kalau sudah pernah direvisi
         const dueColorClass = isRevised ? 'date-badge-new' : '';
         const revisedIcon = isRevised ? '🔄' : '🎯';
 
@@ -795,7 +786,6 @@
       const createdDisplay = idea.createdDate ? formatDate(idea.createdDate) : "Terdahulu";
       document.getElementById('detail-created').innerHTML = `🕒 Dibuat: ${createdDisplay}`;
       
-      // Render History Target Selesai
       const dueContainer = document.getElementById('detail-due-container');
       dueContainer.innerHTML = '';
 
@@ -805,27 +795,23 @@
               const span = document.createElement('span');
               
               if (isLast) {
-                  // Yang terbaru (Paling Bawah) = Hijau / Merah Normal
                   const color = idea.dueDatesHistory.length > 1 ? 'color: var(--dark-green);' : 'color: #DC2626;';
                   span.className = 'date-badge';
                   span.style = color + ' font-size: 0.9rem; margin-top: 2px;';
                   span.innerHTML = `🎯 Target: ${formatDate(date)}`;
               } else {
-                  // Yang lama = Coret Merah
                   span.className = 'date-badge date-badge-old';
                   span.innerHTML = `🎯 Target: ${formatDate(date)}`;
               }
               dueContainer.appendChild(span);
           });
       } else if (idea.dueDate) {
-          // Backward compatibility untuk data lama yang blm pake array history
           const span = document.createElement('span');
           span.className = 'date-badge';
           span.style = 'color: #DC2626; font-size: 0.9rem;';
           span.innerHTML = `🎯 Target: ${formatDate(idea.dueDate)}`;
           dueContainer.appendChild(span);
           
-          // Migrasikan datanya sekalian
           idea.dueDatesHistory = [idea.dueDate];
           saveToStorage();
       } else {
@@ -855,10 +841,9 @@
             if(!idea.dueDatesHistory) {
                 idea.dueDatesHistory = idea.dueDate ? [idea.dueDate] : [];
             }
-            idea.dueDatesHistory.push(newDateVal); // Masukkan history baru
+            idea.dueDatesHistory.push(newDateVal); 
             saveToStorage();
             
-            // Re-render detail untuk melihat perubahannya
             openDetail(currentIdeaId);
         }
         closeDateEditModal();
@@ -1010,7 +995,6 @@
                 idea.icon = icon;
                 saveToStorage();
                 renderIdeas();
-                // Kalau sedang buka halaman detail, re-render detailnya juga untuk jaga-jaga
                 if(currentIdeaId === idea.id) {
                     openDetail(idea.id);
                 }
