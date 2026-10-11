@@ -3,311 +3,309 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Votura Workspace - 2027</title>
+  <title>Idea Dump - Riyan</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-app: #F3F4F9;
-      --card-bg: #FFFFFF;
-      --purple-primary: #6C5CE7;
-      --purple-light: #A29BFE;
-      --text-dark: #2D3436;
-      --text-muted: #A0A5B5;
-      --border-color: #E8ECEF;
+      --bg-color: #FFFDF8;
+      --black: #0F0F0F;
+      --border-width: 3px;
       
-      /* Card Preset Colors */
-      --color-purple: linear-gradient(135deg, #7C5CFF 0%, #6246EA 100%);
-      --color-coral: linear-gradient(135deg, #FF6B6B 0%, #EE5253 100%);
-      --color-amber: linear-gradient(135deg, #FFB142 0%, #FF9F1A 100%);
-      --color-green: linear-gradient(135deg, #2ED573 0%, #26AF5F 100%);
+      /* Neo-Brutalism Palette */
+      --yellow: #FFD836;
+      --green: #4ADE80;
+      --pink: #FF66A1;
+      --purple: #A78BFA;
+      --blue: #60A5FA;
+      --orange: #FB923C;
+      --grey: #E5E7EB;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background-color: var(--bg-app);
-      color: var(--text-dark);
+      background-color: var(--bg-color);
+      color: var(--black);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-bottom: 100px;
+      padding: 20px 20px 60px 20px;
     }
 
-    .app-screen {
+    .app-container {
       width: 100%;
       max-width: 480px;
-      padding: 20px 18px;
     }
 
-    /* Top Bar Header */
-    .top-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      padding-top: 10px;
-    }
-
-    .greeting-sub {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    .greeting-title {
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: var(--text-dark);
-      letter-spacing: -0.5px;
-    }
-
-    .profile-badge {
-      width: 44px;
-      height: 44px;
-      background: #EBF0FF;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--purple-primary);
-      box-shadow: 0 4px 10px rgba(108, 92, 231, 0.15);
-    }
-
-    /* Standard Card */
-    .card {
-      background: var(--card-bg);
-      border-radius: 24px;
-      padding: 20px;
-      margin-bottom: 18px;
-      box-shadow: 0 10px 25px rgba(108, 92, 231, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-    }
-
-    /* Filter Tabs */
-    .pill-tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 20px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-    }
-
-    .pill-tab {
-      padding: 10px 18px;
-      border-radius: 30px;
-      background: var(--card-bg);
-      color: var(--text-muted);
-      font-weight: 700;
-      font-size: 0.85rem;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-      white-space: nowrap;
-      transition: all 0.2s ease;
-    }
-
-    .pill-tab.active {
-      background: var(--purple-primary);
-      color: #FFFFFF;
-      box-shadow: 0 6px 16px rgba(108, 92, 231, 0.3);
-    }
-
-    /* Grid Idea Cards */
-    .ideas-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-bottom: 20px;
-    }
-
-    .idea-card-item {
-      border-radius: 24px;
-      padding: 20px 16px;
-      min-height: 150px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      color: #FFFFFF;
-      cursor: pointer;
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.2s ease;
-    }
-
-    .idea-card-item:active {
-      transform: scale(0.97);
-    }
-
-    .idea-card-item.bg-purple { background: var(--color-purple); }
-    .idea-card-item.bg-coral { background: var(--color-coral); }
-    .idea-card-item.bg-amber { background: var(--color-amber); }
-    .idea-card-item.bg-green { background: var(--color-green); }
-
-    .card-top-icon {
-      width: 36px;
-      height: 36px;
-      background: rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(8px);
+    /* Brutalist Core Classes */
+    .brutal-box {
+      background: #FFFFFF;
+      border: var(--border-width) solid var(--black);
       border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
+      box-shadow: 4px 4px 0px var(--black);
+      transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
     }
 
-    .card-content-title {
-      font-size: 1.15rem;
-      font-weight: 800;
-      line-height: 1.25;
-      margin-top: 12px;
-      margin-bottom: 4px;
-    }
-
-    .card-status-pill {
-      font-size: 0.65rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      background: rgba(255, 255, 255, 0.3);
-      padding: 3px 8px;
-      border-radius: 20px;
-      width: fit-content;
-    }
-
-    .btn-delete-card {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      background: rgba(0, 0, 0, 0.15);
-      border: none;
-      color: white;
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
+    .brutal-btn {
       cursor: pointer;
+      user-select: none;
+    }
+
+    /* Animasi Klik Profesional (Tidak too much) */
+    .brutal-btn:active {
+      transform: translate(3px, 3px);
+      box-shadow: 1px 1px 0px var(--black);
+    }
+
+    /* Header Section */
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+    }
+
+    .icon-btn {
+      width: 45px;
+      height: 45px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.75rem;
-    }
-
-    /* Buttons & Inputs */
-    .input-field {
-      width: 100%;
-      background: #F8F9FD;
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 14px 16px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--text-dark);
-      outline: none;
-      transition: border-color 0.2s ease;
-    }
-
-    .input-field:focus {
-      border-color: var(--purple-primary);
+      font-size: 1.2rem;
       background: #FFFFFF;
     }
 
-    .btn-primary-fresh {
-      width: 100%;
-      background: var(--purple-primary);
-      color: #FFFFFF;
-      border: none;
-      border-radius: 16px;
-      padding: 14px 20px;
+    .hero-title {
+      font-size: 2.8rem;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1px;
+      margin-bottom: 24px;
+    }
+
+    /* Input Form Area */
+    .input-group {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
+    .main-input {
+      flex: 1;
+      padding: 16px;
+      font-size: 1rem;
       font-weight: 700;
-      font-size: 0.95rem;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(108, 92, 231, 0.3);
-      transition: all 0.2s ease;
+      outline: none;
     }
 
-    .btn-primary-fresh:active {
-      transform: translateY(1px);
+    .main-input::placeholder {
+      color: #9CA3AF;
+      font-weight: 600;
     }
 
-    .btn-back-pill {
-      background: #EBF0FF;
-      color: var(--purple-primary);
-      border: none;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      cursor: pointer;
-      margin-bottom: 16px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    /* Todo List Styling */
-    .todo-card-item {
-      background: #F8F9FD;
-      border-radius: 16px;
-      padding: 14px 16px;
-      margin-bottom: 10px;
+    .btn-add {
+      width: 58px;
+      background-color: var(--yellow);
+      font-size: 1.8rem;
+      font-weight: 800;
       display: flex;
       align-items: center;
-      gap: 12px;
+      justify-content: center;
+    }
+
+    /* Title Sections */
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Grid Layout */
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .idea-card {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .card-icon-wrapper {
+      width: 48px;
+      height: 48px;
+      border: 2px solid var(--black);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 24px;
+    }
+
+    .card-task-count {
+      position: absolute;
+      top: 16px;
+      right: 14px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #6B7280;
+    }
+
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      line-height: 1.3;
+      word-break: break-word;
+    }
+
+    /* Delete Button on Card */
+    .btn-delete-card {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background: var(--pink);
+      border: 2px solid var(--black);
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      font-weight: 800;
       cursor: pointer;
-      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .idea-card:hover .btn-delete-card {
+      opacity: 1;
+    }
+
+    /* Detail Page */
+    .status-select {
+      appearance: none;
+      background: var(--bg-color);
+      border: 2px solid var(--black);
+      padding: 6px 12px 6px 12px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 0.8rem;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .btn-back {
+      background: #FFFFFF;
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    /* Todo List */
+    .todo-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+      background: #FFFFFF;
     }
 
     .todo-checkbox {
-      width: 22px;
-      height: 22px;
-      accent-color: var(--purple-primary);
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      border: 2px solid var(--black);
+      border-radius: 6px;
+      background: #FFFFFF;
       cursor: pointer;
+      position: relative;
+      flex-shrink: 0;
+      margin-top: 2px;
     }
 
-    .todo-text-box {
+    .todo-checkbox:checked {
+      background: var(--green);
+    }
+
+    .todo-checkbox:checked::after {
+      content: '✔';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--black);
+    }
+
+    .todo-content {
       flex: 1;
       display: flex;
       flex-direction: column;
     }
 
-    .todo-main-text {
+    .todo-text {
+      font-size: 0.95rem;
       font-weight: 700;
-      font-size: 0.9rem;
-      color: var(--text-dark);
+      line-height: 1.4;
     }
 
-    .todo-note-text {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-top: 2px;
+    .todo-note {
+      font-size: 0.8rem;
+      color: #6B7280;
+      font-weight: 600;
+      margin-top: 4px;
       display: -webkit-box;
-      -webkit-line-clamp: 1;
+      -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
 
-    .todo-card-item.completed .todo-main-text {
+    .todo-item.completed {
+      background: var(--grey);
+      box-shadow: 2px 2px 0px var(--black);
+      transform: translate(2px, 2px);
+    }
+
+    .todo-item.completed .todo-text {
       text-decoration: line-through;
-      color: var(--text-muted);
+      color: #6B7280;
+    }
+
+    .btn-icon-delete {
+      background: transparent;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: var(--black);
     }
 
     /* Modal Styling */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(45, 52, 54, 0.5);
-      backdrop-filter: blur(4px);
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(2px);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -316,234 +314,180 @@
     }
 
     .modal-box {
-      background: #FFFFFF;
-      border-radius: 28px;
-      padding: 24px;
       width: 100%;
       max-width: 400px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      padding: 24px;
     }
 
-    /* Bottom Floating Nav */
-    .bottom-nav {
-      position: fixed;
-      bottom: 20px;
-      width: calc(100% - 36px);
-      max-width: 420px;
-      background: var(--purple-primary);
-      border-radius: 35px;
-      height: 60px;
+    .modal-label {
+      font-size: 0.85rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .modal-footer {
       display: flex;
-      justify-content: space-around;
-      align-items: center;
-      box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4);
-      z-index: 99;
+      gap: 12px;
+      margin-top: 24px;
     }
 
-    .nav-item {
-      background: transparent;
-      border: none;
-      color: rgba(255, 255, 255, 0.6);
-      font-size: 1.2rem;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
+    .btn-modal {
+      flex: 1;
+      padding: 14px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      text-align: center;
     }
 
-    .nav-item.active {
-      color: #FFFFFF;
-    }
-
-    .nav-dot {
-      width: 4px;
-      height: 4px;
-      background: #FFFFFF;
-      border-radius: 50%;
-    }
-
-    /* Utilities */
     .hidden { display: none !important; }
     
-    .footer-text {
+    .footer {
       text-align: center;
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      margin-top: 30px;
-      margin-bottom: 20px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      margin-top: 40px;
+      border-top: 3px solid var(--black);
+      padding-top: 20px;
     }
   </style>
 </head>
 <body>
 
-  <div class="app-screen">
+  <div class="app-container">
 
-    <!-- TOP HEADER -->
-    <div class="top-header">
-      <div>
-        <div class="greeting-sub">Good day,</div>
-        <div class="greeting-title">Votura Studio</div>
+    <!-- HALAMAN 1: WELCOME & IDEAS GRID -->
+    <div id="page-home">
+      <!-- Navigasi Atas -->
+      <div class="top-nav">
+        <div class="brutal-box icon-btn brutal-btn">⚙️</div>
+        <div class="brutal-box icon-btn brutal-btn">🔍</div>
       </div>
-      <div class="profile-badge">R</div>
+
+      <!-- Headline -->
+      <h1 class="hero-title">Tangkap ide.<br>Eksekusi nanti.</h1>
+
+      <!-- Input Form -->
+      <form class="input-group" onsubmit="addIdea(event)">
+        <input type="text" id="idea-title" class="brutal-box main-input" placeholder="# Tulis ide di kepalamu..." required autocomplete="off">
+        <button type="submit" class="brutal-box brutal-btn btn-add">+</button>
+      </form>
+
+      <!-- Koleksi Ide -->
+      <div class="section-title">
+        Koleksi Ide Saya
+        <span id="total-ideas-count" style="font-size: 0.8rem; background: var(--black); color: white; padding: 2px 8px; border-radius: 20px;">0</span>
+      </div>
+      
+      <div id="ideas-grid" class="grid-container">
+        <!-- Grid card akan dirender via JS -->
+      </div>
     </div>
 
-    <!-- HALAMAN 1: WELCOME SCREEN -->
-    <div id="page-welcome">
-      <div class="card" style="text-align: center; padding: 30px 20px;">
-        <div style="font-size: 2.5rem; margin-bottom: 10px;">💡</div>
-        <h2 style="font-weight: 800; font-size: 1.4rem; margin-bottom: 8px;">Project & Idea Workspace</h2>
-        <p style="color: var(--text-muted); font-size: 0.85rem; font-weight: 600; line-height: 1.5; margin-bottom: 20px;">
-          Ruang kreatif terstruktur untuk mengumpulkan ide bisnis dan mengawal rencana eksekusinya.
-        </p>
-        <button class="btn-primary-fresh" onclick="navigateTo('page-ideas')">Mulai Eksplorasi Ide</button>
-      </div>
-    </div>
 
-    <!-- HALAMAN 2: DAFTAR IDE / IDEAS GRID -->
-    <div id="page-ideas" class="hidden">
-      <!-- Input Ide Baru -->
-      <div class="card">
-        <h3 style="font-size: 1rem; font-weight: 800; margin-bottom: 12px;">Ada Ide Apa Hari Ini? 🤔</h3>
-        <form onsubmit="addIdea(event)" style="display: flex; flex-direction: column; gap: 10px;">
-          <input type="text" id="idea-title" class="input-field" placeholder="Nama ide / proyek bisnis..." required>
-          <button type="submit" class="btn-primary-fresh">+ Tambah Ide Baru</button>
-        </form>
-      </div>
-
-      <!-- Filter Tabs -->
-      <div class="pill-tabs">
-        <button class="pill-tab active">Semua Ide</button>
-      </div>
-
-      <!-- Grid Ide Cards -->
-      <div id="ideas-grid" class="ideas-grid"></div>
-    </div>
-
-    <!-- HALAMAN 3: DETAIL IDE & TASK -->
+    <!-- HALAMAN 2: DETAIL PROYEK & TASK -->
     <div id="page-detail" class="hidden">
-      <button class="btn-back-pill" onclick="navigateTo('page-ideas')">← Kembali ke Daftar Ide</button>
+      <button class="brutal-box brutal-btn btn-back" onclick="navigateTo('page-home')">
+        ← Kembali
+      </button>
 
-      <!-- Card Header Proyek -->
-      <div class="card">
-        <span style="font-size: 0.7rem; font-weight: 800; color: var(--purple-primary); text-transform: uppercase;">DETAIL PROYEK</span>
-        <h2 id="detail-title" style="font-size: 1.4rem; font-weight: 800; margin: 4px 0 14px 0;"></h2>
-        
-        <div style="display: flex; justify-content: space-between; align-items: center; background: #F8F9FD; padding: 10px 14px; border-radius: 16px;">
-          <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">Status Proyek:</span>
-          <select id="detail-status" onchange="updateIdeaStatus(this.value)" style="background: transparent; border: none; font-weight: 800; color: var(--purple-primary); font-size: 0.85rem; outline: none; cursor: pointer;">
-            <option value="open">OPEN</option>
-            <option value="progress">PROGRESS</option>
-            <option value="close">CLOSE</option>
-            <option value="noprogress">NO PROGRESS</option>
+      <!-- Header Detail -->
+      <div class="brutal-box" style="padding: 20px; margin-bottom: 24px;">
+        <h2 id="detail-title" style="font-size: 1.6rem; font-weight: 800; margin-bottom: 16px; line-height: 1.2;"></h2>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 0.85rem; font-weight: 700;">Status:</span>
+          <select id="detail-status" class="status-select brutal-btn" onchange="updateIdeaStatus(this.value)">
+            <option value="💡 Open">💡 Open</option>
+            <option value="🚀 Progress">🚀 Progress</option>
+            <option value="✅ Closed">✅ Closed</option>
+            <option value="⏸️ Pending">⏸️ Pending</option>
           </select>
         </div>
       </div>
 
       <!-- Form Tambah Action Plan -->
-      <div class="card">
-        <h3 style="font-size: 0.95rem; font-weight: 800; margin-bottom: 10px;">Langkah Eksekusi selanjutnya 🚀</h3>
-        <form onsubmit="addTodo(event)" style="display: flex; flex-direction: column; gap: 10px;">
-          <input type="text" id="todo-text" class="input-field" placeholder="Tulis aksi konkret..." required>
-          <button type="submit" class="btn-primary-fresh">+ Tambah Langkah</button>
-        </form>
-      </div>
+      <div class="section-title">Langkah Eksekusi Selanjutnya</div>
+      <form class="input-group" onsubmit="addTodo(event)">
+        <input type="text" id="todo-text" class="brutal-box main-input" placeholder="Tulis action plan..." required autocomplete="off">
+        <button type="submit" class="brutal-box brutal-btn btn-add" style="background: var(--purple);">+</button>
+      </form>
 
-      <!-- List Task / Action Plan -->
-      <div class="card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-          <h3 style="font-size: 0.95rem; font-weight: 800;">Daftar Action Plan</h3>
-          <span id="todo-counter" style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted);"></span>
-        </div>
-        <div id="todo-list"></div>
-      </div>
+      <!-- List Task -->
+      <div id="todo-list"></div>
     </div>
 
+
     <!-- FOOTER -->
-    <div class="footer-text">
+    <div class="footer">
       Riyan for 2027
     </div>
 
   </div>
 
-  <!-- FLOATING BOTTOM NAVIGATION BAR -->
-  <div class="bottom-nav">
-    <button class="nav-item active" id="nav-welcome" onclick="navigateTo('page-welcome')">
-      🏠
-      <div class="nav-dot"></div>
-    </button>
-    <button class="nav-item" id="nav-ideas" onclick="navigateTo('page-ideas')">
-      📄
-    </button>
-  </div>
-
-  <!-- MODAL EDIT TASK & NOTE -->
+  <!-- MODAL EDIT TASK -->
   <div id="task-modal" class="modal-overlay hidden">
-    <div class="modal-box">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-        <h3 style="font-weight: 800; font-size: 1.1rem;">Detail Action Plan</h3>
-        <button onclick="closeTaskModal()" style="background: none; border: none; font-size: 1.2rem; cursor: pointer;">✕</button>
+    <div class="brutal-box modal-box">
+      <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 20px;">Detail Action Plan</h3>
+      
+      <div style="margin-bottom: 16px;">
+        <label class="modal-label">Aksi / Judul</label>
+        <input type="text" id="modal-task-title" class="brutal-box main-input" style="width: 100%; padding: 12px;">
+      </div>
+      
+      <div>
+        <label class="modal-label">Catatan Tambahan</label>
+        <textarea id="modal-task-note" class="brutal-box main-input" style="width: 100%; min-height: 100px; padding: 12px; resize: vertical;" placeholder="Rincian spesifik, link, dll..."></textarea>
       </div>
 
-      <div style="display: flex; flex-direction: column; gap: 12px;">
-        <div>
-          <label style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">JUDUL TASK</label>
-          <input type="text" id="modal-task-title" class="input-field">
-        </div>
-        <div>
-          <label style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">CATATAN & DETAIL</label>
-          <textarea id="modal-task-note" class="input-field" style="min-height: 100px; resize: vertical;" placeholder="Tulis rincian, instruksi, atau ide tambahan..."></textarea>
-        </div>
-      </div>
-
-      <div style="display: flex; gap: 10px; margin-top: 18px;">
-        <button class="btn-primary-fresh" style="background: #EBF0FF; color: var(--purple-primary); box-shadow: none;" onclick="closeTaskModal()">Batal</button>
-        <button class="btn-primary-fresh" onclick="saveTaskModal()">Simpan</button>
+      <div class="modal-footer">
+        <button class="brutal-box brutal-btn btn-modal" style="background: var(--grey);" onclick="closeTaskModal()">Batal</button>
+        <button class="brutal-box brutal-btn btn-modal" style="background: var(--green);" onclick="saveTaskModal()">Simpan</button>
       </div>
     </div>
   </div>
 
+
   <script>
-    let ideas = JSON.parse(localStorage.getItem('my_ideas_data_fresh')) || [];
+    // Palet warna & icon untuk Neo-Brutalism randomizer
+    const palette = ['#FFD836', '#4ADE80', '#FF66A1', '#A78BFA', '#60A5FA', '#FB923C'];
+    const icons = ['💡', '📂', '⚡', '🎯', '🚀', '🛠️', '🎨'];
+
+    let ideas = JSON.parse(localStorage.getItem('riyan_brutalist_ideas')) || [];
     let currentIdeaId = null;
     let currentEditingTodoId = null;
 
-    const bgColors = ['bg-purple', 'bg-coral', 'bg-amber', 'bg-green'];
+    // Inisialisasi awal
+    renderIdeas();
 
     function saveToStorage() {
-      localStorage.setItem('my_ideas_data_fresh', JSON.stringify(ideas));
+      localStorage.setItem('riyan_brutalist_ideas', JSON.stringify(ideas));
     }
 
     function navigateTo(pageId) {
-      document.getElementById('page-welcome').classList.add('hidden');
-      document.getElementById('page-ideas').classList.add('hidden');
+      document.getElementById('page-home').classList.add('hidden');
       document.getElementById('page-detail').classList.add('hidden');
-
       document.getElementById(pageId).classList.remove('hidden');
 
-      // Update Nav Active state
-      document.getElementById('nav-welcome').classList.remove('active');
-      document.getElementById('nav-ideas').classList.remove('active');
-
-      if (pageId === 'page-welcome') document.getElementById('nav-welcome').classList.add('active');
-      if (pageId === 'page-ideas') {
-        document.getElementById('nav-ideas').classList.add('active');
-        renderIdeas();
-      }
+      if (pageId === 'page-home') renderIdeas();
     }
 
     function addIdea(e) {
       e.preventDefault();
       const titleInput = document.getElementById('idea-title');
+      
+      const randomColor = palette[Math.floor(Math.random() * palette.length)];
+      const randomIcon = icons[Math.floor(Math.random() * icons.length)];
+
       const newIdea = {
         id: Date.now(),
         title: titleInput.value,
-        status: 'open',
-        bgStyle: bgColors[ideas.length % bgColors.length],
+        status: '💡 Open',
+        color: randomColor,
+        icon: randomIcon,
         todos: []
       };
-      ideas.push(newIdea);
+      
+      ideas.unshift(newIdea); // Masukkan ke atas
       saveToStorage();
       titleInput.value = '';
       renderIdeas();
@@ -552,10 +496,15 @@
     function renderIdeas() {
       const container = document.getElementById('ideas-grid');
       container.innerHTML = '';
+      document.getElementById('total-ideas-count').innerText = ideas.length;
 
       if (ideas.length === 0) {
         container.style.display = 'block';
-        container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.85rem; font-weight:600; text-align: center; padding: 20px 0;">Belum ada ide. Yuk buat ide pertamamu!</p>';
+        container.innerHTML = `
+          <div class="brutal-box" style="padding: 30px; text-align: center; border-style: dashed; background: transparent; box-shadow: none;">
+            <p style="font-weight: 700; color: #6B7280;">Kosong! Cepat tuangkan ide pertamamu di atas.</p>
+          </div>
+        `;
         return;
       }
 
@@ -563,16 +512,23 @@
 
       ideas.forEach(idea => {
         const div = document.createElement('div');
-        div.className = `idea-card-item ${idea.bgStyle || 'bg-purple'}`;
-        div.onclick = () => openDetail(idea.id);
+        div.className = 'brutal-box brutal-btn idea-card';
+        div.onclick = (e) => {
+          // Jangan buka detail kalau yang diklik adalah tombol hapus
+          if(!e.target.classList.contains('btn-delete-card')) {
+             openDetail(idea.id);
+          }
+        };
+
+        const taskCount = idea.todos ? idea.todos.length : 0;
 
         div.innerHTML = `
-          <button class="btn-delete-card" onclick="deleteIdea(event, ${idea.id})">✕</button>
-          <div class="card-top-icon">💡</div>
-          <div>
-            <div class="card-content-title">${escapeHtml(idea.title)}</div>
-            <span class="card-status-pill">${idea.status}</span>
+          <div class="card-icon-wrapper" style="background: ${idea.color};">
+            ${idea.icon}
           </div>
+          <div class="card-task-count">${taskCount} task</div>
+          <div class="card-title">${escapeHtml(idea.title)}</div>
+          <button class="btn-delete-card" onclick="deleteIdea(event, ${idea.id})" title="Hapus Ide">✕</button>
         `;
         container.appendChild(div);
       });
@@ -600,7 +556,7 @@
 
     function deleteIdea(e, id) {
       e.stopPropagation();
-      if(confirm('Hapus ide ini?')) {
+      if(confirm('Yakin membuang ide ini dari kepalamu?')) {
         ideas = ideas.filter(item => item.id !== id);
         saveToStorage();
         renderIdeas();
@@ -654,33 +610,32 @@
       const idea = ideas.find(item => item.id === currentIdeaId);
 
       if (!idea || idea.todos.length === 0) {
-        container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.85rem; font-weight:600; text-align: center; padding: 12px 0;">Belum ada aksi eksekusi.</p>';
-        document.getElementById('todo-counter').innerText = '';
+        container.innerHTML = `
+          <div class="brutal-box" style="padding: 20px; text-align: center; border-style: dashed; background: transparent; box-shadow: none;">
+            <p style="font-weight: 700; color: #6B7280;">Belum ada langkah eksekusi.</p>
+          </div>
+        `;
         return;
       }
 
-      const total = idea.todos.length;
-      const completed = idea.todos.filter(t => t.completed).length;
-      document.getElementById('todo-counter').innerText = `${completed}/${total} Selesai`;
-
       idea.todos.forEach(todo => {
         const div = document.createElement('div');
-        div.className = `todo-card-item ${todo.completed ? 'completed' : ''}`;
+        div.className = `brutal-box brutal-btn todo-item ${todo.completed ? 'completed' : ''}`;
         div.onclick = () => openTaskModal(todo.id);
 
         div.innerHTML = `
           <input type="checkbox" class="todo-checkbox" ${todo.completed ? 'checked' : ''} onclick="toggleTodo(event, ${todo.id})">
-          <div class="todo-text-box">
-            <span class="todo-main-text">${escapeHtml(todo.text)}</span>
-            ${todo.note ? `<span class="todo-note-text">📝 ${escapeHtml(todo.note)}</span>` : '<span class="todo-note-text" style="opacity:0.6;">+ Tambah rincian</span>'}
+          <div class="todo-content">
+            <span class="todo-text">${escapeHtml(todo.text)}</span>
+            ${todo.note ? `<span class="todo-note">📝 ${escapeHtml(todo.note)}</span>` : '<span class="todo-note" style="opacity:0.5;">+ Tambah catatan</span>'}
           </div>
-          <button style="background:none; border:none; color:var(--text-muted); font-size:0.9rem; cursor:pointer;" onclick="deleteTodo(event, ${todo.id})">✕</button>
+          <button class="btn-icon-delete brutal-btn" onclick="deleteTodo(event, ${todo.id})">🗑️</button>
         `;
         container.appendChild(div);
       });
     }
 
-    /* Modal Controls */
+    /* Logic Modal Edit Task */
     function openTaskModal(todoId) {
       currentEditingTodoId = todoId;
       const idea = ideas.find(item => item.id === currentIdeaId);
