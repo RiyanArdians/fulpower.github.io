@@ -21,6 +21,8 @@
       --blue: #60A5FA;
       --orange: #FB923C;
       --grey: #E5E7EB;
+      --red: #EF4444;
+      --dark-green: #15803D;
     }
 
     * {
@@ -38,15 +40,14 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px 20px 0px 20px; /* Hapus padding bawah untuk flex footer */
+      padding: 20px 20px 0px 20px; 
     }
 
     .app-container {
       width: 100%;
-      /* max-width dibuang agar full screen */
       display: flex;
       flex-direction: column;
-      flex-grow: 1; /* Biar wadah utama meluas ke bawah */
+      flex-grow: 1; 
     }
 
     /* Brutalist Core Classes */
@@ -65,8 +66,8 @@
 
     /* Animasi Klik Profesional */
     .brutal-btn:active {
-      transform: translate(3px, 3px);
-      box-shadow: 1px 1px 0px var(--black);
+      transform: translate(3px, 3px) !important;
+      box-shadow: 1px 1px 0px var(--black) !important;
     }
 
     /* Header Section */
@@ -82,10 +83,10 @@
     /* Input Form Area */
     .input-group {
       display: flex;
-      flex-direction: column; /* Ubah ke kolom untuk menampung input date */
+      flex-direction: column; 
       gap: 12px;
       margin-bottom: 30px;
-      max-width: 600px; /* Batasi lebar form sedikit agar tidak terlalu panjang di PC */
+      max-width: 600px; 
     }
 
     .input-row {
@@ -139,17 +140,23 @@
       align-items: center;
     }
 
-    /* Grid Layout - RESPONSIVE 2 KOTAK/BARIS */
+    /* Grid Layout - PASTI 2 KOTAK DI MOBILE */
     .grid-container {
       display: grid;
-      /* Responsive: minimal 250px, kalau layar lebar akan nambah kolom, kalau kecil (HP) minimal 1 kolom atau 2 kolom kalau muat */
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+      grid-template-columns: 1fr 1fr; /* Kunci jadi 2 kolom */
       gap: 16px;
       width: 100%;
     }
+    
+    /* Jika layar cukup lebar (tablet/PC), perbanyak kolom */
+    @media (min-width: 600px) {
+        .grid-container {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        }
+    }
 
     .idea-card {
-      padding: 16px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
       position: relative;
@@ -159,19 +166,19 @@
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        margin-bottom: 16px;
+        margin-bottom: 12px;
     }
 
     .card-icon-wrapper {
-      width: 54px;
-      height: 54px;
+      width: 48px;
+      height: 48px;
       border: 2px solid var(--black);
       border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.6rem;
-      cursor: pointer; /* Jadikan cursor pointer agar tahu bisa diklik */
+      font-size: 1.4rem;
+      cursor: pointer; 
       transition: transform 0.1s;
     }
     
@@ -180,46 +187,56 @@
     }
 
     .card-task-count {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 800;
       color: #4B5563;
     }
 
     .card-title {
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 800;
       line-height: 1.3;
       word-break: break-word;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
     
     .card-dates {
         display: flex;
         flex-direction: column;
         gap: 4px;
-        margin-top: auto; /* Dorong ke bawah */
-        padding-top: 12px;
+        margin-top: auto;
+        padding-top: 10px;
         border-top: 2px dashed #E5E7EB;
     }
     
     .date-badge {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         font-weight: 700;
         color: #374151;
         display: flex;
         align-items: center;
         gap: 6px;
     }
+    
+    .date-badge-old {
+        text-decoration: line-through;
+        color: var(--red);
+        font-size: 0.65rem;
+    }
+
+    .date-badge-new {
+        color: var(--dark-green);
+    }
 
     /* Delete Button on Card */
     .btn-delete-card {
       position: absolute;
-      bottom: 16px;
-      right: 16px;
+      bottom: 12px;
+      right: 12px;
       background: var(--pink);
       border: 2px solid var(--black);
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       border-radius: 6px;
       font-weight: 800;
       cursor: pointer;
@@ -234,7 +251,6 @@
       opacity: 1;
     }
     
-    /* Sentuh HP langsung muncul icon hapusnya */
     @media (hover: none) {
         .btn-delete-card { opacity: 1; }
     }
@@ -262,6 +278,17 @@
       gap: 8px;
       margin-bottom: 24px;
       width: fit-content;
+    }
+    
+    .btn-edit-date {
+        background: var(--yellow);
+        border: 2px solid var(--black);
+        border-radius: 6px;
+        padding: 4px 8px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        cursor: pointer;
+        margin-left: 8px;
     }
 
     /* Todo List */
@@ -344,17 +371,25 @@
       color: var(--black);
     }
 
-    /* Modal Styling */
+    /* Modal Styling Umum */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(2px);
+      backdrop-filter: blur(3px);
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
       z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    
+    .modal-overlay.active {
+        opacity: 1;
+        pointer-events: auto;
     }
 
     .modal-box {
@@ -363,6 +398,12 @@
       padding: 24px;
       max-height: 90vh;
       overflow-y: auto;
+      transform: translateY(20px);
+      transition: transform 0.2s ease;
+    }
+    
+    .modal-overlay.active .modal-box {
+        transform: translateY(0);
     }
 
     .modal-label {
@@ -386,7 +427,7 @@
       text-align: center;
     }
     
-    /* Icon Picker Grid - DIPERBAIKI POSISINYA */
+    /* Icon Picker Grid */
     .icon-grid {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
@@ -396,13 +437,13 @@
     }
     
     .icon-option {
-        aspect-ratio: 1; /* Supaya kotak */
+        aspect-ratio: 1;
         border: 2px solid var(--black);
         border-radius: 8px;
         display: flex;
-        align-items: center; /* Vertikal tengah */
-        justify-content: center; /* Horizontal tengah */
-        font-size: 1.8rem;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
         cursor: pointer;
         background: #F9FAFB;
         transition: transform 0.1s, background-color 0.1s;
@@ -419,7 +460,7 @@
       text-align: center;
       font-weight: 800;
       font-size: 1rem;
-      margin-top: auto; /* Mendorong footer ke bawah */
+      margin-top: auto; 
       border-top: 3px solid var(--black);
       padding: 24px 0;
       width: 100%;
@@ -432,10 +473,8 @@
 
     <!-- HALAMAN 1: WELCOME & IDEAS GRID -->
     <div id="page-home">
-      <!-- Headline -->
       <h1 class="hero-title">Rancang Masa Depan.<br>Mulai dari Ide Pertama.</h1>
 
-      <!-- Input Form -->
       <form class="input-group" onsubmit="addIdea(event)">
         <div class="input-row">
             <input type="text" id="idea-title" class="brutal-box main-input" placeholder="# Tulis ide di kepalamu..." required autocomplete="off">
@@ -447,7 +486,6 @@
         </div>
       </form>
 
-      <!-- Koleksi Ide -->
       <div class="section-title">
         Koleksi Ide Saya
         <span id="total-ideas-count" style="font-size: 0.85rem; background: var(--black); color: white; padding: 4px 12px; border-radius: 20px;">0</span>
@@ -465,14 +503,23 @@
         ← Kembali
       </button>
 
-      <!-- Header Detail -->
       <div class="brutal-box" style="padding: 24px; margin-bottom: 24px;">
         <h2 id="detail-title" style="font-size: 1.8rem; font-weight: 800; margin-bottom: 20px; line-height: 1.2;"></h2>
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
-          <div style="display: flex; gap: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+          
+          <!-- Wrapper Tanggal -->
+          <div style="display: flex; flex-direction: column; gap: 8px;">
               <span id="detail-created" class="date-badge" style="font-size:0.85rem;"></span>
-              <span id="detail-due" class="date-badge" style="font-size:0.85rem; color: #DC2626;"></span>
+              
+              <div style="display: flex; align-items: flex-start; gap: 8px;">
+                  <div id="detail-due-container" style="display: flex; flex-direction: column; gap: 2px;">
+                      <!-- Isi Tanggal History via JS -->
+                  </div>
+                  <button class="brutal-btn btn-edit-date" onclick="openDateEditModal()">✏️ Ubah</button>
+              </div>
           </div>
+
+          <!-- Status Dropdown -->
           <div style="display: flex; align-items: center; gap: 8px;">
               <span style="font-size: 0.9rem; font-weight: 700;">Status:</span>
               <select id="detail-status" class="status-select brutal-btn" onchange="updateIdeaStatus(this.value)">
@@ -485,18 +532,16 @@
         </div>
       </div>
 
-      <!-- Form Tambah Action Plan -->
       <div class="section-title">Langkah Eksekusi Selanjutnya</div>
       <form class="input-row" style="margin-bottom: 24px;" onsubmit="addTodo(event)">
         <input type="text" id="todo-text" class="brutal-box main-input" placeholder="Tulis action plan..." required autocomplete="off">
         <button type="submit" class="brutal-box brutal-btn btn-add" style="background: var(--purple);">+</button>
       </form>
 
-      <!-- List Task -->
       <div id="todo-list"></div>
     </div>
 
-    <!-- FOOTER (Selalu di bawah berkat margin-top: auto) -->
+    <!-- FOOTER -->
     <div class="footer">
       Riyan for 2027
     </div>
@@ -504,7 +549,7 @@
   </div>
 
   <!-- MODAL EDIT TASK -->
-  <div id="task-modal" class="modal-overlay hidden">
+  <div id="task-modal" class="modal-overlay">
     <div class="brutal-box modal-box">
       <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 20px;">Detail Action Plan</h3>
       
@@ -526,7 +571,7 @@
   </div>
   
   <!-- MODAL ICON PICKER -->
-  <div id="icon-modal" class="modal-overlay hidden">
+  <div id="icon-modal" class="modal-overlay">
     <div class="brutal-box modal-box">
       <h3 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 8px;">Pilih Ikon Baru</h3>
       <p style="font-size: 0.9rem; color: #4B5563; font-weight: 600;">Sesuaikan ikon agar lebih representatif dengan ide.</p>
@@ -537,6 +582,33 @@
 
       <button class="brutal-box brutal-btn btn-modal" style="width: 100%; background: #FFFFFF;" onclick="closeIconModal()">Tutup</button>
     </div>
+  </div>
+
+  <!-- MODAL KONFIRMASI HAPUS (CUSTOM) -->
+  <div id="delete-modal" class="modal-overlay">
+      <div class="brutal-box modal-box" style="text-align: center;">
+          <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 12px; color: var(--red);">Hapus Ide?</h3>
+          <p style="font-size: 0.95rem; font-weight: 600; color: #4B5563; margin-bottom: 24px;">Yakin ingin menghapus ide brilian ini selamanya? Data tidak bisa dikembalikan.</p>
+          <div class="modal-footer">
+            <button class="brutal-box brutal-btn btn-modal" style="background: var(--grey);" onclick="closeDeleteModal()">Batal</button>
+            <button class="brutal-box brutal-btn btn-modal" style="background: var(--pink);" onclick="executeDeleteIdea()">Ya, Hapus</button>
+          </div>
+      </div>
+  </div>
+
+  <!-- MODAL UBAH DUE DATE -->
+  <div id="date-modal" class="modal-overlay">
+      <div class="brutal-box modal-box">
+          <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 12px;">Ubah Target Selesai</h3>
+          <p style="font-size: 0.85rem; font-weight: 600; color: #4B5563; margin-bottom: 16px;">Target lama akan tercoret merah sebagai jejak historis penundaan/perubahan.</p>
+          
+          <input type="date" id="new-due-date" class="brutal-box main-input" style="width: 100%; margin-bottom: 20px;" required>
+
+          <div class="modal-footer">
+            <button class="brutal-box brutal-btn btn-modal" style="background: var(--grey);" onclick="closeDateEditModal()">Batal</button>
+            <button class="brutal-box brutal-btn btn-modal" style="background: var(--yellow);" onclick="saveNewDate()">Ubah Target</button>
+          </div>
+      </div>
   </div>
 
 
@@ -558,6 +630,7 @@
     let currentIdeaId = null;
     let currentEditingTodoId = null;
     let currentIconEditIdeaId = null;
+    let ideaToDeleteId = null;
 
     // Helper Format Tanggal
     function formatDate(dateString) {
@@ -594,9 +667,7 @@
       const dueDateInput = document.getElementById('idea-due-date');
       
       const randomColor = palette[Math.floor(Math.random() * palette.length)];
-      // Default icon bola lampu untuk ide baru
       const defaultIcon = '💡';
-      
       const today = new Date().toISOString();
 
       const newIdea = {
@@ -606,14 +677,17 @@
         color: randomColor,
         icon: defaultIcon,
         createdDate: today,
-        dueDate: dueDateInput.value,
+        // Menyimpan history Due Date sebagai Array untuk dicoret nantinya
+        dueDatesHistory: [dueDateInput.value], 
         todos: []
       };
+      
+      // Jika data lama belum pakai dueDatesHistory (backward compatibility)
+      // Ini di-handle pas render.
       
       ideas.unshift(newIdea);
       saveToStorage();
       titleInput.value = '';
-      // Reset date to tomorrow
       document.getElementById('idea-due-date').valueAsDate = tomorrow;
       renderIdeas();
     }
@@ -639,7 +713,6 @@
         const div = document.createElement('div');
         div.className = 'brutal-box brutal-btn idea-card';
         div.onclick = (e) => {
-          // Jangan buka detail kalau klik icon picker atau tombol hapus
           if(!e.target.closest('.btn-delete-card') && !e.target.closest('.card-icon-wrapper')) {
              openDetail(idea.id);
           }
@@ -647,9 +720,23 @@
 
         const taskCount = idea.todos ? idea.todos.length : 0;
         
-        // Handle data lama yang belum punya tanggal
         const createdDisplay = idea.createdDate ? formatDate(idea.createdDate) : "Terdahulu";
-        const dueDisplay = idea.dueDate ? formatDate(idea.dueDate) : "-";
+        
+        // Logika History Due Date untuk Tampilan Card (Ambil yang paling akhir/terbaru)
+        let latestDue = "-";
+        let isRevised = false;
+
+        if (idea.dueDatesHistory && idea.dueDatesHistory.length > 0) {
+            latestDue = formatDate(idea.dueDatesHistory[idea.dueDatesHistory.length - 1]);
+            if (idea.dueDatesHistory.length > 1) isRevised = true;
+        } else if (idea.dueDate) {
+            // Backward compatibility
+            latestDue = formatDate(idea.dueDate);
+        }
+
+        // Tampilan warna date badge kalau sudah pernah direvisi
+        const dueColorClass = isRevised ? 'date-badge-new' : '';
+        const revisedIcon = isRevised ? '🔄' : '🎯';
 
         div.innerHTML = `
           <div class="card-header-row">
@@ -663,15 +750,40 @@
           
           <div class="card-dates">
               <div class="date-badge">🕒 Dibuat: ${createdDisplay}</div>
-              <div class="date-badge" style="color: #DC2626;">🎯 Target: ${dueDisplay}</div>
+              <div class="date-badge ${dueColorClass}" style="${!isRevised ? 'color: #DC2626;' : ''}">
+                ${revisedIcon} Target: ${latestDue}
+              </div>
           </div>
           
-          <button class="btn-delete-card" onclick="deleteIdea(event, ${idea.id})" title="Hapus Ide">✕</button>
+          <button class="btn-delete-card" onclick="promptDeleteIdea(event, ${idea.id})" title="Hapus Ide">✕</button>
         `;
         container.appendChild(div);
       });
     }
 
+    /* CUSTOM DELETE CONFIRMATION MODAL */
+    function promptDeleteIdea(e, id) {
+        e.stopPropagation();
+        ideaToDeleteId = id;
+        document.getElementById('delete-modal').classList.add('active');
+    }
+
+    function closeDeleteModal() {
+        document.getElementById('delete-modal').classList.remove('active');
+        ideaToDeleteId = null;
+    }
+
+    function executeDeleteIdea() {
+        if(ideaToDeleteId) {
+            ideas = ideas.filter(item => item.id !== ideaToDeleteId);
+            saveToStorage();
+            renderIdeas();
+        }
+        closeDeleteModal();
+    }
+
+
+    /* TAMPILAN DETAIL DENGAN HISTORY DUE DATE */
     function openDetail(id) {
       currentIdeaId = id;
       const idea = ideas.find(item => item.id === id);
@@ -681,15 +793,79 @@
       document.getElementById('detail-status').value = idea.status;
       
       const createdDisplay = idea.createdDate ? formatDate(idea.createdDate) : "Terdahulu";
-      const dueDisplay = idea.dueDate ? formatDate(idea.dueDate) : "-";
-      
       document.getElementById('detail-created').innerHTML = `🕒 Dibuat: ${createdDisplay}`;
-      document.getElementById('detail-due').innerHTML = `🎯 Target: ${dueDisplay}`;
+      
+      // Render History Target Selesai
+      const dueContainer = document.getElementById('detail-due-container');
+      dueContainer.innerHTML = '';
+
+      if (idea.dueDatesHistory && idea.dueDatesHistory.length > 0) {
+          idea.dueDatesHistory.forEach((date, index) => {
+              const isLast = index === idea.dueDatesHistory.length - 1;
+              const span = document.createElement('span');
+              
+              if (isLast) {
+                  // Yang terbaru (Paling Bawah) = Hijau / Merah Normal
+                  const color = idea.dueDatesHistory.length > 1 ? 'color: var(--dark-green);' : 'color: #DC2626;';
+                  span.className = 'date-badge';
+                  span.style = color + ' font-size: 0.9rem; margin-top: 2px;';
+                  span.innerHTML = `🎯 Target: ${formatDate(date)}`;
+              } else {
+                  // Yang lama = Coret Merah
+                  span.className = 'date-badge date-badge-old';
+                  span.innerHTML = `🎯 Target: ${formatDate(date)}`;
+              }
+              dueContainer.appendChild(span);
+          });
+      } else if (idea.dueDate) {
+          // Backward compatibility untuk data lama yang blm pake array history
+          const span = document.createElement('span');
+          span.className = 'date-badge';
+          span.style = 'color: #DC2626; font-size: 0.9rem;';
+          span.innerHTML = `🎯 Target: ${formatDate(idea.dueDate)}`;
+          dueContainer.appendChild(span);
+          
+          // Migrasikan datanya sekalian
+          idea.dueDatesHistory = [idea.dueDate];
+          saveToStorage();
+      } else {
+          dueContainer.innerHTML = `<span class="date-badge">🎯 Target: -</span>`;
+      }
 
       renderTodos();
       navigateTo('page-detail');
     }
 
+    /* MODAL UBAH DUE DATE */
+    function openDateEditModal() {
+        document.getElementById('new-due-date').valueAsDate = tomorrow; // Default besok
+        document.getElementById('date-modal').classList.add('active');
+    }
+    
+    function closeDateEditModal() {
+        document.getElementById('date-modal').classList.remove('active');
+    }
+
+    function saveNewDate() {
+        const newDateVal = document.getElementById('new-due-date').value;
+        if(!newDateVal) return alert('Pilih tanggal dulu!');
+
+        const idea = ideas.find(item => item.id === currentIdeaId);
+        if(idea) {
+            if(!idea.dueDatesHistory) {
+                idea.dueDatesHistory = idea.dueDate ? [idea.dueDate] : [];
+            }
+            idea.dueDatesHistory.push(newDateVal); // Masukkan history baru
+            saveToStorage();
+            
+            // Re-render detail untuk melihat perubahannya
+            openDetail(currentIdeaId);
+        }
+        closeDateEditModal();
+    }
+
+
+    /* UPDATE STATUS */
     function updateIdeaStatus(newStatus) {
       const idea = ideas.find(item => item.id === currentIdeaId);
       if (idea) {
@@ -698,15 +874,8 @@
       }
     }
 
-    function deleteIdea(e, id) {
-      e.stopPropagation();
-      if(confirm('Yakin menghapus ide brilian ini?')) {
-        ideas = ideas.filter(item => item.id !== id);
-        saveToStorage();
-        renderIdeas();
-      }
-    }
 
+    /* ACTION PLAN / TODOS LOGIC */
     function addTodo(e) {
       e.preventDefault();
       const todoInput = document.getElementById('todo-text');
@@ -779,7 +948,7 @@
       });
     }
 
-    /* Logic Modal Edit Task */
+    /* Modal Edit Task */
     function openTaskModal(todoId) {
       currentEditingTodoId = todoId;
       const idea = ideas.find(item => item.id === currentIdeaId);
@@ -789,11 +958,11 @@
 
       document.getElementById('modal-task-title').value = todo.text;
       document.getElementById('modal-task-note').value = todo.note || '';
-      document.getElementById('task-modal').classList.remove('hidden');
+      document.getElementById('task-modal').classList.add('active');
     }
 
     function closeTaskModal() {
-      document.getElementById('task-modal').classList.add('hidden');
+      document.getElementById('task-modal').classList.remove('active');
       currentEditingTodoId = null;
     }
 
@@ -826,11 +995,11 @@
     
     function openIconModal(ideaId) {
         currentIconEditIdeaId = ideaId;
-        document.getElementById('icon-modal').classList.remove('hidden');
+        document.getElementById('icon-modal').classList.add('active');
     }
     
     function closeIconModal() {
-        document.getElementById('icon-modal').classList.add('hidden');
+        document.getElementById('icon-modal').classList.remove('active');
         currentIconEditIdeaId = null;
     }
     
@@ -841,6 +1010,10 @@
                 idea.icon = icon;
                 saveToStorage();
                 renderIdeas();
+                // Kalau sedang buka halaman detail, re-render detailnya juga untuk jaga-jaga
+                if(currentIdeaId === idea.id) {
+                    openDetail(idea.id);
+                }
             }
         }
         closeIconModal();
