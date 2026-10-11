@@ -3,550 +3,516 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Votura Workspace - Executive Project Hub</title>
+  <title>Votura Workspace - 2027</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-main: #0b0f19;
-      --bg-card: #151c2c;
-      --bg-card-hover: #1c263b;
-      --bg-input: #0f1420;
-      --border: #243049;
-      --border-focus: #3b82f6;
+      --bg-app: #F3F4F9;
+      --card-bg: #FFFFFF;
+      --purple-primary: #6C5CE7;
+      --purple-light: #A29BFE;
+      --text-dark: #2D3436;
+      --text-muted: #A0A5B5;
+      --border-color: #E8ECEF;
       
-      --accent-primary: #4f46e5;
-      --accent-hover: #4338ca;
-      --accent-light: #818cf8;
-      
-      --text-main: #f1f5f9;
-      --text-muted: #94a3b8;
-      --text-dim: #64748b;
-
-      --status-open: #38bdf8;
-      --status-progress: #fbbf24;
-      --status-close: #34d399;
-      --status-noprogress: #f87171;
+      /* Card Preset Colors */
+      --color-purple: linear-gradient(135deg, #7C5CFF 0%, #6246EA 100%);
+      --color-coral: linear-gradient(135deg, #FF6B6B 0%, #EE5253 100%);
+      --color-amber: linear-gradient(135deg, #FFB142 0%, #FF9F1A 100%);
+      --color-green: linear-gradient(135deg, #2ED573 0%, #26AF5F 100%);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background-color: var(--bg-main);
-      color: var(--text-main);
+      background-color: var(--bg-app);
+      color: var(--text-dark);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px 16px 40px 16px;
+      padding-bottom: 100px;
     }
 
-    .app-container {
+    .app-screen {
       width: 100%;
-      max-width: 640px;
+      max-width: 480px;
+      padding: 20px 18px;
     }
 
-    /* Navbar Header */
-    .navbar {
+    /* Top Bar Header */
+    .top-header {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 24px;
-      padding: 8px 0;
+      margin-bottom: 20px;
+      padding-top: 10px;
     }
 
-    .brand-icon {
-      width: 40px;
-      height: 40px;
-      background: linear-gradient(135deg, #4f46e5, #06b6d4);
-      border-radius: 10px;
+    .greeting-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .greeting-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      letter-spacing: -0.5px;
+    }
+
+    .profile-badge {
+      width: 44px;
+      height: 44px;
+      background: #EBF0FF;
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+      font-size: 1.1rem;
       font-weight: 700;
-      font-size: 1.2rem;
-      color: #fff;
+      color: var(--purple-primary);
+      box-shadow: 0 4px 10px rgba(108, 92, 231, 0.15);
     }
 
-    .brand-title {
-      font-size: 1.15rem;
-      font-weight: 700;
-      letter-spacing: -0.3px;
-    }
-
-    .brand-subtitle {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-
-    /* Card Layout */
+    /* Standard Card */
     .card {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
+      background: var(--card-bg);
+      border-radius: 24px;
       padding: 20px;
-      margin-bottom: 16px;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+      margin-bottom: 18px;
+      box-shadow: 0 10px 25px rgba(108, 92, 231, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+
+    /* Filter Tabs */
+    .pill-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .pill-tab {
+      padding: 10px 18px;
+      border-radius: 30px;
+      background: var(--card-bg);
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.85rem;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .pill-tab.active {
+      background: var(--purple-primary);
+      color: #FFFFFF;
+      box-shadow: 0 6px 16px rgba(108, 92, 231, 0.3);
+    }
+
+    /* Grid Idea Cards */
+    .ideas-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .idea-card-item {
+      border-radius: 24px;
+      padding: 20px 16px;
+      min-height: 150px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: #FFFFFF;
+      cursor: pointer;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease;
+    }
+
+    .idea-card-item:active {
+      transform: scale(0.97);
+    }
+
+    .idea-card-item.bg-purple { background: var(--color-purple); }
+    .idea-card-item.bg-coral { background: var(--color-coral); }
+    .idea-card-item.bg-amber { background: var(--color-amber); }
+    .idea-card-item.bg-green { background: var(--color-green); }
+
+    .card-top-icon {
+      width: 36px;
+      height: 36px;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(8px);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .card-content-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-top: 12px;
+      margin-bottom: 4px;
+    }
+
+    .card-status-pill {
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: rgba(255, 255, 255, 0.3);
+      padding: 3px 8px;
+      border-radius: 20px;
+      width: fit-content;
+    }
+
+    .btn-delete-card {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: rgba(0, 0, 0, 0.15);
+      border: none;
+      color: white;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+    }
+
+    /* Buttons & Inputs */
+    .input-field {
+      width: 100%;
+      background: #F8F9FD;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 14px 16px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      outline: none;
       transition: border-color 0.2s ease;
     }
 
-    /* Welcome Screen */
-    .welcome-card {
-      text-align: center;
-      padding: 36px 20px;
+    .input-field:focus {
+      border-color: var(--purple-primary);
+      background: #FFFFFF;
     }
 
-    .welcome-title {
-      font-size: 1.75rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-      background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .welcome-desc {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      margin-bottom: 24px;
-      line-height: 1.5;
-    }
-
-    /* Buttons */
-    .btn-primary {
+    .btn-primary-fresh {
       width: 100%;
-      background-color: var(--accent-primary);
-      color: #ffffff;
+      background: var(--purple-primary);
+      color: #FFFFFF;
       border: none;
-      border-radius: 10px;
-      padding: 12px 20px;
-      font-weight: 600;
+      border-radius: 16px;
+      padding: 14px 20px;
+      font-weight: 700;
       font-size: 0.95rem;
       cursor: pointer;
+      box-shadow: 0 8px 20px rgba(108, 92, 231, 0.3);
       transition: all 0.2s ease;
-      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
     }
 
-    .btn-primary:hover {
-      background-color: var(--accent-hover);
-      transform: translateY(-1px);
+    .btn-primary-fresh:active {
+      transform: translateY(1px);
     }
 
-    .btn-back {
-      background-color: transparent;
-      color: var(--text-muted);
-      border: 1px solid var(--border);
-      padding: 8px 14px;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      font-weight: 500;
+    .btn-back-pill {
+      background: #EBF0FF;
+      color: var(--purple-primary);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
       cursor: pointer;
       margin-bottom: 16px;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.2s ease;
     }
 
-    .btn-back:hover {
-      background-color: var(--bg-card-hover);
-      color: var(--text-main);
-    }
-
-    /* Forms & Inputs */
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .input-text, .input-textarea {
-      width: 100%;
-      background-color: var(--bg-input);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px 14px;
-      color: var(--text-main);
-      font-size: 0.9rem;
-      outline: none;
-      transition: border-color 0.2s ease;
-    }
-
-    .input-textarea {
-      resize: vertical;
-      min-height: 100px;
-      line-height: 1.5;
-    }
-
-    .input-text:focus, .input-textarea:focus {
-      border-color: var(--border-focus);
-    }
-
-    .input-text::placeholder, .input-textarea::placeholder {
-      color: var(--text-dim);
-    }
-
-    /* Section Headers */
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-    }
-
-    .section-title {
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--text-main);
-    }
-
-    /* List Item Idea */
-    .idea-item {
-      background-color: var(--bg-input);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px;
+    /* Todo List Styling */
+    .todo-card-item {
+      background: #F8F9FD;
+      border-radius: 16px;
+      padding: 14px 16px;
       margin-bottom: 10px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .idea-item:hover {
-      background-color: var(--bg-card-hover);
-      border-color: #334155;
-    }
-
-    .idea-info {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .idea-title {
-      font-weight: 600;
-      font-size: 0.95rem;
-    }
-
-    /* Status Badges */
-    .badge {
-      display: inline-block;
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      width: fit-content;
-    }
-
-    .badge-open { background: rgba(56, 189, 248, 0.15); color: var(--status-open); border: 1px solid rgba(56, 189, 248, 0.3); }
-    .badge-progress { background: rgba(251, 191, 36, 0.15); color: var(--status-progress); border: 1px solid rgba(251, 191, 36, 0.3); }
-    .badge-close { background: rgba(52, 211, 153, 0.15); color: var(--status-close); border: 1px solid rgba(52, 211, 153, 0.3); }
-    .badge-noprogress { background: rgba(248, 113, 113, 0.15); color: var(--status-noprogress); border: 1px solid rgba(248, 113, 113, 0.3); }
-
-    .btn-icon-delete {
-      background: transparent;
-      border: none;
-      color: var(--text-dim);
-      font-size: 1rem;
-      padding: 6px;
-      cursor: pointer;
-      border-radius: 6px;
-      transition: color 0.2s ease;
-    }
-
-    .btn-icon-delete:hover {
-      color: #ef4444;
-    }
-
-    /* Select Status dropdown */
-    .select-status {
-      background-color: var(--bg-input);
-      color: var(--text-main);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 8px 12px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      outline: none;
-      cursor: pointer;
-    }
-
-    /* Todo Checklist */
-    .todo-item {
-      background-color: var(--bg-input);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px 14px;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
       gap: 12px;
-      transition: background-color 0.2s ease;
       cursor: pointer;
-    }
-
-    .todo-item:hover {
-      background-color: var(--bg-card-hover);
+      border: 1px solid var(--border-color);
     }
 
     .todo-checkbox {
-      width: 18px;
-      height: 18px;
-      accent-color: var(--accent-primary);
+      width: 22px;
+      height: 22px;
+      accent-color: var(--purple-primary);
       cursor: pointer;
     }
 
-    .todo-content {
+    .todo-text-box {
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 2px;
     }
 
-    .todo-text {
+    .todo-main-text {
+      font-weight: 700;
       font-size: 0.9rem;
-      color: var(--text-main);
-      word-break: break-word;
+      color: var(--text-dark);
     }
 
-    .todo-note-preview {
+    .todo-note-text {
       font-size: 0.75rem;
       color: var(--text-muted);
+      margin-top: 2px;
       display: -webkit-box;
       -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
 
-    .todo-item.done .todo-text {
+    .todo-card-item.completed .todo-main-text {
       text-decoration: line-through;
-      color: var(--text-dim);
+      color: var(--text-muted);
     }
 
-    /* Progress Bar */
-    .progress-bar-bg {
-      width: 100%;
-      height: 6px;
-      background-color: var(--bg-input);
-      border-radius: 3px;
-      overflow: hidden;
-      margin-bottom: 16px;
-    }
-
-    .progress-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent-primary), var(--accent-light));
-      width: 0%;
-      transition: width 0.3s ease;
-    }
-
-    /* Modal Overlay */
+    /* Modal Styling */
     .modal-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(11, 15, 25, 0.85);
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(45, 52, 54, 0.5);
       backdrop-filter: blur(4px);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 16px;
+      padding: 20px;
       z-index: 999;
     }
 
-    .modal-card {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
+    .modal-box {
+      background: #FFFFFF;
+      border-radius: 28px;
       padding: 24px;
       width: 100%;
-      max-width: 500px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      max-width: 400px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
     }
 
-    .modal-header {
+    /* Bottom Floating Nav */
+    .bottom-nav {
+      position: fixed;
+      bottom: 20px;
+      width: calc(100% - 36px);
+      max-width: 420px;
+      background: var(--purple-primary);
+      border-radius: 35px;
+      height: 60px;
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
       align-items: center;
-      margin-bottom: 18px;
+      box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4);
+      z-index: 99;
     }
 
-    .modal-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-    }
-
-    .modal-footer {
-      display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-      margin-top: 18px;
-    }
-
-    .btn-secondary {
-      background-color: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      border-radius: 8px;
-      padding: 10px 16px;
-      font-size: 0.85rem;
-      font-weight: 600;
+    .nav-item {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 1.2rem;
       cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
     }
 
-    .btn-secondary:hover {
-      background-color: var(--bg-card-hover);
-      color: var(--text-main);
+    .nav-item.active {
+      color: #FFFFFF;
     }
 
+    .nav-dot {
+      width: 4px;
+      height: 4px;
+      background: #FFFFFF;
+      border-radius: 50%;
+    }
+
+    /* Utilities */
     .hidden { display: none !important; }
-
-    /* Footer */
-    .footer {
+    
+    .footer-text {
       text-align: center;
-      font-size: 0.75rem;
-      color: var(--text-dim);
-      margin-top: 24px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-top: 30px;
+      margin-bottom: 20px;
     }
   </style>
 </head>
 <body>
 
-  <div class="app-container">
-    
-    <!-- Top Branding Navbar -->
-    <div class="navbar">
-      <div class="brand-icon">V</div>
+  <div class="app-screen">
+
+    <!-- TOP HEADER -->
+    <div class="top-header">
       <div>
-        <div class="brand-title">Votura Workspace</div>
-        <div class="brand-subtitle">Idea & Project Execution</div>
+        <div class="greeting-sub">Good day,</div>
+        <div class="greeting-title">Votura Studio</div>
       </div>
+      <div class="profile-badge">R</div>
     </div>
 
     <!-- HALAMAN 1: WELCOME SCREEN -->
-    <div id="page-welcome" class="card welcome-card">
-      <h1 class="welcome-title">Welcome to Workspace 💡</h1>
-      <p class="welcome-desc">Wadah terstruktur untuk mencatat ide bisnis, perencanaan proyek, dan eksekusi task harian.</p>
-      <button class="btn-primary" onclick="navigateTo('page-ideas')">Buka Idea Hub</button>
+    <div id="page-welcome">
+      <div class="card" style="text-align: center; padding: 30px 20px;">
+        <div style="font-size: 2.5rem; margin-bottom: 10px;">💡</div>
+        <h2 style="font-weight: 800; font-size: 1.4rem; margin-bottom: 8px;">Project & Idea Workspace</h2>
+        <p style="color: var(--text-muted); font-size: 0.85rem; font-weight: 600; line-height: 1.5; margin-bottom: 20px;">
+          Ruang kreatif terstruktur untuk mengumpulkan ide bisnis dan mengawal rencana eksekusinya.
+        </p>
+        <button class="btn-primary-fresh" onclick="navigateTo('page-ideas')">Mulai Eksplorasi Ide</button>
+      </div>
     </div>
 
-    <!-- HALAMAN 2: DAFTAR IDE -->
+    <!-- HALAMAN 2: DAFTAR IDE / IDEAS GRID -->
     <div id="page-ideas" class="hidden">
-      <button class="btn-back" onclick="navigateTo('page-welcome')">← Kembali ke Welcome</button>
-      
+      <!-- Input Ide Baru -->
       <div class="card">
-        <div class="section-header">
-          <span class="section-title">Ada Ide Apa Hari Ini? 🤔</span>
-        </div>
-        <form class="form-group" onsubmit="addIdea(event)">
-          <input type="text" id="idea-title" class="input-text" placeholder="Tulis nama proyek / ide bisnis..." required>
-          <button type="submit" class="btn-primary">+ Tambah Proyek / Ide</button>
+        <h3 style="font-size: 1rem; font-weight: 800; margin-bottom: 12px;">Ada Ide Apa Hari Ini? 🤔</h3>
+        <form onsubmit="addIdea(event)" style="display: flex; flex-direction: column; gap: 10px;">
+          <input type="text" id="idea-title" class="input-field" placeholder="Nama ide / proyek bisnis..." required>
+          <button type="submit" class="btn-primary-fresh">+ Tambah Ide Baru</button>
         </form>
       </div>
 
-      <div class="card">
-        <div class="section-header">
-          <span class="section-title">Daftar Proyek & Ide</span>
-        </div>
-        <div id="ideas-list"></div>
+      <!-- Filter Tabs -->
+      <div class="pill-tabs">
+        <button class="pill-tab active">Semua Ide</button>
       </div>
+
+      <!-- Grid Ide Cards -->
+      <div id="ideas-grid" class="ideas-grid"></div>
     </div>
 
     <!-- HALAMAN 3: DETAIL IDE & TASK -->
     <div id="page-detail" class="hidden">
-      <button class="btn-back" onclick="navigateTo('page-ideas')">← Kembali ke Daftar Ide</button>
-      
+      <button class="btn-back-pill" onclick="navigateTo('page-ideas')">← Kembali ke Daftar Ide</button>
+
+      <!-- Card Header Proyek -->
       <div class="card">
-        <div style="font-size: 0.75rem; color: var(--accent-light); font-weight: 700; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">PROYEK / IDE</div>
-        <h2 id="detail-title" style="font-size: 1.3rem; font-weight: 700; margin-bottom: 14px;"></h2>
+        <span style="font-size: 0.7rem; font-weight: 800; color: var(--purple-primary); text-transform: uppercase;">DETAIL PROYEK</span>
+        <h2 id="detail-title" style="font-size: 1.4rem; font-weight: 800; margin: 4px 0 14px 0;"></h2>
         
-        <div style="display: flex; align-items: center; justify-content: space-between;">
-          <span style="font-size: 0.85rem; color: var(--text-muted);">Status Pengerjaan:</span>
-          <select id="detail-status" class="select-status" onchange="updateIdeaStatus(this.value)">
-            <option value="open">Open</option>
-            <option value="progress">Progress</option>
-            <option value="close">Close</option>
-            <option value="noprogress">No Progress</option>
+        <div style="display: flex; justify-content: space-between; align-items: center; background: #F8F9FD; padding: 10px 14px; border-radius: 16px;">
+          <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">Status Proyek:</span>
+          <select id="detail-status" onchange="updateIdeaStatus(this.value)" style="background: transparent; border: none; font-weight: 800; color: var(--purple-primary); font-size: 0.85rem; outline: none; cursor: pointer;">
+            <option value="open">OPEN</option>
+            <option value="progress">PROGRESS</option>
+            <option value="close">CLOSE</option>
+            <option value="noprogress">NO PROGRESS</option>
           </select>
         </div>
       </div>
 
+      <!-- Form Tambah Action Plan -->
       <div class="card">
-        <div class="section-header">
-          <span class="section-title">Langkah Eksekusi Selanjutnya 🚀</span>
-        </div>
-        <form class="form-group" onsubmit="addTodo(event)">
-          <input type="text" id="todo-text" class="input-text" placeholder="Tuliskan aksi konkret selanjutnya..." required>
-          <button type="submit" class="btn-primary">+ Tambah Langkah</button>
+        <h3 style="font-size: 0.95rem; font-weight: 800; margin-bottom: 10px;">Langkah Eksekusi selanjutnya 🚀</h3>
+        <form onsubmit="addTodo(event)" style="display: flex; flex-direction: column; gap: 10px;">
+          <input type="text" id="todo-text" class="input-field" placeholder="Tulis aksi konkret..." required>
+          <button type="submit" class="btn-primary-fresh">+ Tambah Langkah</button>
         </form>
       </div>
 
+      <!-- List Task / Action Plan -->
       <div class="card">
-        <div class="section-header">
-          <span class="section-title">Daftar Task / Action Plan</span>
-          <span id="todo-counter" style="font-size: 0.8rem; color: var(--text-muted);"></span>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <h3 style="font-size: 0.95rem; font-weight: 800;">Daftar Action Plan</h3>
+          <span id="todo-counter" style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted);"></span>
         </div>
-        
-        <div class="progress-bar-bg">
-          <div id="progress-bar" class="progress-bar-fill"></div>
-        </div>
-
         <div id="todo-list"></div>
       </div>
     </div>
 
+    <!-- FOOTER -->
+    <div class="footer-text">
+      Riyan for 2027
+    </div>
+
   </div>
 
-  <!-- MODAL EDIT/DETAIL TASK -->
+  <!-- FLOATING BOTTOM NAVIGATION BAR -->
+  <div class="bottom-nav">
+    <button class="nav-item active" id="nav-welcome" onclick="navigateTo('page-welcome')">
+      🏠
+      <div class="nav-dot"></div>
+    </button>
+    <button class="nav-item" id="nav-ideas" onclick="navigateTo('page-ideas')">
+      📄
+    </button>
+  </div>
+
+  <!-- MODAL EDIT TASK & NOTE -->
   <div id="task-modal" class="modal-overlay hidden">
-    <div class="modal-card">
-      <div class="modal-header">
-        <span class="modal-title">Detail & Keterangan Task</span>
-        <button class="btn-icon-delete" onclick="closeTaskModal()">✕</button>
+    <div class="modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h3 style="font-weight: 800; font-size: 1.1rem;">Detail Action Plan</h3>
+        <button onclick="closeTaskModal()" style="background: none; border: none; font-size: 1.2rem; cursor: pointer;">✕</button>
       </div>
-      
-      <div class="form-group">
+
+      <div style="display: flex; flex-direction: column; gap: 12px;">
         <div>
-          <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 6px;">Judul Task:</label>
-          <input type="text" id="modal-task-title" class="input-text" placeholder="Judul task...">
+          <label style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">JUDUL TASK</label>
+          <input type="text" id="modal-task-title" class="input-field">
         </div>
         <div>
-          <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 6px;">Keterangan / Catatan Tambahan:</label>
-          <textarea id="modal-task-note" class="input-textarea" placeholder="Tulis rincian, instruksi, link, atau catatan bebas di sini..."></textarea>
+          <label style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">CATATAN & DETAIL</label>
+          <textarea id="modal-task-note" class="input-field" style="min-height: 100px; resize: vertical;" placeholder="Tulis rincian, instruksi, atau ide tambahan..."></textarea>
         </div>
       </div>
 
-      <div class="modal-footer">
-        <button class="btn-secondary" onclick="closeTaskModal()">Batal</button>
-        <button class="btn-primary" style="width: auto;" onclick="saveTaskModal()">Simpan Catatan</button>
+      <div style="display: flex; gap: 10px; margin-top: 18px;">
+        <button class="btn-primary-fresh" style="background: #EBF0FF; color: var(--purple-primary); box-shadow: none;" onclick="closeTaskModal()">Batal</button>
+        <button class="btn-primary-fresh" onclick="saveTaskModal()">Simpan</button>
       </div>
     </div>
   </div>
 
-  <div class="footer">
-    © Executive Workspace • Tersimpan Otomatis (Local Storage)
-  </div>
-
   <script>
-    let ideas = JSON.parse(localStorage.getItem('my_ideas_data')) || [];
+    let ideas = JSON.parse(localStorage.getItem('my_ideas_data_fresh')) || [];
     let currentIdeaId = null;
     let currentEditingTodoId = null;
 
+    const bgColors = ['bg-purple', 'bg-coral', 'bg-amber', 'bg-green'];
+
     function saveToStorage() {
-      localStorage.setItem('my_ideas_data', JSON.stringify(ideas));
+      localStorage.setItem('my_ideas_data_fresh', JSON.stringify(ideas));
     }
 
     function navigateTo(pageId) {
@@ -556,7 +522,15 @@
 
       document.getElementById(pageId).classList.remove('hidden');
 
-      if (pageId === 'page-ideas') renderIdeas();
+      // Update Nav Active state
+      document.getElementById('nav-welcome').classList.remove('active');
+      document.getElementById('nav-ideas').classList.remove('active');
+
+      if (pageId === 'page-welcome') document.getElementById('nav-welcome').classList.add('active');
+      if (pageId === 'page-ideas') {
+        document.getElementById('nav-ideas').classList.add('active');
+        renderIdeas();
+      }
     }
 
     function addIdea(e) {
@@ -566,6 +540,7 @@
         id: Date.now(),
         title: titleInput.value,
         status: 'open',
+        bgStyle: bgColors[ideas.length % bgColors.length],
         todos: []
       };
       ideas.push(newIdea);
@@ -575,23 +550,29 @@
     }
 
     function renderIdeas() {
-      const container = document.getElementById('ideas-list');
+      const container = document.getElementById('ideas-grid');
       container.innerHTML = '';
 
       if (ideas.length === 0) {
-        container.innerHTML = '<p style="color: var(--text-dim); font-size: 0.85rem; text-align: center; padding: 12px 0;">Belum ada ide tersimpan.</p>';
+        container.style.display = 'block';
+        container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.85rem; font-weight:600; text-align: center; padding: 20px 0;">Belum ada ide. Yuk buat ide pertamamu!</p>';
         return;
       }
 
+      container.style.display = 'grid';
+
       ideas.forEach(idea => {
         const div = document.createElement('div');
-        div.className = 'idea-item';
+        div.className = `idea-card-item ${idea.bgStyle || 'bg-purple'}`;
+        div.onclick = () => openDetail(idea.id);
+
         div.innerHTML = `
-          <div class="idea-info" style="flex:1;" onclick="openDetail(${idea.id})">
-            <span class="idea-title">${escapeHtml(idea.title)}</span>
-            <span class="badge badge-${idea.status}">${idea.status}</span>
+          <button class="btn-delete-card" onclick="deleteIdea(event, ${idea.id})">✕</button>
+          <div class="card-top-icon">💡</div>
+          <div>
+            <div class="card-content-title">${escapeHtml(idea.title)}</div>
+            <span class="card-status-pill">${idea.status}</span>
           </div>
-          <button class="btn-icon-delete" title="Hapus Ide" onclick="deleteIdea(event, ${idea.id})">✕</button>
         `;
         container.appendChild(div);
       });
@@ -619,7 +600,7 @@
 
     function deleteIdea(e, id) {
       e.stopPropagation();
-      if(confirm('Yakin ingin menghapus ide/proyek ini?')) {
+      if(confirm('Hapus ide ini?')) {
         ideas = ideas.filter(item => item.id !== id);
         saveToStorage();
         renderIdeas();
@@ -673,37 +654,33 @@
       const idea = ideas.find(item => item.id === currentIdeaId);
 
       if (!idea || idea.todos.length === 0) {
-        container.innerHTML = '<p style="color: var(--text-dim); font-size: 0.85rem; text-align: center; padding: 12px 0;">Belum ada langkah eksekusi.</p>';
+        container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.85rem; font-weight:600; text-align: center; padding: 12px 0;">Belum ada aksi eksekusi.</p>';
         document.getElementById('todo-counter').innerText = '';
-        document.getElementById('progress-bar').style.width = '0%';
         return;
       }
 
       const total = idea.todos.length;
       const completed = idea.todos.filter(t => t.completed).length;
-      const percent = Math.round((completed / total) * 100);
-
-      document.getElementById('todo-counter').innerText = `${completed} dari ${total} selesai (${percent}%)`;
-      document.getElementById('progress-bar').style.width = `${percent}%`;
+      document.getElementById('todo-counter').innerText = `${completed}/${total} Selesai`;
 
       idea.todos.forEach(todo => {
         const div = document.createElement('div');
-        div.className = `todo-item ${todo.completed ? 'done' : ''}`;
+        div.className = `todo-card-item ${todo.completed ? 'completed' : ''}`;
         div.onclick = () => openTaskModal(todo.id);
 
         div.innerHTML = `
           <input type="checkbox" class="todo-checkbox" ${todo.completed ? 'checked' : ''} onclick="toggleTodo(event, ${todo.id})">
-          <div class="todo-content">
-            <span class="todo-text">${escapeHtml(todo.text)}</span>
-            ${todo.note ? `<span class="todo-note-preview">📝 ${escapeHtml(todo.note)}</span>` : '<span class="todo-note-preview" style="opacity:0.5;">+ Klik untuk tambah catatan</span>'}
+          <div class="todo-text-box">
+            <span class="todo-main-text">${escapeHtml(todo.text)}</span>
+            ${todo.note ? `<span class="todo-note-text">📝 ${escapeHtml(todo.note)}</span>` : '<span class="todo-note-text" style="opacity:0.6;">+ Tambah rincian</span>'}
           </div>
-          <button class="btn-icon-delete" title="Hapus Task" onclick="deleteTodo(event, ${todo.id})">✕</button>
+          <button style="background:none; border:none; color:var(--text-muted); font-size:0.9rem; cursor:pointer;" onclick="deleteTodo(event, ${todo.id})">✕</button>
         `;
         container.appendChild(div);
       });
     }
 
-    /* Modal Handlers */
+    /* Modal Controls */
     function openTaskModal(todoId) {
       currentEditingTodoId = todoId;
       const idea = ideas.find(item => item.id === currentIdeaId);
@@ -739,6 +716,5 @@
       return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
   </script>
-
 </body>
 </html>
