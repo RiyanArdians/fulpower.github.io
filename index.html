@@ -4,12 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Idea Dump - Riyan</title>
-  
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
-  
   <style>
     :root {
       --bg-color: #FFFDF8;
@@ -40,13 +37,16 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      align-items: center;
+      padding: 20px 20px 0px 20px; /* Hapus padding bawah untuk flex footer */
     }
 
     .app-container {
       width: 100%;
-      max-width: none; /* Full width menyesuaikan device sesuai request */
-      padding: 20px;
-      flex: 1; /* Membuat container mengambil sisa tinggi untuk mendorong footer */
+      /* max-width dibuang agar full screen */
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1; /* Biar wadah utama meluas ke bawah */
     }
 
     /* Brutalist Core Classes */
@@ -63,26 +63,34 @@
       user-select: none;
     }
 
-    /* Animasi Klik Presisi (Tidak too much) */
+    /* Animasi Klik Profesional */
     .brutal-btn:active {
       transform: translate(3px, 3px);
       box-shadow: 1px 1px 0px var(--black);
     }
 
+    /* Header Section */
     .hero-title {
-      font-size: clamp(2rem, 5vw, 3.5rem); /* Ukuran teks responsif */
+      font-size: 2.8rem;
       font-weight: 800;
       line-height: 1.1;
       letter-spacing: -1px;
+      margin-top: 20px;
       margin-bottom: 24px;
-      margin-top: 10px;
     }
 
+    /* Input Form Area */
     .input-group {
       display: flex;
+      flex-direction: column; /* Ubah ke kolom untuk menampung input date */
       gap: 12px;
       margin-bottom: 30px;
-      width: 100%;
+      max-width: 600px; /* Batasi lebar form sedikit agar tidak terlalu panjang di PC */
+    }
+
+    .input-row {
+      display: flex;
+      gap: 12px;
     }
 
     .main-input {
@@ -97,21 +105,33 @@
       color: #9CA3AF;
       font-weight: 600;
     }
+    
+    .date-input-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .date-input {
+        padding: 12px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        outline: none;
+    }
 
     .btn-add {
-      width: 64px;
+      width: 58px;
       background-color: var(--yellow);
-      font-size: 2rem;
+      font-size: 1.8rem;
       font-weight: 800;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-shrink: 0;
     }
 
-    /* Section Title */
+    /* Title Sections */
     .section-title {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: 800;
       margin-bottom: 16px;
       display: flex;
@@ -119,11 +139,13 @@
       align-items: center;
     }
 
+    /* Grid Layout - RESPONSIVE 2 KOTAK/BARIS */
     .grid-container {
       display: grid;
-      /* Grid otomatis mengisi ruang layar: HP 2 kolom, Desktop bisa 4-6 kolom */
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      /* Responsive: minimal 250px, kalau layar lebar akan nambah kolom, kalau kecil (HP) minimal 1 kolom atau 2 kolom kalau muat */
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
       gap: 16px;
+      width: 100%;
     }
 
     .idea-card {
@@ -131,8 +153,13 @@
       display: flex;
       flex-direction: column;
       position: relative;
-      height: 100%;
-      min-height: 160px;
+    }
+    
+    .card-header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 16px;
     }
 
     .card-icon-wrapper {
@@ -144,37 +171,51 @@
       align-items: center;
       justify-content: center;
       font-size: 1.6rem;
-      margin-bottom: auto; /* Mendorong title ke bawah */
-      cursor: pointer;
-      background-color: #fff;
+      cursor: pointer; /* Jadikan cursor pointer agar tahu bisa diklik */
+      transition: transform 0.1s;
     }
-
-    /* Animasi kecil saat icon dihover untuk interaksi */
+    
     .card-icon-wrapper:hover {
-      transform: scale(1.05);
+        transform: scale(1.05);
     }
 
     .card-task-count {
-      position: absolute;
-      top: 16px;
-      right: 14px;
       font-size: 0.8rem;
       font-weight: 800;
       color: #4B5563;
     }
 
     .card-title {
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       font-weight: 800;
       line-height: 1.3;
       word-break: break-word;
-      margin-top: 20px;
+      margin-bottom: 12px;
+    }
+    
+    .card-dates {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin-top: auto; /* Dorong ke bawah */
+        padding-top: 12px;
+        border-top: 2px dashed #E5E7EB;
+    }
+    
+    .date-badge {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #374151;
+        display: flex;
+        align-items: center;
+        gap: 6px;
     }
 
+    /* Delete Button on Card */
     .btn-delete-card {
       position: absolute;
-      bottom: 12px;
-      right: 12px;
+      bottom: 16px;
+      right: 16px;
       background: var(--pink);
       border: 2px solid var(--black);
       width: 32px;
@@ -189,10 +230,13 @@
       transition: opacity 0.2s;
     }
 
-    /* Munculkan tombol delete saat hover atau aktif (untuk mobile) */
-    .idea-card:hover .btn-delete-card,
-    .idea-card:active .btn-delete-card {
+    .idea-card:hover .btn-delete-card {
       opacity: 1;
+    }
+    
+    /* Sentuh HP langsung muncul icon hapusnya */
+    @media (hover: none) {
+        .btn-delete-card { opacity: 1; }
     }
 
     /* Detail Page */
@@ -200,7 +244,7 @@
       appearance: none;
       background: var(--bg-color);
       border: 2px solid var(--black);
-      padding: 8px 14px;
+      padding: 8px 16px;
       border-radius: 8px;
       font-weight: 800;
       font-size: 0.9rem;
@@ -212,19 +256,21 @@
       background: #FFFFFF;
       padding: 12px 20px;
       font-weight: 800;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       display: inline-flex;
       align-items: center;
       gap: 8px;
       margin-bottom: 24px;
+      width: fit-content;
     }
 
+    /* Todo List */
     .todo-item {
       display: flex;
       align-items: flex-start;
-      gap: 14px;
+      gap: 12px;
       padding: 16px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       background: #FFFFFF;
     }
 
@@ -263,15 +309,15 @@
     }
 
     .todo-text {
-      font-size: 1.05rem;
-      font-weight: 800;
+      font-size: 1rem;
+      font-weight: 700;
       line-height: 1.4;
     }
 
     .todo-note {
       font-size: 0.85rem;
-      color: #4B5563;
-      font-weight: 700;
+      color: #6B7280;
+      font-weight: 600;
       margin-top: 6px;
       display: -webkit-box;
       -webkit-line-clamp: 2;
@@ -293,11 +339,12 @@
     .btn-icon-delete {
       background: transparent;
       border: none;
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       cursor: pointer;
       color: var(--black);
     }
 
+    /* Modal Styling */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -312,7 +359,7 @@
 
     .modal-box {
       width: 100%;
-      max-width: 440px;
+      max-width: 400px;
       padding: 24px;
       max-height: 90vh;
       overflow-y: auto;
@@ -333,34 +380,37 @@
 
     .btn-modal {
       flex: 1;
-      padding: 16px;
+      padding: 14px;
       font-weight: 800;
-      font-size: 0.95rem;
+      font-size: 1rem;
       text-align: center;
     }
-
-    /* Emoji Picker Grid */
-    .emoji-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
-      gap: 10px;
-      margin-top: 10px;
-      margin-bottom: 20px;
+    
+    /* Icon Picker Grid - DIPERBAIKI POSISINYA */
+    .icon-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+        margin-top: 16px;
+        margin-bottom: 24px;
     }
-
-    .emoji-btn {
-      font-size: 1.8rem;
-      padding: 8px;
-      background: var(--grey);
-      border: 2px solid var(--black);
-      border-radius: 8px;
-      cursor: pointer;
-      text-align: center;
-      transition: background 0.2s;
+    
+    .icon-option {
+        aspect-ratio: 1; /* Supaya kotak */
+        border: 2px solid var(--black);
+        border-radius: 8px;
+        display: flex;
+        align-items: center; /* Vertikal tengah */
+        justify-content: center; /* Horizontal tengah */
+        font-size: 1.8rem;
+        cursor: pointer;
+        background: #F9FAFB;
+        transition: transform 0.1s, background-color 0.1s;
     }
-
-    .emoji-btn:hover, .emoji-btn:active {
-      background: var(--yellow);
+    
+    .icon-option:hover {
+        background: var(--yellow);
+        transform: scale(1.1);
     }
 
     .hidden { display: none !important; }
@@ -369,10 +419,10 @@
       text-align: center;
       font-weight: 800;
       font-size: 1rem;
-      padding: 24px 20px;
+      margin-top: auto; /* Mendorong footer ke bawah */
       border-top: 3px solid var(--black);
-      background-color: var(--bg-color);
-      margin-top: auto; /* Mendorong footer agar mentok ke bawah layar */
+      padding: 24px 0;
+      width: 100%;
     }
   </style>
 </head>
@@ -380,51 +430,65 @@
 
   <div class="app-container">
 
+    <!-- HALAMAN 1: WELCOME & IDEAS GRID -->
     <div id="page-home">
-      <!-- Headline Semangat & Profesional -->
+      <!-- Headline -->
       <h1 class="hero-title">Rancang Masa Depan.<br>Mulai dari Ide Pertama.</h1>
 
       <!-- Input Form -->
       <form class="input-group" onsubmit="addIdea(event)">
-        <input type="text" id="idea-title" class="brutal-box main-input" placeholder="# Tulis ide di kepalamu..." required autocomplete="off">
-        <button type="submit" class="brutal-box brutal-btn btn-add">+</button>
+        <div class="input-row">
+            <input type="text" id="idea-title" class="brutal-box main-input" placeholder="# Tulis ide di kepalamu..." required autocomplete="off">
+            <button type="submit" class="brutal-box brutal-btn btn-add">+</button>
+        </div>
+        <div class="date-input-wrapper">
+            <label style="font-weight: 800; font-size: 0.85rem;">Target Selesai (Due Date):</label>
+            <input type="date" id="idea-due-date" class="brutal-box date-input" required>
+        </div>
       </form>
 
       <!-- Koleksi Ide -->
       <div class="section-title">
         Koleksi Ide Saya
-        <span id="total-ideas-count" style="font-size: 0.9rem; background: var(--black); color: white; padding: 4px 10px; border-radius: 20px;">0</span>
+        <span id="total-ideas-count" style="font-size: 0.85rem; background: var(--black); color: white; padding: 4px 12px; border-radius: 20px;">0</span>
       </div>
       
       <div id="ideas-grid" class="grid-container">
-        <!-- Grid card dirender via JS -->
+        <!-- Grid card akan dirender via JS -->
       </div>
     </div>
 
 
+    <!-- HALAMAN 2: DETAIL PROYEK & TASK -->
     <div id="page-detail" class="hidden">
       <button class="brutal-box brutal-btn btn-back" onclick="navigateTo('page-home')">
         ← Kembali
       </button>
 
       <!-- Header Detail -->
-      <div class="brutal-box" style="padding: 24px; margin-bottom: 30px;">
-        <h2 id="detail-title" style="font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 800; margin-bottom: 16px; line-height: 1.2;"></h2>
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-          <span style="font-size: 0.95rem; font-weight: 800;">Status Proyek:</span>
-          <select id="detail-status" class="status-select brutal-btn" onchange="updateIdeaStatus(this.value)">
-            <option value="💡 Open">💡 Open</option>
-            <option value="🚀 Progress">🚀 Progress</option>
-            <option value="✅ Closed">✅ Closed</option>
-            <option value="⏸️ Pending">⏸️ Pending</option>
-          </select>
+      <div class="brutal-box" style="padding: 24px; margin-bottom: 24px;">
+        <h2 id="detail-title" style="font-size: 1.8rem; font-weight: 800; margin-bottom: 20px; line-height: 1.2;"></h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+          <div style="display: flex; gap: 16px;">
+              <span id="detail-created" class="date-badge" style="font-size:0.85rem;"></span>
+              <span id="detail-due" class="date-badge" style="font-size:0.85rem; color: #DC2626;"></span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 0.9rem; font-weight: 700;">Status:</span>
+              <select id="detail-status" class="status-select brutal-btn" onchange="updateIdeaStatus(this.value)">
+                <option value="💡 Open">💡 Open</option>
+                <option value="🚀 Progress">🚀 Progress</option>
+                <option value="✅ Closed">✅ Closed</option>
+                <option value="⏸️ Pending">⏸️ Pending</option>
+              </select>
+          </div>
         </div>
       </div>
 
       <!-- Form Tambah Action Plan -->
       <div class="section-title">Langkah Eksekusi Selanjutnya</div>
-      <form class="input-group" onsubmit="addTodo(event)">
-        <input type="text" id="todo-text" class="brutal-box main-input" placeholder="Tulis rincian action plan..." required autocomplete="off">
+      <form class="input-row" style="margin-bottom: 24px;" onsubmit="addTodo(event)">
+        <input type="text" id="todo-text" class="brutal-box main-input" placeholder="Tulis action plan..." required autocomplete="off">
         <button type="submit" class="brutal-box brutal-btn btn-add" style="background: var(--purple);">+</button>
       </form>
 
@@ -432,27 +496,26 @@
       <div id="todo-list"></div>
     </div>
 
+    <!-- FOOTER (Selalu di bawah berkat margin-top: auto) -->
+    <div class="footer">
+      Riyan for 2027
+    </div>
+
   </div>
 
-  <!-- Footer Mentok Bawah -->
-  <div class="footer">
-    Riyan for 2027
-  </div>
-
-  
-  <!-- Modal Edit Task -->
+  <!-- MODAL EDIT TASK -->
   <div id="task-modal" class="modal-overlay hidden">
     <div class="brutal-box modal-box">
-      <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 24px;">Detail Action Plan</h3>
+      <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 20px;">Detail Action Plan</h3>
       
-      <div style="margin-bottom: 20px;">
+      <div style="margin-bottom: 16px;">
         <label class="modal-label">Aksi / Judul</label>
-        <input type="text" id="modal-task-title" class="brutal-box main-input" style="width: 100%; padding: 14px;">
+        <input type="text" id="modal-task-title" class="brutal-box main-input" style="width: 100%; padding: 12px;">
       </div>
       
       <div>
         <label class="modal-label">Catatan Tambahan</label>
-        <textarea id="modal-task-note" class="brutal-box main-input" style="width: 100%; min-height: 120px; padding: 14px; resize: vertical;" placeholder="Rincian, panduan, atau target waktu..."></textarea>
+        <textarea id="modal-task-note" class="brutal-box main-input" style="width: 100%; min-height: 120px; padding: 12px; resize: vertical;" placeholder="Rincian spesifik, link, dll..."></textarea>
       </div>
 
       <div class="modal-footer">
@@ -461,75 +524,97 @@
       </div>
     </div>
   </div>
-
-  <!-- Modal Pilih Icon (Emoji Picker) -->
+  
+  <!-- MODAL ICON PICKER -->
   <div id="icon-modal" class="modal-overlay hidden">
     <div class="brutal-box modal-box">
-      <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 8px;">Pilih Ikon Baru</h3>
-      <p style="font-size: 0.9rem; font-weight: 700; color: #4B5563; margin-bottom: 16px;">Sesuaikan ikon agar lebih representatif dengan ide.</p>
+      <h3 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 8px;">Pilih Ikon Baru</h3>
+      <p style="font-size: 0.9rem; color: #4B5563; font-weight: 600;">Sesuaikan ikon agar lebih representatif dengan ide.</p>
       
-      <div id="emoji-picker-container" class="emoji-grid">
-        <!-- Emojis dirender via JS -->
+      <div class="icon-grid" id="icon-grid-container">
+          <!-- Icon dirender JS -->
       </div>
 
-      <div class="modal-footer">
-        <button class="brutal-box brutal-btn btn-modal" style="background: var(--grey);" onclick="closeIconModal()">Tutup</button>
-      </div>
+      <button class="brutal-box brutal-btn btn-modal" style="width: 100%; background: #FFFFFF;" onclick="closeIconModal()">Tutup</button>
     </div>
   </div>
 
+
   <script>
-    // Palet warna untuk background ikon agar bervariasi
+    // Palet warna untuk neo-brutalism randomizer
     const palette = ['#FFD836', '#4ADE80', '#FF66A1', '#A78BFA', '#60A5FA', '#FB923C'];
     
-    // Daftar emoji lengkap (profesional & fun)
-    const availableEmojis = [
-      '💡','🚀','🎯','🛠️','🎨','🔥','⚡','📈','💸','🌍',
-      '🏆','🧩','✨','💻','📱','📸','🍔','☕','✈️','🎵',
-      '📚','🧠','💪','🌿','🏢','📝','⚙️','🛡️','💎','🎤'
+    // Daftar Icon yang tersedia di modal
+    const allIcons = [
+        '💡','🚀','🎯','🛠️','🎨',
+        '🔥','⚡','📈','💸','🌍',
+        '🏆','🧩','✨','💻','📱',
+        '📸','🍔','☕','✈️','🎵',
+        '📚','🧠','💪','🌿','🏢',
+        '📝','⚙️','🛡️','💎','🎤'
     ];
 
-    let ideas = JSON.parse(localStorage.getItem('riyan_workspace_v3')) || [];
+    let ideas = JSON.parse(localStorage.getItem('riyan_brutalist_ideas')) || [];
     let currentIdeaId = null;
     let currentEditingTodoId = null;
-    let targetIdeaForIcon = null; // Menyimpan ID ide yang ikonnya sedang mau diganti
+    let currentIconEditIdeaId = null;
+
+    // Helper Format Tanggal
+    function formatDate(dateString) {
+        if (!dateString) return "-";
+        const options = { day: 'numeric', month: 'short', year: 'numeric' };
+        return new Date(dateString).toLocaleDateString('id-ID', options);
+    }
+    
+    // Set default value due date ke besok
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    document.getElementById('idea-due-date').valueAsDate = tomorrow;
 
     // Inisialisasi awal
     renderIdeas();
-    renderEmojiPicker();
+    renderIconGrid();
 
     function saveToStorage() {
-      localStorage.setItem('riyan_workspace_v3', JSON.stringify(ideas));
+      localStorage.setItem('riyan_brutalist_ideas', JSON.stringify(ideas));
     }
 
-    // Fungsi Navigasi Halaman
     function navigateTo(pageId) {
       document.getElementById('page-home').classList.add('hidden');
       document.getElementById('page-detail').classList.add('hidden');
       document.getElementById(pageId).classList.remove('hidden');
 
       if (pageId === 'page-home') renderIdeas();
+      window.scrollTo(0,0);
     }
 
     function addIdea(e) {
       e.preventDefault();
       const titleInput = document.getElementById('idea-title');
+      const dueDateInput = document.getElementById('idea-due-date');
       
       const randomColor = palette[Math.floor(Math.random() * palette.length)];
+      // Default icon bola lampu untuk ide baru
+      const defaultIcon = '💡';
       
-      // Default icon adalah bohlam, nanti bisa diubah user
+      const today = new Date().toISOString();
+
       const newIdea = {
         id: Date.now(),
         title: titleInput.value,
         status: '💡 Open',
         color: randomColor,
-        icon: '💡',
+        icon: defaultIcon,
+        createdDate: today,
+        dueDate: dueDateInput.value,
         todos: []
       };
       
-      ideas.unshift(newIdea); // Masukkan ke urutan paling atas
+      ideas.unshift(newIdea);
       saveToStorage();
       titleInput.value = '';
+      // Reset date to tomorrow
+      document.getElementById('idea-due-date').valueAsDate = tomorrow;
       renderIdeas();
     }
 
@@ -541,8 +626,8 @@
       if (ideas.length === 0) {
         container.style.display = 'block';
         container.innerHTML = `
-          <div class="brutal-box" style="padding: 40px 20px; text-align: center; border-style: dashed; background: transparent; box-shadow: none;">
-            <p style="font-weight: 800; font-size: 1.1rem; color: #4B5563;">Belum ada ide. Ayo mulai rancang masa depanmu!</p>
+          <div class="brutal-box" style="padding: 40px; text-align: center; border-style: dashed; background: transparent; box-shadow: none;">
+            <p style="font-weight: 700; color: #6B7280; font-size: 1.1rem;">Kosong! Ayo rancang masa depanmu.</p>
           </div>
         `;
         return;
@@ -553,63 +638,39 @@
       ideas.forEach(idea => {
         const div = document.createElement('div');
         div.className = 'brutal-box brutal-btn idea-card';
-        // Mencegah navigasi ke halaman detail bila yang diklik adalah tombol/icon tertentu
         div.onclick = (e) => {
+          // Jangan buka detail kalau klik icon picker atau tombol hapus
           if(!e.target.closest('.btn-delete-card') && !e.target.closest('.card-icon-wrapper')) {
              openDetail(idea.id);
           }
         };
 
         const taskCount = idea.todos ? idea.todos.length : 0;
+        
+        // Handle data lama yang belum punya tanggal
+        const createdDisplay = idea.createdDate ? formatDate(idea.createdDate) : "Terdahulu";
+        const dueDisplay = idea.dueDate ? formatDate(idea.dueDate) : "-";
 
         div.innerHTML = `
-          <div class="card-icon-wrapper brutal-btn" style="background: ${idea.color};" onclick="openIconPicker(event, ${idea.id})" title="Ganti Ikon">
-            ${idea.icon || '💡'}
+          <div class="card-header-row">
+              <div class="card-icon-wrapper brutal-box" style="background: ${idea.color};" onclick="openIconModal(${idea.id})" title="Ganti Ikon">
+                ${idea.icon || '💡'}
+              </div>
+              <div class="card-task-count">${taskCount} task</div>
           </div>
-          <div class="card-task-count">${taskCount} task</div>
+          
           <div class="card-title">${escapeHtml(idea.title)}</div>
-          <button class="btn-delete-card brutal-btn" onclick="deleteIdea(event, ${idea.id})" title="Hapus Ide">✕</button>
+          
+          <div class="card-dates">
+              <div class="date-badge">🕒 Dibuat: ${createdDisplay}</div>
+              <div class="date-badge" style="color: #DC2626;">🎯 Target: ${dueDisplay}</div>
+          </div>
+          
+          <button class="btn-delete-card" onclick="deleteIdea(event, ${idea.id})" title="Hapus Ide">✕</button>
         `;
         container.appendChild(div);
       });
     }
-
-    function renderEmojiPicker() {
-      const container = document.getElementById('emoji-picker-container');
-      container.innerHTML = '';
-      
-      availableEmojis.forEach(emoji => {
-        const btn = document.createElement('div');
-        btn.className = 'emoji-btn';
-        btn.innerText = emoji;
-        btn.onclick = () => saveNewIcon(emoji);
-        container.appendChild(btn);
-      });
-    }
-
-    function openIconPicker(e, id) {
-      e.stopPropagation(); // Mencegah pindah ke halaman detail
-      targetIdeaForIcon = id;
-      document.getElementById('icon-modal').classList.remove('hidden');
-    }
-
-    function closeIconModal() {
-      document.getElementById('icon-modal').classList.add('hidden');
-      targetIdeaForIcon = null;
-    }
-
-    function saveNewIcon(selectedEmoji) {
-      if (targetIdeaForIcon) {
-        const idea = ideas.find(item => item.id === targetIdeaForIcon);
-        if (idea) {
-          idea.icon = selectedEmoji;
-          saveToStorage();
-          renderIdeas(); // Refresh grid
-        }
-      }
-      closeIconModal();
-    }
-
 
     function openDetail(id) {
       currentIdeaId = id;
@@ -618,6 +679,12 @@
 
       document.getElementById('detail-title').innerText = idea.title;
       document.getElementById('detail-status').value = idea.status;
+      
+      const createdDisplay = idea.createdDate ? formatDate(idea.createdDate) : "Terdahulu";
+      const dueDisplay = idea.dueDate ? formatDate(idea.dueDate) : "-";
+      
+      document.getElementById('detail-created').innerHTML = `🕒 Dibuat: ${createdDisplay}`;
+      document.getElementById('detail-due').innerHTML = `🎯 Target: ${dueDisplay}`;
 
       renderTodos();
       navigateTo('page-detail');
@@ -633,7 +700,7 @@
 
     function deleteIdea(e, id) {
       e.stopPropagation();
-      if(confirm('Yakin ingin menghapus ide ini?')) {
+      if(confirm('Yakin menghapus ide brilian ini?')) {
         ideas = ideas.filter(item => item.id !== id);
         saveToStorage();
         renderIdeas();
@@ -688,8 +755,8 @@
 
       if (!idea || idea.todos.length === 0) {
         container.innerHTML = `
-          <div class="brutal-box" style="padding: 24px; text-align: center; border-style: dashed; background: transparent; box-shadow: none;">
-            <p style="font-weight: 800; color: #4B5563;">Belum ada langkah eksekusi.</p>
+          <div class="brutal-box" style="padding: 30px; text-align: center; border-style: dashed; background: transparent; box-shadow: none;">
+            <p style="font-weight: 700; color: #6B7280; font-size: 1rem;">Belum ada langkah eksekusi.</p>
           </div>
         `;
         return;
@@ -698,26 +765,21 @@
       idea.todos.forEach(todo => {
         const div = document.createElement('div');
         div.className = `brutal-box brutal-btn todo-item ${todo.completed ? 'completed' : ''}`;
-        
-        // Membuka modal edit task bila yang diklik bukan checkbox / tong sampah
-        div.onclick = (e) => {
-          if(!e.target.closest('.todo-checkbox') && !e.target.closest('.btn-icon-delete')) {
-            openTaskModal(todo.id);
-          }
-        };
+        div.onclick = () => openTaskModal(todo.id);
 
         div.innerHTML = `
-          <input type="checkbox" class="todo-checkbox brutal-btn" ${todo.completed ? 'checked' : ''} onclick="toggleTodo(event, ${todo.id})">
+          <input type="checkbox" class="todo-checkbox" ${todo.completed ? 'checked' : ''} onclick="toggleTodo(event, ${todo.id})">
           <div class="todo-content">
             <span class="todo-text">${escapeHtml(todo.text)}</span>
-            ${todo.note ? `<span class="todo-note">📝 ${escapeHtml(todo.note)}</span>` : '<span class="todo-note" style="opacity:0.6;">+ Klik untuk tambah catatan</span>'}
+            ${todo.note ? `<span class="todo-note">📝 ${escapeHtml(todo.note)}</span>` : '<span class="todo-note" style="opacity:0.5;">+ Tambah rincian</span>'}
           </div>
-          <button class="btn-icon-delete brutal-btn" onclick="deleteTodo(event, ${todo.id})" title="Hapus Task">🗑️</button>
+          <button class="btn-icon-delete brutal-btn" onclick="deleteTodo(event, ${todo.id})">🗑️</button>
         `;
         container.appendChild(div);
       });
     }
 
+    /* Logic Modal Edit Task */
     function openTaskModal(todoId) {
       currentEditingTodoId = todoId;
       const idea = ideas.find(item => item.id === currentIdeaId);
@@ -748,8 +810,42 @@
       }
       closeTaskModal();
     }
+    
+    /* Logic Modal Icon Picker */
+    function renderIconGrid() {
+        const container = document.getElementById('icon-grid-container');
+        container.innerHTML = '';
+        allIcons.forEach(icon => {
+            const div = document.createElement('div');
+            div.className = 'icon-option';
+            div.innerText = icon;
+            div.onclick = () => selectIcon(icon);
+            container.appendChild(div);
+        });
+    }
+    
+    function openIconModal(ideaId) {
+        currentIconEditIdeaId = ideaId;
+        document.getElementById('icon-modal').classList.remove('hidden');
+    }
+    
+    function closeIconModal() {
+        document.getElementById('icon-modal').classList.add('hidden');
+        currentIconEditIdeaId = null;
+    }
+    
+    function selectIcon(icon) {
+        if(currentIconEditIdeaId) {
+            const idea = ideas.find(item => item.id === currentIconEditIdeaId);
+            if(idea) {
+                idea.icon = icon;
+                saveToStorage();
+                renderIdeas();
+            }
+        }
+        closeIconModal();
+    }
 
-    // Helpers
     function escapeHtml(text) {
       return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
