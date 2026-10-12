@@ -2,2123 +2,1010 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Virtual Photobooth & Guestbook - FOTOME</title>
-  
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Firebase Compat SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="./js/config.js"></script>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Idea Dump - Riyan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary-crimson: #7A3D44;
-      --deep-crimson: #5C2B32;
-      --gold-accent: #D4AF37;
-      --gold-light: #F8F1E5;
-      --bg-cream: #FDFBF7;
-      --text-dark: #2C2223;
-      --card-glass: rgba(255, 255, 255, 0.12);
-      --card-border: rgba(212, 175, 55, 0.35);
+      --bg-color: #FFFDF8;
+      --black: #0F0F0F;
+      --border-width: 3px;
+      
+      /* Neo-Brutalism Palette */
+      --yellow: #FFD836;
+      --green: #4ADE80;
+      --pink: #FF66A1;
+      --purple: #A78BFA;
+      --blue: #60A5FA;
+      --orange: #FB923C;
+      --grey: #E5E7EB;
+      --red: #EF4444;
+      --dark-green: #15803D;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-    html, body {
-      width: 100vw;
-      height: 100%;
-      overflow-x: hidden;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background: linear-gradient(180deg, #7A3D44 0%, #5C2B32 100%);
-      color: #FFFFFF;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    .font-serif { font-family: 'Cormorant Garamond', serif; }
-    .font-script { font-family: 'Alex Brush', cursive; }
-    .hidden { display: none !important; }
-
-    /* ANIMASI SPINNER LOADING & REFRESH */
-    @keyframes spinAnim {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    .spin-icon {
-      display: inline-block;
-      animation: spinAnim 0.75s linear infinite;
-    }
-
-    .page-fullscreen {
-      width: 100vw;
-      height: 100dvh;
+    body {
+      background-color: var(--bg-color);
+      color: var(--black);
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
+      align-items: center;
+      padding: 20px 20px 0px 20px; 
+    }
+
+    .app-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1; 
+    }
+
+    /* Brutalist Core Classes */
+    .brutal-box {
+      background: #FFFFFF;
+      border: var(--border-width) solid var(--black);
+      border-radius: 12px;
+      box-shadow: 4px 4px 0px var(--black);
+      transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+    }
+
+    .brutal-btn {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    /* Animasi Klik Profesional */
+    .brutal-btn:active {
+      transform: translate(3px, 3px) !important;
+      box-shadow: 1px 1px 0px var(--black) !important;
+    }
+
+    /* Header Section */
+    .hero-title {
+      font-size: 2.8rem;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1px;
+      margin-top: 20px;
+      margin-bottom: 24px;
+    }
+
+    /* Input Form Area */
+    .input-group {
+      display: flex;
+      flex-direction: column; 
+      gap: 12px;
+      margin-bottom: 30px;
+      max-width: 600px; 
+    }
+
+    .input-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .main-input {
+      flex: 1;
+      padding: 16px;
+      font-size: 1rem;
+      font-weight: 700;
+      outline: none;
+    }
+
+    .main-input::placeholder {
+      color: #9CA3AF;
+      font-weight: 600;
+    }
+    
+    .date-input-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .date-input {
+        padding: 12px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        outline: none;
+    }
+
+    .btn-add {
+      width: 58px;
+      background-color: var(--yellow);
+      font-size: 1.8rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Title Sections */
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 16px;
+      display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 16px;
-      position: relative;
-      background: linear-gradient(180deg, #7A3D44 0%, #5C2B32 100%);
-      color: #FFFFFF;
-      overflow: hidden;
     }
 
-    .page-fullscreen-scrollable {
-      width: 100vw;
-      height: 100dvh;
-      display: block;
-      padding: 16px 16px 80px;
-      position: relative;
-      background: linear-gradient(180deg, #7A3D44 0%, #5C2B32 100%);
-      color: #FFFFFF;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .btn-gold-v2 {
-      background: linear-gradient(135deg, #E2C275 0%, #C39B38 100%);
-      color: #2A1A1C;
-      border: 1px solid #FFF;
-      padding: 13px 20px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      border-radius: 35px;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    /* Grid Layout - PASTI 2 KOTAK DI MOBILE */
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr; /* Kunci jadi 2 kolom */
+      gap: 16px;
       width: 100%;
-      max-width: 320px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      margin-bottom: 40px; /* Jarak aman agar tidak menabrak garis footer */
+    }
+    
+    /* Jika layar cukup lebar (tablet/PC), perbanyak kolom */
+    @media (min-width: 600px) {
+        .grid-container {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        }
     }
 
-    .btn-gold-v2:active { transform: scale(0.96); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); }
-
-    .btn-secondary-v2 {
-      background: rgba(255, 255, 255, 0.08);
-      color: #FFFFFF;
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      padding: 11px 18px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      border-radius: 35px;
-      cursor: pointer;
-      margin-top: 6px;
-      width: 100%;
-      max-width: 320px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: transform 0.15s ease, background 0.2s ease;
-    }
-
-    .btn-secondary-v2:active { transform: scale(0.96); background: rgba(255, 255, 255, 0.18); }
-
-    .btn-outline-v2 {
-      background: transparent;
-      color: rgba(255, 255, 255, 0.8);
-      border: none;
-      padding: 6px 12px;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      cursor: pointer;
-      width: 100%;
-      max-width: 320px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.15s ease, opacity 0.2s ease;
-    }
-
-    .btn-outline-v2:active { transform: scale(0.94); opacity: 0.7; }
-
-    .btn-back-styled {
-      background: rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      color: #FFFFFF;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      padding: 10px 28px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      border-radius: 30px;
-      cursor: pointer;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      transition: transform 0.15s ease, background 0.2s ease;
-    }
-
-    .btn-back-styled:active { transform: scale(0.94); background: rgba(255, 255, 255, 0.22); }
-
-    /* TOMBOL REFRESH KHUSUS GALERI */
-    .btn-refresh-feed-custom {
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid var(--gold-accent);
-      color: #FFF;
-      font-size: 0.68rem;
-      font-weight: 700;
-      padding: 5px 12px;
-      border-radius: 20px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      backdrop-filter: blur(6px);
-      transition: transform 0.15s ease, background 0.2s ease;
-    }
-
-    .btn-refresh-feed-custom:active { transform: scale(0.92); background: rgba(212, 175, 55, 0.25); }
-
-    .envelope-screen {
-      position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100dvh;
-      background: linear-gradient(180deg, #7A3D44 0%, #5C2B32 100%);
-      z-index: 99999;
+    .idea-card {
+      padding: 14px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      cursor: pointer;
-      overflow: hidden;
-      transition: opacity 0.8s ease;
+      position: relative;
+    }
+    
+    .card-header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 12px;
     }
 
-    .envelope-wrapper {
-      position: relative;
-      width: 300px;
-      height: 195px;
-      background: #4F242A;
+    .card-icon-wrapper {
+      width: 48px;
+      height: 48px;
+      border: 2px solid var(--black);
       border-radius: 8px;
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.45);
-      border: 1px solid rgba(212, 175, 55, 0.3);
-      margin: 20px 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      perspective: 1000px;
+      font-size: 1.4rem;
+      cursor: pointer; 
+      transition: transform 0.1s;
+    }
+    
+    .card-icon-wrapper:hover {
+        transform: scale(1.05);
     }
 
-    .envelope-wrapper::before {
-      content: "";
+    .card-task-count {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #4B5563;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 800;
+      line-height: 1.3;
+      word-break: break-word;
+      margin-bottom: 10px;
+    }
+    
+    .card-dates {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin-top: auto;
+        padding-top: 10px;
+        border-top: 2px dashed #E5E7EB;
+    }
+    
+    .date-badge {
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: #374151;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    
+    .date-badge-old {
+        text-decoration: line-through;
+        color: var(--red);
+        font-size: 0.65rem;
+    }
+
+    .date-badge-new {
+        color: var(--dark-green);
+    }
+
+    /* Delete Button on Card */
+    .btn-delete-card {
       position: absolute;
-      top: 0; left: 0;
-      width: 0; height: 0;
-      border-top: 97px solid transparent;
-      border-bottom: 98px solid transparent;
-      border-left: 150px solid #5A2A30;
-      z-index: 3;
-    }
-
-    .envelope-wrapper::after {
-      content: "";
-      position: absolute;
-      top: 0; right: 0;
-      width: 0; height: 0;
-      border-top: 97px solid transparent;
-      border-bottom: 98px solid transparent;
-      border-right: 150px solid #52252B;
-      z-index: 3;
-    }
-
-    .envelope-flap-top {
-      position: absolute;
-      top: 0; left: 0;
-      width: 0; height: 0;
-      border-left: 150px solid transparent;
-      border-right: 150px solid transparent;
-      border-top: 110px solid #6A333A;
-      transform-origin: top;
-      transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-      z-index: 5;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
-    }
-
-    .envelope-gold-seal {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 46px; height: 46px;
-      background: radial-gradient(circle, #E2C275 0%, #C39B38 70%, #906F1E 100%);
-      border-radius: 50%;
-      box-shadow: inset 0 2px 4px rgba(255,255,255,0.6), 0 6px 16px rgba(0, 0, 0, 0.4);
-      border: 1px solid #FFF;
-      z-index: 10;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .envelope-gold-seal::after {
-      content: "F";
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 700;
-      font-size: 1.2rem;
-      color: #3D2605;
-      text-shadow: 0 1px 1px rgba(255,255,255,0.4);
-    }
-
-    .envelope-card-inside {
-      position: absolute;
-      width: 268px;
-      height: 168px;
-      background: #FDFBF7;
+      bottom: 12px;
+      right: 12px;
+      background: var(--pink);
+      border: 2px solid var(--black);
+      width: 28px;
+      height: 28px;
       border-radius: 6px;
-      border: 1px solid var(--gold-accent);
-      padding: 16px 12px;
-      text-align: center;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-      z-index: 2;
-      transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease;
+      font-weight: 800;
+      cursor: pointer;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       opacity: 0;
-      transform: translateY(0) scale(0.95);
+      transition: opacity 0.2s;
     }
 
-    .envelope-wrapper.step-open-flap .envelope-flap-top { transform: rotateX(180deg); z-index: 1; }
-    .envelope-wrapper.step-open-flap .envelope-gold-seal { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
-    .envelope-wrapper.step-lift-up .envelope-card-inside { opacity: 1; transform: translateY(-115px) scale(1); z-index: 8; }
-    .envelope-wrapper.step-zoom-center .envelope-card-inside { transform: translateY(0) scale(1.28); z-index: 99; box-shadow: 0 25px 60px rgba(0,0,0,0.4); }
-
-    .hero-pill-frame-pure {
-      width: 100%;
-      max-width: 230px;
-      height: 48dvh;
-      max-height: 350px;
-      border-radius: 120px;
-      overflow: hidden;
-      border: 2px solid var(--gold-accent);
-      padding: 5px;
-      margin: 8px auto;
-      background: rgba(255, 255, 255, 0.1);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
+    /* Tombol X HANYA muncul saat di hover atau kotak sedang disentuh (active) */
+    .idea-card:hover .btn-delete-card,
+    .idea-card:active .btn-delete-card {
+      opacity: 1;
     }
 
-    .hero-pill-frame-pure img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center top;
-      border-radius: 115px;
-      display: block;
-    }
-
-    .ask-page-center-wrapper {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      margin: auto 0;
-    }
-
-    .glass-card-ask {
-      background: var(--card-glass);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid var(--card-border);
-      border-radius: 22px;
-      padding: 26px 20px 22px;
-      width: 100%;
-      max-width: 320px;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
-      text-align: center;
-    }
-
-    .stylish-underline-input {
-      width: 100%;
-      background: rgba(0, 0, 0, 0.2);
-      border: 1px solid rgba(212, 175, 55, 0.5);
-      border-radius: 30px;
-      color: #FFFFFF;
-      font-size: 0.95rem;
-      text-align: center;
-      padding: 12px 16px;
-      outline: none;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      transition: all 0.3s ease;
-      margin: 16px 0 4px;
-    }
-
-    .stylish-underline-input::placeholder { color: rgba(255, 255, 255, 0.55); font-style: italic; font-size: 0.85rem; }
-    .stylish-underline-input:focus { border-color: var(--gold-accent); box-shadow: 0 0 12px rgba(212, 175, 55, 0.3); background: rgba(0, 0, 0, 0.3); }
-
-    .slider-header-box { text-align: center; z-index: 10; width: 100%; max-width: 360px; margin-top: 2px; }
-    .section-label-fullscreen { font-size: 0.68rem; font-weight: 700; color: var(--gold-accent); text-transform: uppercase; letter-spacing: 2.5px; margin-bottom: 2px; }
-    .slider-main-title { font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; font-weight: 700; color: #FFFFFF; line-height: 1.2; margin-bottom: 2px; }
-
-    .slider-cards-viewport {
-      position: relative; width: 100%; max-width: 340px; height: 46dvh; min-height: 270px;
-      display: flex; align-items: center; justify-content: center; margin: 4px 0;
-    }
-
-    .figma-card-item {
-      position: absolute; width: 170px; height: 100%; max-height: 340px;
-      border-radius: 18px; background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.25); display: flex; align-items: center; justify-content: center;
-      padding: 8px; box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25); transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1); cursor: pointer; user-select: none;
-    }
-
-    .figma-card-item img { width: 100%; height: 100%; max-height: 320px; object-fit: contain; }
-
-    .figma-card-item.active { transform: translateX(0) scale(1) rotate(0deg); opacity: 1; z-index: 10; }
-    .figma-card-item.next { transform: translateX(62%) scale(0.82) rotate(6deg); opacity: 0.55; z-index: 5; }
-    .figma-card-item.prev { transform: translateX(-62%) scale(0.82) rotate(-6deg); opacity: 0.55; z-index: 5; }
-    .figma-card-item.hidden-left { transform: translateX(-115%) scale(0.65) rotate(-12deg); opacity: 0; z-index: 1; }
-    .figma-card-item.hidden-right { transform: translateX(115%) scale(0.65) rotate(12deg); opacity: 0; z-index: 1; }
-    .figma-card-item.card-pressed { transform: scale(0.92) !important; }
-
-    .camera-stage-container {
-      width: 100%;
-      max-width: 380px;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 4px 15px;
-    }
-
-    .camera-top-status {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+    /* Detail Page */
+    .status-select {
+      appearance: none;
+      background: var(--bg-color);
+      border: 2px solid var(--black);
       padding: 8px 16px;
-      border-radius: 25px;
-      color: #FFF;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .camera-viewfinder-box {
-      position: relative;
-      width: 100%;
-      max-width: 330px;
-      max-height: 48dvh;
-      border-radius: 20px;
-      overflow: hidden;
-      background: #000;
-      border: 2px solid var(--gold-accent);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
-      margin: 8px auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: aspect-ratio 0.3s ease;
-    }
-
-    .camera-video-element {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      background: #000;
-      transition: transform 0.2s ease-out;
-    }
-
-    .cam-photos-preview-strip {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      align-items: center;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 8px 16px;
-      border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      width: 100%;
-      max-width: 340px;
-      margin-bottom: 8px;
-    }
-
-    .photo-thumb-box {
-      position: relative; 
-      width: 52px; 
-      aspect-ratio: 1 / 1; 
-      border-radius: 12px; 
-      overflow: hidden;
-      border: 1.5px solid rgba(255, 255, 255, 0.4); 
-      background: rgba(255, 255, 255, 0.1); 
-      display: flex; 
-      align-items: center; 
-      justify-content: center;
-      transition: all 0.3s ease;
-    }
-
-    .photo-thumb-box img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
-    .photo-thumb-box.empty-slot { border: 1.5px dashed rgba(255, 255, 255, 0.35); color: rgba(255, 255, 255, 0.6); font-size: 0.8rem; font-weight: 600; }
-
-    .cam-floating-tools {
-      display: flex;
-      gap: 6px;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 6px 12px;
-      border-radius: 25px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      margin-bottom: 8px;
-      width: 100%;
-      max-width: 340px;
-      justify-content: space-around;
-      align-items: center;
-    }
-
-    .cam-tool-btn {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #FFF;
-      font-size: 0.72rem;
-      font-weight: 600;
-      padding: 6px 12px;
-      border-radius: 16px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 0.9rem;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      white-space: nowrap;
-      flex: 1;
-      justify-content: center;
-      transition: transform 0.15s ease, background 0.2s ease;
+      outline: none;
     }
 
-    .cam-tool-btn:active { transform: scale(0.92); }
-
-    .cam-bottom-action-row {
-      width: 100%;
-      max-width: 340px;
-      display: flex;
-      flex-direction: column;
+    .btn-back {
+      background: #FFFFFF;
+      padding: 12px 20px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      display: inline-flex;
       align-items: center;
       gap: 8px;
-      margin-bottom: 4px;
+      margin-bottom: 24px;
+      width: fit-content;
+    }
+    
+    .btn-edit-date {
+        background: var(--yellow);
+        border: 2px solid var(--black);
+        border-radius: 6px;
+        padding: 4px 8px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        cursor: pointer;
+        margin-left: 8px;
     }
 
-    .cam-snap-trigger {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background: #FFF;
-      border: 4px solid var(--gold-accent);
-      box-shadow: 0 0 18px rgba(0, 0, 0, 0.35);
+    /* Todo List */
+    .todo-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      background: #FFFFFF;
+    }
+
+    .todo-checkbox {
+      appearance: none;
+      width: 26px;
+      height: 26px;
+      border: 2px solid var(--black);
+      border-radius: 6px;
+      background: #FFFFFF;
       cursor: pointer;
+      position: relative;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .todo-checkbox:checked {
+      background: var(--green);
+    }
+
+    .todo-checkbox:checked::after {
+      content: '✔';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--black);
+    }
+
+    .todo-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .todo-text {
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .todo-note {
+      font-size: 0.85rem;
+      color: #6B7280;
+      font-weight: 600;
+      margin-top: 6px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .todo-item.completed {
+      background: var(--grey);
+      box-shadow: 2px 2px 0px var(--black);
+      transform: translate(2px, 2px);
+    }
+
+    .todo-item.completed .todo-text {
+      text-decoration: line-through;
+      color: #6B7280;
+    }
+
+    .btn-icon-delete {
+      background: transparent;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: var(--black);
+    }
+
+    /* Modal Styling Umum */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(3px);
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.15s ease;
+      padding: 20px;
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
     }
     
-    .cam-snap-trigger-inner {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: var(--primary-crimson);
+    .modal-overlay.active {
+        opacity: 1;
+        pointer-events: auto;
     }
 
-    .cam-snap-trigger:active { transform: scale(0.88); }
-
-    .countdown-overlay {
-      position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.45); color: #FFF; font-size: 3.5rem; font-weight: 700; display: flex; align-items: center; justify-content: center; z-index: 20;
+    .modal-box {
+      width: 100%;
+      max-width: 400px;
+      padding: 24px;
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: translateY(20px);
+      transition: transform 0.2s ease;
+    }
+    
+    .modal-overlay.active .modal-box {
+        transform: translateY(0);
     }
 
-    .flash-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #FFF; opacity: 0; pointer-events: none; transition: opacity 0.1s; z-index: 30; }
-    .flash-overlay.active { opacity: 1; }
-
-    .review-grid-box {
-      display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; align-items: center; width: 100%; max-width: 340px; margin: 15px auto;
-    }
-
-    .review-photo-card {
-      position: relative; 
-      border-radius: 16px; 
-      overflow: hidden; 
-      border: 2px solid var(--gold-accent); 
-      box-shadow: 0 10px 22px rgba(0,0,0,0.3); 
-      background: #000;
-    }
-
-    .review-photo-card img { 
-      width: 100%; 
-      height: 100%; 
-      object-fit: cover; 
-      object-position: center; 
+    .modal-label {
+      font-size: 0.9rem;
+      font-weight: 800;
+      margin-bottom: 8px;
       display: block;
     }
 
-    .review-delete-btn {
-      position: absolute; top: 6px; right: 6px; background: rgba(122, 61, 68, 0.95); color: #FFF; border: 1px solid var(--gold-accent); width: 24px; height: 24px; border-radius: 50%; font-weight: 700; font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.4); z-index: 10;
+    .modal-footer {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
     }
 
-    .printer-lottie-stage {
-      width: 100vw; min-height: 100dvh; background: linear-gradient(180deg, #7A3D44 0%, #5C2B32 100%); color: #FFF; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 16px 14px 20px; position: relative; overflow-y: auto;
+    .btn-modal {
+      flex: 1;
+      padding: 14px;
+      font-weight: 800;
+      font-size: 1rem;
+      text-align: center;
     }
-
-    .vector-printer-wrapper {
-      position: relative; width: 240px; margin-top: 2px; display: flex; flex-direction: column; align-items: center; transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .vector-printer-wrapper.fade-out-printer { opacity: 0; transform: translateY(-30px) scale(0.85); pointer-events: none; height: 0; margin: 0; overflow: hidden; }
-
-    .paper-tray-input {
-      width: 110px; height: 50px; background: #FDFBF7; border: 2px solid var(--gold-accent); border-bottom: none; border-radius: 8px 8px 0 0; margin-bottom: -12px; box-shadow: 0 -3px 8px rgba(0,0,0,0.2); transition: transform 2s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1;
-    }
-
-    .paper-tray-input.pulled-in { transform: translateY(45px); }
-
-    .flat-printer-body {
-      width: 220px; height: 80px; background: #3D1C21; border: 1px solid var(--gold-accent); border-radius: 14px; position: relative; z-index: 10; box-shadow: 0 10px 25px rgba(0,0,0,0.35); display: flex; flex-direction: column; justify-content: space-between; padding: 8px 12px;
-    }
-
-    .printer-panel-top { display: flex; align-items: center; gap: 6px; }
-    .led-dot { width: 8px; height: 8px; border-radius: 50%; transition: all 0.2s ease; }
-    .led-red { background: #E74C3C; }
-    .led-green { background: #2ECC71; }
-    .led-red.blinking { animation: ledBlinkRed 0.3s infinite alternate; }
-    .led-green.blinking { animation: ledBlinkGreen 0.3s infinite alternate; }
-
-    @keyframes ledBlinkRed { 0% { background: #FF7675; } 100% { background: #7F1D1D; } }
-    @keyframes ledBlinkGreen { 0% { background: #55E6C1; } 100% { background: #145A32; } }
-
-    .printer-brand-tag { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.58rem; font-weight: 700; color: var(--gold-accent); letter-spacing: 1.5px; text-transform: uppercase; }
-
-    .printer-door-tray { width: 100%; height: 26px; background: #281115; border-radius: 6px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; }
-    .printer-slot-gap { width: 88%; height: 5px; background: #000; border-radius: 3px; }
-
-    .printer-output-paper-container { position: relative; width: 130px; margin-top: -8px; overflow: hidden; z-index: 5; display: flex; justify-content: center; padding-top: 4px; }
-
-    .ejected-photo-sheet { width: 100%; transform: translateY(-100%); transition: transform 5s cubic-bezier(0.22, 1, 0.36, 1); filter: drop-shadow(0 6px 15px rgba(0,0,0,0.3)); }
-    .ejected-photo-sheet.fully-printed { transform: translateY(0); }
-    .ejected-photo-sheet img { width: 100%; border-radius: 6px; display: block; margin: 0 auto; }
-
-    .popup-photo-container { 
-      width: 100%; max-width: 175px; margin: 2px auto; opacity: 0; transform: scale(0.6); transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-    }
-    .popup-photo-container.show-popup { opacity: 1; transform: scale(1); }
-    .popup-photo-container img { width: 100%; max-height: 38vh; object-fit: contain; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.35); border: 1px solid var(--gold-accent); }
-
-    .printer-status-text-box { margin-top: 4px; text-align: center; z-index: 20; }
-    .status-main-label { font-size: 0.85rem; font-weight: 700; color: var(--gold-accent); letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 5px; }
-    .status-sub-label { font-size: 0.7rem; color: rgba(255,255,255,0.75); margin-top: 2px; font-style: italic; }
-
-    .printer-bottom-actions { 
-      width: 100%; max-width: 320px; margin-top: 6px; display: flex; flex-direction: column; gap: 6px; z-index: 20; opacity: 0; transform: translateY(10px); transition: all 0.5s ease; 
-    }
-    .printer-bottom-actions.visible { opacity: 1; transform: translateY(0); }
-
-    .feed-container { width: 100%; max-width: 420px; margin: 0 auto; }
-    .gallery-intro-box { background: rgba(255, 255, 255, 0.1); border: 1px solid var(--card-border); backdrop-filter: blur(10px); border-radius: 16px; padding: 16px 12px; margin-bottom: 16px; text-align: center; }
-    .ig-grid-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
     
-    .ig-grid-item { 
-      background: rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; border: 1px solid var(--card-border); cursor: pointer; display: flex; flex-direction: column; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: transform 0.15s ease; 
+    /* Icon Picker Grid */
+    .icon-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+        margin-top: 16px;
+        margin-bottom: 24px;
     }
-    .ig-grid-item:active { transform: scale(0.96); }
-
-    .ig-item-header { display: flex; flex-direction: column; align-items: center; padding: 6px 4px; background: rgba(0, 0, 0, 0.2); border-bottom: 1px solid rgba(212,175,55,0.2); }
-    .ig-item-name { font-size: 0.65rem; font-weight: 700; color: var(--gold-accent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; text-align: center; }
-    .ig-item-date { font-size: 0.52rem; color: rgba(255,255,255,0.6); margin-top: 1px; }
-
-    .ig-item-img-box { width: 100%; aspect-ratio: 1/1; overflow: hidden; background: #1A0D0F; }
-    .ig-item-img-box img { width: 100%; height: 100%; object-fit: cover; }
-    .ig-item-msg { font-size: 0.6rem; color: rgba(255,255,255,0.85); padding: 6px 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; font-style: italic; background: rgba(0, 0, 0, 0.15); }
-
-    .floating-scroll-nav {
-      position: fixed;
-      bottom: 25px;
-      right: 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      z-index: 9999;
+    
+    .icon-option {
+        aspect-ratio: 1;
+        border: 2px solid var(--black);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
+        cursor: pointer;
+        background: #F9FAFB;
+        transition: transform 0.1s, background-color 0.1s;
     }
-
-    .btn-scroll-nav {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      background: rgba(122, 61, 68, 0.95);
-      border: 1.5px solid var(--gold-accent);
-      color: var(--gold-accent);
-      font-size: 1.1rem;
-      font-weight: bold;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.5);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      transition: transform 0.15s ease, opacity 0.25s ease;
+    
+    .icon-option:hover {
+        background: var(--yellow);
+        transform: scale(1.1);
     }
 
-    .btn-scroll-nav:active { transform: scale(0.88); background: rgba(212, 175, 55, 0.3); }
-
-    .app-official-footer { text-align: center; padding: 8px 10px 2px; font-size: 0.65rem; color: rgba(255, 255, 255, 0.65); border-top: 1px dashed rgba(255, 255, 255, 0.2); margin-top: 8px; width: 100%; letter-spacing: 0.5px; }
-
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 99999; padding: 15px; }
-    .modal-card { background: linear-gradient(180deg, #7A3D44 0%, #5C2B32 100%); color: #FFF; border-radius: 20px; padding: 20px 16px 16px; max-width: 330px; width: 100%; text-align: center; position: relative; box-shadow: 0 15px 35px rgba(0,0,0,0.5); border: 1px solid var(--gold-accent); max-height: 90vh; display: flex; flex-direction: column; overflow-y: auto; }
-    .modal-close-btn { position: absolute; top: 10px; right: 12px; background: rgba(0,0,0,0.3); color: var(--gold-accent); border: 1px solid var(--gold-accent); width: 28px; height: 28px; border-radius: 50%; font-weight: 700; font-size: 0.8rem; cursor: pointer; z-index: 100; }
-    .modal-user-name { font-size: 0.95rem; font-weight: 700; color: var(--gold-accent); margin-bottom: 1px; padding-right: 25px; letter-spacing: 1px; }
-    .modal-user-date { font-size: 0.65rem; color: rgba(255,255,255,0.65); margin-bottom: 6px; }
-    .modal-img { width: 100%; max-height: 52vh; object-fit: contain; border-radius: 10px; margin: 6px 0; background: rgba(0,0,0,0.2); border: 1px solid rgba(212,175,55,0.3); }
-    .modal-msg { font-size: 0.78rem; color: #FFF; font-style: italic; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 10px; line-height: 1.4; word-break: break-word; border: 1px solid rgba(255,255,255,0.1); }
-
-    canvas { display: none; }
+    .hidden { display: none !important; }
+    
+    .footer {
+      text-align: center;
+      font-weight: 800;
+      font-size: 1rem;
+      margin-top: auto; 
+      border-top: 3px solid var(--black);
+      padding: 24px 0;
+      width: 100%;
+    }
   </style>
 </head>
 <body>
 
-<div id="envelope-screen" class="envelope-screen" onclick="openEnvelopeAnimation()">
-  <div style="text-align:center; color:#FFF; margin-bottom:10px;">
-    <div style="font-size:0.7rem; letter-spacing:3px; color:var(--gold-accent); font-weight:700; margin-bottom:4px; text-transform:uppercase;">Kenangan Pernikahan</div>
-    <div class="font-script" style="font-size:2.8rem; color:#FFF; line-height:1;" id="envelope-names">Riyan & Amelia</div>
-  </div>
+  <div class="app-container">
 
-  <div class="envelope-wrapper" id="envelope-wrapper">
-    <div class="envelope-flap-top"></div>
-    <div class="envelope-gold-seal"></div>
+    <!-- HALAMAN 1: WELCOME & IDEAS GRID -->
+    <div id="page-home">
+      <h1 class="hero-title">Rancang Masa Depan.<br>Mulai dari Ide Pertama.</h1>
 
-    <div class="envelope-card-inside">
-      <div style="font-size:0.62rem; color:var(--gold-accent); font-weight:700; letter-spacing:2px; text-transform:uppercase;">Pernikahan Kami</div>
-      <div class="font-script" style="font-size:2.2rem; color:var(--primary-crimson); line-height:1.1; margin:4px 0;" id="inside-card-names">Riyan & Amelia</div>
-      <div style="font-size:0.7rem; color:#666; font-style:italic;">Virtual Photobooth & Guestbook</div>
-    </div>
-  </div>
+      <form class="input-group" onsubmit="addIdea(event)">
+        <div class="input-row">
+            <input type="text" id="idea-title" class="brutal-box main-input" placeholder="# Tulis ide di kepalamu..." required autocomplete="off">
+            <button type="submit" class="brutal-box brutal-btn btn-add">+</button>
+        </div>
+        <div class="date-input-wrapper">
+            <label style="font-weight: 800; font-size: 0.85rem;">Target Selesai (Due Date):</label>
+            <input type="date" id="idea-due-date" class="brutal-box date-input" required>
+        </div>
+      </form>
 
-  <div style="font-size:0.75rem; color:rgba(255,255,255,0.85); font-style:italic; letter-spacing:1px; margin-top:12px;">
-    Ketuk amplop untuk membuka
-  </div>
-</div>
-
-<div id="step-welcome" class="page-fullscreen">
-  <div style="width:100%; text-align:center; display:flex; flex-direction:column; align-items:center;">
-    <p style="font-size:0.7rem; color:var(--gold-accent); letter-spacing:2.5px; font-weight:700; margin-bottom:1px;">KENANGAN PERNIKAHAN</p>
-    <h1 class="font-script" style="font-size:2.6rem; color:#FFF; line-height:1.05;" id="display-event-title">Riyan & Amelia</h1>
-    <p style="font-size:0.72rem; color:rgba(255,255,255,0.8); letter-spacing:1px; margin-bottom:4px;">06 DESEMBER 2026</p>
-
-    <div class="hero-pill-frame-pure">
-      <img src="./assets/v2/hero.png" alt="Hero Pengantin" id="welcome-couple-img" onerror="this.src='./assets/v2/dsg1.png'">
-    </div>
-
-    <p style="font-size:0.75rem; color:rgba(255,255,255,0.85); font-style:italic; line-height:1.35; max-width:310px; margin:4px 0 10px;">
-      "Satu foto menyimpan sejuta kenangan. Terima kasih telah menjadi bagian dari hari bahagia kami!"
-    </p>
-
-    <button class="btn-gold-v2" onclick="goToStep('step-ask-name')">
-      TAMBAHKAN MOMEN
-    </button>
-
-    <button class="btn-secondary-v2" onclick="goToStep('step-gallery-page')">
-      JELAJAHI KENANGAN
-    </button>
-  </div>
-
-  <div class="app-official-footer">
-    © 2026 FOTOME by Riyan. All rights reserved.
-  </div>
-</div>
-
-<div id="step-ask-name" class="page-fullscreen hidden">
-  <div style="width:100%; text-align:center; padding-top:4px;">
-    <p style="font-size:0.68rem; color:var(--gold-accent); letter-spacing:2.5px; font-weight:700; margin-bottom:2px;">KENANGAN PERNIKAHAN</p>
-    <h2 class="font-script" style="font-size:2.4rem; color:#FFF;" id="ask-event-title">Riyan & Amelia</h2>
-    <p style="font-size:0.72rem; color:rgba(255,255,255,0.75); letter-spacing:1px;">06 DESEMBER 2026</p>
-  </div>
-
-  <div class="ask-page-center-wrapper">
-    <div class="glass-card-ask">
-      <h3 class="font-serif" style="font-size:1.45rem; letter-spacing:1.5px; font-weight:600; color:#FFF; line-height:1.2;">
-        DARI SIAPA<br>KENANGAN INI?
-      </h3>
-      <p style="font-size:0.72rem; color:rgba(255,255,255,0.8); margin-top:6px;">Tuliskan nama/panggilanmu untuk dicantumkan pada foto kenangan</p>
-
-      <input type="text" id="guest-initial-name" class="stylish-underline-input" placeholder="Misal: Budi & Sarah" autocomplete="off">
-    </div>
-  </div>
-
-  <div style="width:100%; text-align:center;">
-    <button class="btn-gold-v2" onclick="submitGuestNameAndNext()">
-      LANJUTKAN
-    </button>
-    
-    <button class="btn-outline-v2" style="margin-top:6px;" onclick="goToStep('step-welcome')">
-      Kembali
-    </button>
-
-    <div class="app-official-footer">
-      © 2026 FOTOME by Riyan. All rights reserved.
-    </div>
-  </div>
-</div>
-
-<div id="step-template" class="page-fullscreen hidden">
-  <div class="slider-header-box">
-    <div class="section-label-fullscreen" id="card-theme-tag">ROYAL EDITION</div>
-    <div class="slider-main-title" id="card-theme-name">Classic Royal (3 Foto)</div>
-    <div style="font-size:0.72rem; color:rgba(255,255,255,0.85); font-style:italic;">Ketuk bingkai untuk memilih &amp; memulai</div>
-  </div>
-
-  <div class="slider-cards-viewport" id="slider-stack-box">
-    <div class="figma-card-item" data-path="./assets/v2/dsg3.png" data-count="3" data-name="Classic Royal (3 Foto)" data-tag="ROYAL EDITION">
-      <img src="./assets/v2/dsg3.png" alt="Desain 3">
-    </div>
-    <div class="figma-card-item" data-path="./assets/v2/dsg2.png" data-count="2" data-name="Classic Royal (2 Foto)" data-tag="ROYAL EDITION">
-      <img src="./assets/v2/dsg2.png" alt="Desain 2">
-    </div>
-    <div class="figma-card-item" data-path="./assets/v2/dsg1.png" data-count="1" data-name="Classic Royal (1 Foto)" data-tag="ROYAL EDITION">
-      <img src="./assets/v2/dsg1.png" alt="Desain 1">
-    </div>
-    <div class="figma-card-item" data-path="./assets/v2/flower3.png" data-count="3" data-name="Floral Romance (3 Foto)" data-tag="FLORAL COLLECTION">
-      <img src="./assets/v2/flower3.png" alt="Flower 3">
-    </div>
-    <div class="figma-card-item" data-path="./assets/v2/flower2.png" data-count="2" data-name="Floral Romance (2 Foto)" data-tag="FLORAL COLLECTION">
-      <img src="./assets/v2/flower2.png" alt="Flower 2">
-    </div>
-    <div class="figma-card-item" data-path="./assets/v2/flower1.png" data-count="1" data-name="Floral Romance (1 Foto)" data-tag="FLORAL COLLECTION">
-      <img src="./assets/v2/flower1.png" alt="Flower 1">
-    </div>
-    <div class="figma-card-item" data-path="./assets/v2/line 3.png" data-count="3" data-name="Minimalist Modern (3 Foto)" data-tag="MINIMALIST STYLE">
-      <img src="./assets/v2/line 3.png" alt="Line 3">
-    </div>
-    <div class="figma-card-item" data-path="./assets/v2/line 2.png" data-count="2" data-name="Minimalist Modern (2 Foto)" data-tag="MINIMALIST STYLE">
-      <img src="./assets/v2/line 2.png" alt="Line 2">
-    </div>
-    <div class="figma-card-item" data-path="./assets/v2/line 1.png" data-count="1" data-name="Minimalist Modern (1 Foto)" data-tag="MINIMALIST STYLE">
-      <img src="./assets/v2/line 1.png" alt="Line 1">
-    </div>
-  </div>
-
-  <div style="width:100%; text-align:center;">
-    <button class="btn-back-styled" onclick="goToStep('step-ask-name')">
-      Kembali
-    </button>
-    <div class="app-official-footer">
-      © 2026 FOTOME by Riyan. All rights reserved.
-    </div>
-  </div>
-</div>
-
-<div id="step-camera" class="page-fullscreen hidden">
-  <div class="camera-stage-container">
-    <div class="camera-top-status">
-      <span style="font-size:0.75rem; font-weight:700;" id="cam-progress-text">Foto 1 dari 3</span>
-      <button class="btn-outline-v2" style="width:auto; margin:0; padding:4px 12px; border:1px solid rgba(212,175,55,0.6); border-radius:15px; background:rgba(0,0,0,0.3); color:var(--gold-accent);" onclick="stopCameraAndGoBack()">
-        PILIH FRAME
-      </button>
-    </div>
-
-    <div class="camera-viewfinder-box" id="cam-viewfinder-box">
-      <video id="video" class="camera-video-element" autoplay playsinline webkit-playsinline muted></video>
-      <div id="countdown-overlay" class="countdown-overlay hidden">3</div>
-      <div id="flash-overlay" class="flash-overlay"></div>
-    </div>
-
-    <div class="cam-photos-preview-strip" id="cam-photos-strip"></div>
-
-    <div class="cam-floating-tools" id="cam-tools-box">
-      <button class="cam-tool-btn" id="btn-timer" onclick="toggleTimerSetting()">
-        Timer: <span id="label-timer">3s</span>
-      </button>
-      <button class="cam-tool-btn" id="btn-zoom" onclick="toggleZoomSetting()">
-        Zoom: <span id="label-zoom">1x</span>
-      </button>
-      <button class="cam-tool-btn" id="btn-mirror" onclick="toggleMirror()">
-        Mirror: <span id="label-mirror">OFF</span>
-      </button>
-    </div>
-
-    <div class="cam-bottom-action-row">
-      <div style="width: 100%; max-width: 280px; position: relative;">
-        <select id="camera-select-dropdown" onchange="onCameraSelectChange(this.value)" style="width: 100%; background: rgba(0,0,0,0.4); color: #FFF; border: 1px solid var(--gold-accent); padding: 8px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-align: center; outline: none; backdrop-filter: blur(8px); cursor: pointer;">
-          <option value="">Memindai Kamera...</option>
-        </select>
+      <div class="section-title">
+        Koleksi Ide Saya
+        <span id="total-ideas-count" style="font-size: 0.85rem; background: var(--black); color: white; padding: 4px 12px; border-radius: 20px;">0</span>
       </div>
-
-      <div class="cam-snap-trigger" id="btn-snap" onclick="takePhotoSnap()">
-        <div class="cam-snap-trigger-inner"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div id="step-review-photos" class="page-fullscreen hidden">
-  <div style="width:100%; text-align:center; padding-top:10px;">
-    <p style="font-size:0.68rem; color:var(--gold-accent); letter-spacing:2.5px; font-weight:700; margin-bottom:2px;">REVIEW HASIL FOTO</p>
-    <h2 class="font-serif" style="font-size:1.4rem; color:#FFF;">Apakah foto kamu sudah pas?</h2>
-    <p style="font-size:0.72rem; color:rgba(255,255,255,0.75); margin-top:2px;">Tekan tombol ✕ pada foto jika ingin mengambil foto ulang</p>
-  </div>
-
-  <div class="review-grid-box" id="review-grid-box"></div>
-
-  <div style="width:100%; text-align:center; margin-bottom:10px;">
-    <button class="btn-gold-v2" onclick="proceedToRenderStrip()">
-      LANJUTKAN KE CETAK
-    </button>
-    
-    <button class="btn-outline-v2" style="margin-top:8px;" onclick="goToCameraToRetakeAll()">
-      Foto Ulang Semua
-    </button>
-
-    <div class="app-official-footer">
-      © 2026 FOTOME by Riyan. All rights reserved.
-    </div>
-  </div>
-</div>
-
-<div id="step-result" class="printer-lottie-stage hidden">
-  <div class="vector-printer-wrapper" id="main-printer-unit">
-    <div class="paper-tray-input" id="paper-input-sheet"></div>
-    <div class="flat-printer-body">
-      <div class="printer-panel-top">
-        <div class="led-dot led-red" id="led-red"></div>
-        <div class="led-dot led-green" id="led-green"></div>
-        <div class="printer-brand-tag">FOTOME by Riyan</div>
-      </div>
-      <div class="printer-door-tray">
-        <div class="printer-slot-gap"></div>
-      </div>
-    </div>
-    <div class="printer-output-paper-container">
-      <div id="ejected-photo-sheet" class="ejected-photo-sheet">
-        <img class="result-img-target" alt="Hasil Photobooth">
-      </div>
-    </div>
-  </div>
-
-  <div class="popup-photo-container" id="popup-photo-box">
-    <img class="result-img-target" alt="Hasil Photobooth Pop Up">
-  </div>
-
-  <div class="printer-status-text-box">
-    <div class="status-main-label" id="printer-status-main">
-      <span id="printer-status-text">Memproses foto kamu...</span>
-    </div>
-    <div class="status-sub-label" id="printer-status-sub">Harap tunggu sebentar</div>
-  </div>
-
-  <div class="printer-bottom-actions" id="printer-bottom-actions">
-    <div style="background: rgba(255, 255, 255, 0.1); border: 1px solid var(--gold-accent); border-radius: 14px; padding: 12px; text-align: left; box-shadow: 0 8px 20px rgba(0,0,0,0.2); backdrop-filter: blur(8px);">
-      <label style="display:block; font-size:0.68rem; font-weight:700; color:var(--gold-accent); margin-bottom:3px; letter-spacing:1px; text-transform:uppercase;">Dari (Pengirim)</label>
-      <input type="text" id="input-sender-name" style="width:100%; padding:8px 10px; border:1px solid rgba(212,175,55,0.4); border-radius:8px; font-size:0.8rem; outline:none; margin-bottom:8px; background:rgba(0,0,0,0.25); font-family:'Plus Jakarta Sans', sans-serif; font-weight:600; color:#FFF;" readonly>
-
-      <label style="display:block; font-size:0.68rem; font-weight:700; color:var(--gold-accent); margin-bottom:3px; letter-spacing:1px; text-transform:uppercase;">Pesan / Ucapan Doa Kamu</label>
-      <textarea id="input-sender-message" rows="2" style="width:100%; padding:8px 10px; border:1px solid rgba(212,175,55,0.4); border-radius:8px; font-size:0.8rem; outline:none; background:rgba(0,0,0,0.25); color:#FFF; font-family:'Plus Jakarta Sans', sans-serif;" placeholder="Tuliskan ucapan manismu di sini..."></textarea>
-    </div>
-
-    <button class="btn-gold-v2" style="max-width:100%; margin-top:4px;" onclick="saveAndShareToFeed()">
-      UNDUH &amp; POSTING KE GALERI
-    </button>
-
-    <button class="btn-secondary-v2" style="max-width:100%;" onclick="savePrivateOnly()">
-      SIMPAN PRIVAT KE HP
-    </button>
-
-    <button class="btn-outline-v2" style="color:rgba(255,255,255,0.7); max-width:100%; padding:4px;" onclick="goToStep('step-template')">
-      Foto Ulang Semua
-    </button>
-
-    <div class="app-official-footer" style="max-width: 100%;">
-      © 2026 FOTOME by Riyan. All rights reserved.
-    </div>
-  </div>
-</div>
-
-<!-- GALERI KENANGAN -->
-<div id="step-gallery-page" class="page-fullscreen-scrollable hidden">
-  <div class="feed-container">
-    <div style="text-align:center; margin-bottom:12px;">
-      <p style="font-size:0.68rem; color:var(--gold-accent); letter-spacing:2.5px; font-weight:700; margin-bottom:2px;">GALERI KENANGAN</p>
-      <h2 class="font-script" style="font-size:2.6rem; color:#FFF; line-height:1;">Jejak Kebahagiaan</h2>
-    </div>
-
-    <div class="gallery-intro-box">
-      <p class="font-serif" style="font-size:0.92rem; color:#FFF; line-height:1.5; font-style:italic;">
-        "Terima kasih telah melangkah bersama kami dan mengukir kehangatan dalam setiap senyuman. Setiap foto dan doa yang tertulis di sini adalah hadiah terindah yang akan selalu kami kenang sepanjang masa."
-      </p>
-      <div style="font-size:0.7rem; font-weight:700; color:var(--gold-accent); margin-top:8px; letter-spacing:1.5px;" id="gallery-couple-sub">
-        — RIYAN &amp; AMELIA
-      </div>
-    </div>
-
-    <!-- HEADER GALERI: TOMBOL REFRESH DI SAMPING JUMLAH KIRIMAN -->
-    <div style="font-size:0.85rem; font-weight:700; color:var(--gold-accent); margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; letter-spacing:1px;">
-      <span>KIRIMAN TAMU</span>
-      <div style="display:flex; align-items:center; gap:8px;">
-        <button class="btn-refresh-feed-custom" onclick="manualRefreshFeed()" title="Segarkan Foto">
-          <span id="refresh-icon-elm">🔄</span> Refresh
-        </button>
-        <span style="font-size:0.7rem; color:rgba(255,255,255,0.7);" id="total-posts-count">... Kiriman</span>
-      </div>
-    </div>
-
-    <div id="ig-grid-box" class="ig-grid-container">
-      <p style="font-size: 0.8rem; color: rgba(255,255,255,0.6); grid-column: span 3; text-align: center;">Memuat ucapan &amp; foto tamu...</p>
-    </div>
-
-    <div style="text-align: center; margin-top: 15px;">
-      <button id="btn-load-more" class="btn-secondary-v2 hidden" style="max-width: 260px; margin: 0 auto;" onclick="loadMorePosts()">
-        MUAT LEBIH BANYAK
-      </button>
-    </div>
-
-    <div style="margin-top:20px;">
-      <button class="btn-gold-v2" style="max-width:100%;" onclick="goToStep('step-welcome')">
-        KEMBALI KE BERANDA
-      </button>
-    </div>
-  </div>
-
-  <div class="app-official-footer">
-    © 2026 FOTOME by Riyan. All rights reserved.
-  </div>
-</div>
-
-<div id="gallery-scroll-nav" class="floating-scroll-nav">
-  <button id="btn-scroll-top" onclick="scrollToTop()" title="Ke Atas" class="btn-scroll-nav hidden">▲</button>
-  <button id="btn-scroll-bottom" onclick="scrollToBottom()" title="Ke Bawah" class="btn-scroll-nav hidden">▼</button>
-</div>
-
-<div id="photo-modal" class="modal-overlay hidden">
-  <div class="modal-card">
-    <button class="modal-close-btn" onclick="closeModal()">✕</button>
-    <div class="modal-user-name" id="modal-name">Nama Tamu</div>
-    <div class="modal-user-date" id="modal-date">06 Des 2026 • 12:00</div>
-    <img id="modal-img" class="modal-img" src="" alt="Foto Perbesar">
-    <div class="modal-msg" id="modal-msg">"Ucapan doa tamu..."</div>
-  </div>
-</div>
-
-<div id="alert-modal" class="modal-overlay hidden">
-  <div class="modal-card">
-    <div style="font-size: 0.95rem; font-weight: 700; color: var(--gold-accent); margin-bottom: 8px; letter-spacing: 1px;" id="alert-title">PEMBERITAHUAN</div>
-    <div style="font-size: 0.82rem; color: rgba(255,255,255,0.9); line-height: 1.4; margin-bottom: 18px;" id="alert-text">Pesan...</div>
-    <button class="btn-gold-v2" style="margin-top:0;" onclick="closeAlertModal()">OK</button>
-  </div>
-</div>
-
-<canvas id="canvas"></canvas>
-
-<script>
-  const EVENT_DOC_ID = 'v2_event'; 
-
-  let eventTitle = "Riyan & Amelia";
-  let currentGuestName = "";
-  let selectedFramePath = './assets/v2/dsg3.png';
-  let requiredPhotoCount = 3; 
-  let capturedPhotos = [];
-  let videoStream = null;
-  let generatedDataUrl = "";
-
-  let activeDeviceId = null;
-  let isSwitchingCamera = false;
-  let isMirror = false; 
-  let timerDuration = 3;
-  let zoomLevel = 1;      
-  let onAlertCloseCallback = null;
-  let isTakingPhoto = false;
-
-  let cardItems = [];
-  let currentCardIndex = 0;
-
-  let globalPostsMap = {};
-  let lastVisibleDoc = null;
-  let totalPostsInDb = 0;
-  let loadedPostsCount = 0;
-  const PAGE_SIZE = 12;
-  let feedUnsubscribe = null;
-  let isInitialLoad = true;
-
-  document.addEventListener("DOMContentLoaded", () => {
-    initFigmaSlider();
-
-    const galleryPage = document.getElementById('step-gallery-page');
-    if (galleryPage) {
-      galleryPage.addEventListener('scroll', handleGalleryScroll, { passive: true });
-    }
-  });
-
-  function openEnvelopeAnimation() {
-    const envelopeWrapper = document.getElementById('envelope-wrapper');
-    const envelopeScreen = document.getElementById('envelope-screen');
-
-    envelopeWrapper.classList.add('step-open-flap');
-    setTimeout(() => envelopeWrapper.classList.add('step-lift-up'), 600);
-    setTimeout(() => envelopeWrapper.classList.add('step-zoom-center'), 1300);
-    setTimeout(() => {
-      envelopeScreen.style.opacity = '0';
-      setTimeout(() => envelopeScreen.style.display = 'none', 750);
-    }, 2200);
-  }
-
-  function resetGuestInfo() {
-    currentGuestName = "";
-    const nameInput = document.getElementById('guest-initial-name');
-    if (nameInput) nameInput.value = "";
-    const senderInput = document.getElementById('input-sender-name');
-    if (senderInput) senderInput.value = "";
-  }
-
-  function goToStep(targetId) {
-    if (targetId === 'step-welcome') {
-      resetGuestInfo();
-    }
-
-    const steps = ['step-welcome', 'step-ask-name', 'step-template', 'step-camera', 'step-review-photos', 'step-result', 'step-gallery-page'];
-    steps.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.classList.add('hidden');
-    });
-
-    const targetEl = document.getElementById(targetId);
-    if (targetEl) targetEl.classList.remove('hidden');
-
-    if (targetId === 'step-gallery-page') {
-      setTimeout(handleGalleryScroll, 200);
-    } else {
-      const btnTop = document.getElementById('btn-scroll-top');
-      const btnBottom = document.getElementById('btn-scroll-bottom');
-      if (btnTop) btnTop.classList.add('hidden');
-      if (btnBottom) btnBottom.classList.add('hidden');
-    }
-
-    if (targetId === 'step-template') {
-      updateFigmaSliderPositions();
-    }
-
-    if (targetId === 'step-review-photos') {
-      renderReviewPhotosUI();
-    }
-
-    if (targetId === 'step-result') {
-      const printerUnit = document.getElementById('main-printer-unit');
-      const popupBox = document.getElementById('popup-photo-box');
-      const inputPaper = document.getElementById('paper-input-sheet');
-      const ejectedPhoto = document.getElementById('ejected-photo-sheet');
-      const ledRed = document.getElementById('led-red');
-      const ledGreen = document.getElementById('led-green');
-      const statusText = document.getElementById('printer-status-text');
-      const statusSub = document.getElementById('printer-status-sub');
-      const actionsBox = document.getElementById('printer-bottom-actions');
-
-      printerUnit.classList.remove('fade-out-printer');
-      popupBox.classList.remove('show-popup');
-      inputPaper.classList.remove('pulled-in');
-      ejectedPhoto.classList.remove('fully-printed');
-      actionsBox.classList.remove('visible');
-      ledRed.classList.add('blinking');
-      ledGreen.classList.add('blinking');
-      statusText.innerText = "Memproses foto kamu...";
-      statusSub.innerText = "Kertas ditarik masuk ke mesin...";
-
-      setTimeout(() => {
-        inputPaper.classList.add('pulled-in');
-        statusText.innerText = "Mencetak foto kenangan...";
-        statusSub.innerText = "Sedang dicetak perlahan...";
-      }, 500);
-
-      setTimeout(() => {
-        ejectedPhoto.classList.add('fully-printed');
-      }, 2000);
-
-      setTimeout(() => {
-        ledRed.classList.remove('blinking');
-        ledGreen.classList.remove('blinking');
-        printerUnit.classList.add('fade-out-printer');
-
-        setTimeout(() => {
-          popupBox.classList.add('show-popup');
-          statusText.innerHTML = 'Cetak Selesai!';
-          statusSub.innerText = "Foto kamu sudah siap disimpan!";
-          actionsBox.classList.add('visible');
-
-          const stepResultPage = document.getElementById('step-result');
-          if (stepResultPage) {
-            stepResultPage.scrollTo({ top: 160, behavior: 'smooth' });
-          }
-        }, 400);
-      }, 6800);
-    }
-  }
-
-  function handleGalleryScroll() {
-    const galleryPage = document.getElementById('step-gallery-page');
-    const btnTop = document.getElementById('btn-scroll-top');
-    const btnBottom = document.getElementById('btn-scroll-bottom');
-
-    if (!galleryPage || galleryPage.classList.contains('hidden') || !btnTop || !btnBottom) return;
-
-    const scrollTop = galleryPage.scrollTop;
-    const scrollHeight = galleryPage.scrollHeight;
-    const clientHeight = galleryPage.clientHeight;
-
-    if (scrollHeight <= clientHeight + 50) {
-      btnTop.classList.add('hidden');
-      btnBottom.classList.add('hidden');
-      return;
-    }
-
-    const isAtTop = scrollTop < 80;
-    const isAtBottom = (scrollTop + clientHeight) >= (scrollHeight - 80);
-
-    if (isAtTop) {
-      btnTop.classList.add('hidden');
-      btnBottom.classList.remove('hidden');
-    } else if (isAtBottom) {
-      btnTop.classList.remove('hidden');
-      btnBottom.classList.add('hidden');
-    } else {
-      btnTop.classList.remove('hidden');
-      btnBottom.classList.remove('hidden');
-    }
-  }
-
-  function scrollToTop() {
-    const galleryPage = document.getElementById('step-gallery-page');
-    if (galleryPage) galleryPage.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function scrollToBottom() {
-    const galleryPage = document.getElementById('step-gallery-page');
-    if (galleryPage) galleryPage.scrollTo({ top: galleryPage.scrollHeight, behavior: 'smooth' });
-  }
-
-  function submitGuestNameAndNext() {
-    const inputName = document.getElementById('guest-initial-name').value.trim();
-    if (!inputName) {
-      showAlert("Harap isi nama kamu terlebih dahulu!", "NAMA MASIH KOSONG");
-      return;
-    }
-    currentGuestName = inputName;
-    document.getElementById('input-sender-name').value = inputName;
-    goToStep('step-template');
-  }
-
-  function initFigmaSlider() {
-    cardItems = Array.from(document.querySelectorAll('.figma-card-item'));
-    
-    cardItems.forEach((card, index) => {
-      let isDragging = false;
-      let startX = 0;
-
-      card.addEventListener('mousedown', (e) => {
-        isDragging = false;
-        startX = e.clientX;
-      });
-
-      card.addEventListener('mousemove', (e) => {
-        if (Math.abs(e.clientX - startX) > 5) isDragging = true;
-      });
-
-      card.addEventListener('touchstart', (e) => {
-        isDragging = false;
-        startX = e.touches[0].clientX;
-      }, { passive: true });
-
-      card.addEventListener('touchmove', (e) => {
-        if (Math.abs(e.touches[0].clientX - startX) > 5) isDragging = true;
-      }, { passive: true });
-
-      card.addEventListener('click', (e) => {
-        if (isDragging) return;
-
-        if (index === currentCardIndex) {
-          card.classList.add('card-pressed');
-          const countAttr = card.getAttribute('data-count');
-          requiredPhotoCount = parseInt(countAttr, 10) || 3;
-          selectedFramePath = card.getAttribute('data-path');
-
-          capturedPhotos = [];
-          initCameraStream();
-
-          setTimeout(() => {
-            card.classList.remove('card-pressed');
-            startCameraProcess();
-          }, 200);
-        } else {
-          currentCardIndex = index;
-          updateFigmaSliderPositions();
-        }
-      });
-    });
-
-    updateFigmaSliderPositions();
-
-    const container = document.getElementById('slider-stack-box');
-    let touchStartX = 0;
-    container.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-    container.addEventListener('touchend', e => {
-      let touchEndX = e.changedTouches[0].clientX;
-      if (touchStartX - touchEndX > 35) moveFigmaSlider(1);
-      else if (touchEndX - touchStartX > 35) moveFigmaSlider(-1);
-    }, { passive: true });
-  }
-
-  function moveFigmaSlider(dir) {
-    currentCardIndex += dir;
-    if (currentCardIndex < 0) currentCardIndex = cardItems.length - 1;
-    if (currentCardIndex >= cardItems.length) currentCardIndex = 0;
-    updateFigmaSliderPositions();
-  }
-
-  function updateFigmaSliderPositions() {
-    cardItems.forEach((card, i) => {
-      card.className = 'figma-card-item';
-
-      if (i === currentCardIndex) {
-        card.classList.add('active');
-        selectedFramePath = card.getAttribute('data-path');
-        requiredPhotoCount = parseInt(card.getAttribute('data-count'), 10) || 3;
-
-        document.getElementById('card-theme-tag').innerText = card.getAttribute('data-tag');
-        document.getElementById('card-theme-name').innerText = card.getAttribute('data-name');
-      } else if (i === (currentCardIndex + 1) % cardItems.length) {
-        card.classList.add('next');
-      } else if (i === (currentCardIndex - 1 + cardItems.length) % cardItems.length) {
-        card.classList.add('prev');
-      } else if (i < currentCardIndex) {
-        card.classList.add('hidden-left');
-      } else {
-        card.classList.add('hidden-right');
-      }
-    });
-  }
-
-  function showAlert(message, title = "PEMBERITAHUAN", callback = null) {
-    document.getElementById('alert-title').innerText = title;
-    document.getElementById('alert-text').innerText = message;
-    onAlertCloseCallback = callback;
-    document.getElementById('alert-modal').classList.remove('hidden');
-  }
-
-  function closeAlertModal() {
-    document.getElementById('alert-modal').classList.add('hidden');
-    if (onAlertCloseCallback) {
-      onAlertCloseCallback();
-      onAlertCloseCallback = null;
-    }
-  }
-
-  if (typeof db !== 'undefined') {
-    db.collection('settings').doc(EVENT_DOC_ID).onSnapshot(doc => {
-      if (doc.exists) {
-        const data = doc.data();
-        if (data.title) {
-          eventTitle = data.title;
-          const t1 = document.getElementById('display-event-title');
-          const t2 = document.getElementById('ask-event-title');
-          const t3 = document.getElementById('envelope-names');
-          const t4 = document.getElementById('inside-card-names');
-          const t5 = document.getElementById('gallery-couple-sub');
-          if (t1) t1.innerText = data.title;
-          if (t2) t2.innerText = data.title;
-          if (t3) t3.innerText = data.title;
-          if (t4) t4.innerText = data.title;
-          if (t5) t5.innerText = `— ${data.title.toUpperCase()}`;
-        }
-
-        let lockOverlay = document.getElementById('lock-overlay');
-        if (data.isActive === false) {
-          if (!lockOverlay) {
-            lockOverlay = document.createElement('div');
-            lockOverlay.id = 'lock-overlay';
-            lockOverlay.innerHTML = `
-              <div style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(180deg, #7A3D44 0%, #5C2B32 100%); color: #FFF;">
-                <div style="background: rgba(255,255,255,0.1); padding: 40px 25px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); border: 1px solid var(--gold-accent); max-width: 400px; width: 100%;">
-                  <h2 style="font-family: 'Cormorant Garamond', serif; color: var(--gold-accent); font-size: 2rem; margin-bottom: 10px;">Photobooth Ditutup</h2>
-                  <p style="color: rgba(255,255,255,0.8); font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px;">Sesi virtual photobooth saat ini sedang tidak aktif.</p>
-                  <div style="font-family: 'Alex Brush', cursive; font-size: 2.4rem; color: #FFF;">${eventTitle}</div>
-                </div>
-              </div>
-            `;
-            lockOverlay.style.position = 'fixed';
-            lockOverlay.style.top = '0'; lockOverlay.style.left = '0'; lockOverlay.style.width = '100%'; lockOverlay.style.height = '100%'; lockOverlay.style.zIndex = '999999';
-            document.body.appendChild(lockOverlay);
-          }
-        } else {
-          if (lockOverlay) lockOverlay.remove();
-        }
-      }
-    });
-
-    loadRealtimeFeedIG();
-  }
-
-  function getFrameTargetAspect() {
-    return 456 / 360; 
-  }
-
-  function updateViewfinderAspectRatio() {
-    const viewfinderBox = document.getElementById('cam-viewfinder-box');
-    if (!viewfinderBox) return;
-
-    const targetAspect = getFrameTargetAspect();
-    viewfinderBox.style.aspectRatio = `${targetAspect}`;
-  }
-
-  async function populateCameraDevices() {
-    const selectEl = document.getElementById('camera-select-dropdown');
-    if (!selectEl) return;
-
-    try {
-      const devices = await navigator.mediaDevices.enumerateDevices();
-      const videoDevices = devices.filter(d => d.kind === 'videoinput');
-
-      let filteredCameras = [];
-      let backCameras = [];
-      let frontCameras = [];
-      let externalCameras = [];
-
-      videoDevices.forEach((dev, idx) => {
-        const label = (dev.label || `Kamera ${idx + 1}`).toLowerCase();
-        
-        if (label.includes('external') || label.includes('usb') || label.includes('webcam')) {
-          externalCameras.push({ deviceId: dev.deviceId, label: dev.label || `Kamera Eksternal ${externalCameras.length + 1}` });
-        } else if (label.includes('front') || label.includes('user') || label.includes('facing front')) {
-          frontCameras.push({ deviceId: dev.deviceId, label: 'Kamera Depan' });
-        } else if (label.includes('back') || label.includes('rear') || label.includes('environment')) {
-          backCameras.push({ deviceId: dev.deviceId, label: dev.label });
-        } else {
-          backCameras.push({ deviceId: dev.deviceId, label: dev.label || `Kamera ${idx + 1}` });
-        }
-      });
-
-      if (frontCameras.length > 0) {
-        filteredCameras.push(frontCameras[0]);
-      } else {
-        filteredCameras.push({ deviceId: 'user_default', label: 'Kamera Depan' });
-      }
-
-      if (backCameras.length > 0) {
-        const mainBack = backCameras.find(c => c.label.toLowerCase().includes('0') || c.label.toLowerCase().includes('main')) || backCameras[0];
-        filteredCameras.push({ deviceId: mainBack.deviceId, label: 'Kamera Belakang' });
-      } else {
-        filteredCameras.push({ deviceId: 'environment_default', label: 'Kamera Belakang' });
-      }
-
-      externalCameras.forEach(ext => filteredCameras.push(ext));
-
-      selectEl.innerHTML = '';
-      filteredCameras.forEach(cam => {
-        const opt = document.createElement('option');
-        opt.value = cam.deviceId;
-        opt.innerText = cam.label;
-        selectEl.appendChild(opt);
-      });
-
-      if (!activeDeviceId && filteredCameras.length > 0) {
-        activeDeviceId = filteredCameras[0].deviceId;
-      }
-      selectEl.value = activeDeviceId;
-
-    } catch (err) {
-      console.warn("Gagal memindai perangkat kamera:", err);
-      selectEl.innerHTML = `
-        <option value="user_default">Kamera Depan</option>
-        <option value="environment_default">Kamera Belakang</option>
-      `;
-    }
-  }
-
-  async function stopCurrentStream() {
-    if (videoStream) {
-      try {
-        videoStream.getTracks().forEach(track => track.stop());
-      } catch (e) { console.warn(e); }
-      videoStream = null;
-    }
-    const video = document.getElementById('video');
-    if (video) {
-      video.pause();
-      video.srcObject = null;
-    }
-    await new Promise(resolve => setTimeout(resolve, 300));
-  }
-
-  async function initCameraStream() {
-    const video = document.getElementById('video');
-    if (!video) return;
-
-    await stopCurrentStream();
-
-    let videoConstraints = {};
-
-    if (activeDeviceId === 'user_default') {
-      videoConstraints = { facingMode: "user" };
-    } else if (activeDeviceId === 'environment_default') {
-      videoConstraints = { facingMode: { ideal: "environment" } };
-    } else if (activeDeviceId) {
-      videoConstraints = { deviceId: { exact: activeDeviceId } };
-    } else {
-      videoConstraints = { facingMode: "user" };
-    }
-
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        audio: false,
-        video: videoConstraints
-      });
-      videoStream = stream;
-      video.srcObject = stream;
-      await video.play().catch(e => console.warn(e));
-      applyZoomTransform();
-      await populateCameraDevices();
-    } catch (err) {
-      console.warn("Mencoba fallback mode fleksibel...", err);
-      try {
-        const fallbackStream = await navigator.mediaDevices.getUserMedia({
-          audio: false,
-          video: true
-        });
-        videoStream = fallbackStream;
-        video.srcObject = fallbackStream;
-        await video.play().catch(e => console.warn(e));
-        applyZoomTransform();
-        await populateCameraDevices();
-      } catch (finalErr) {
-        console.error("Kamera gagal dibuka:", finalErr);
-        showAlert("Gagal membuka kamera. Pastikan izin akses kamera sudah diberikan.", "KAMERA ERROR");
-      }
-    }
-  }
-
-  async function onCameraSelectChange(deviceId) {
-    if (!deviceId || isSwitchingCamera) return;
-    isSwitchingCamera = true;
-    activeDeviceId = deviceId;
-
-    await initCameraStream();
-    isSwitchingCamera = false;
-  }
-
-  function startCameraProcess() {
-    goToStep('step-camera');
-    isTakingPhoto = false;
-
-    const btnSnap = document.getElementById('btn-snap');
-    if (btnSnap) btnSnap.style.opacity = '1';
-
-    const activeCard = cardItems[currentCardIndex];
-    if (activeCard) {
-      requiredPhotoCount = parseInt(activeCard.getAttribute('data-count'), 10) || 3;
-      selectedFramePath = activeCard.getAttribute('data-path');
-    }
-
-    updateViewfinderAspectRatio();
-    updatePhotosStripUI();
-
-    if (!videoStream || !videoStream.active) {
-      initCameraStream();
-    }
-  }
-
-  function updatePhotosStripUI() {
-    const stripBox = document.getElementById('cam-photos-strip');
-    const progressText = document.getElementById('cam-progress-text');
-
-    const totalNeeded = parseInt(requiredPhotoCount, 10) || 3;
-    const currentCapturedCount = capturedPhotos.length;
-
-    stripBox.innerHTML = '';
-
-    for (let i = 0; i < totalNeeded; i++) {
-      const thumbBox = document.createElement('div');
       
-      if (capturedPhotos[i]) {
-        thumbBox.className = 'photo-thumb-box';
-        thumbBox.innerHTML = `<img src="${capturedPhotos[i]}" alt="Foto ${i+1}">`;
-      } else {
-        thumbBox.className = 'photo-thumb-box empty-slot';
-        thumbBox.innerText = `#${i + 1}`;
-      }
-      stripBox.appendChild(thumbBox);
-    }
-
-    const currentDisplayNum = Math.min(currentCapturedCount + 1, totalNeeded);
-    progressText.innerText = `Foto ${currentDisplayNum} dari ${totalNeeded}`;
-  }
-
-  function toggleMirror() {
-    isMirror = !isMirror;
-    applyZoomTransform();
-    document.getElementById('label-mirror').innerText = isMirror ? 'ON' : 'OFF';
-  }
-
-  function toggleTimerSetting() {
-    if (timerDuration === 3) timerDuration = 5;
-    else if (timerDuration === 5) timerDuration = 0;
-    else timerDuration = 3;
-
-    document.getElementById('label-timer').innerText = timerDuration === 0 ? 'OFF' : timerDuration + 's';
-  }
-
-  function toggleZoomSetting() {
-    if (zoomLevel === 1) zoomLevel = 1.5;
-    else if (zoomLevel === 1.5) zoomLevel = 2;
-    else if (zoomLevel === 2) zoomLevel = 0.5;
-    else zoomLevel = 1;
-
-    applyZoomTransform();
-    document.getElementById('label-zoom').innerText = `${zoomLevel}x`;
-  }
-
-  function applyZoomTransform() {
-    const video = document.getElementById('video');
-    if (!video) return;
-    let transformStr = `scale(${zoomLevel})`;
-    if (isMirror) transformStr += ` scaleX(-1)`;
-    video.style.transform = transformStr;
-  }
-
-  async function stopCameraAndGoBack() {
-    capturedPhotos = [];
-    isTakingPhoto = false;
-    await stopCurrentStream();
-    goToStep('step-template');
-  }
-
-  function takePhotoSnap() {
-    if (isTakingPhoto) return;
-    
-    const totalNeeded = parseInt(requiredPhotoCount, 10) || 3;
-    if (capturedPhotos.length >= totalNeeded) return;
-
-    isTakingPhoto = true;
-
-    const btnSnap = document.getElementById('btn-snap');
-    if (btnSnap) btnSnap.style.opacity = '0.5';
-
-    if (timerDuration === 0) {
-      executeSnapCapture();
-      return;
-    }
-
-    let count = timerDuration;
-    const overlay = document.getElementById('countdown-overlay');
-    overlay.innerText = count;
-    overlay.classList.remove('hidden');
-
-    const timer = setInterval(() => {
-      count--;
-      if (count > 0) {
-        overlay.innerText = count;
-      } else {
-        clearInterval(timer);
-        overlay.classList.add('hidden');
-        executeSnapCapture();
-      }
-    }, 1000);
-  }
-
-  function executeSnapCapture() {
-    const flash = document.getElementById('flash-overlay');
-    flash.classList.add('active');
-    setTimeout(() => flash.classList.remove('active'), 200);
-
-    const video = document.getElementById('video');
-    
-    const vWidth = video.videoWidth || 640;
-    const vHeight = video.videoHeight || 480;
-
-    const targetAspect = getFrameTargetAspect();
-
-    let cropW = vWidth;
-    let cropH = vWidth / targetAspect;
-
-    if (cropH > vHeight) {
-      cropH = vHeight;
-      cropW = vHeight * targetAspect;
-    }
-
-    const cropX = (vWidth - cropW) / 2;
-    const cropY = (vHeight - cropH) / 2;
-
-    const tempCanvas = document.createElement('canvas');
-    tempCanvas.width = 600;
-    tempCanvas.height = Math.round(600 / targetAspect);
-    const ctx = tempCanvas.getContext('2d');
-
-    ctx.save();
-    if (isMirror) {
-      ctx.translate(tempCanvas.width, 0);
-      ctx.scale(-1, 1);
-    }
-
-    ctx.drawImage(video, cropX, cropY, cropW, cropH, 0, 0, tempCanvas.width, tempCanvas.height);
-    ctx.restore();
-
-    capturedPhotos.push(tempCanvas.toDataURL('image/png'));
-
-    const totalNeeded = parseInt(requiredPhotoCount, 10) || 3;
-
-    isTakingPhoto = false;
-
-    const btnSnap = document.getElementById('btn-snap');
-    if (btnSnap) btnSnap.style.opacity = '1';
-
-    updatePhotosStripUI();
-
-    if (capturedPhotos.length >= totalNeeded) {
-      stopCurrentStream();
-      setTimeout(() => {
-        goToStep('step-review-photos');
-      }, 200);
-    }
-  }
-
-  function renderReviewPhotosUI() {
-    const gridBox = document.getElementById('review-grid-box');
-    gridBox.innerHTML = '';
-
-    const targetAspect = getFrameTargetAspect();
-
-    capturedPhotos.forEach((src, idx) => {
-      const card = document.createElement('div');
-      card.className = 'review-photo-card';
-      
-      card.style.width = '120px';
-      card.style.maxWidth = '120px';
-      card.style.aspectRatio = `${targetAspect}`;
-      card.innerHTML = `
-        <img src="${src}" alt="Foto ${idx + 1}">
-        <button class="review-delete-btn" onclick="deletePhotoInReview(${idx})">✕</button>
-      `;
-      gridBox.appendChild(card);
-    });
-  }
-
-  function deletePhotoInReview(index) {
-    capturedPhotos.splice(index, 1);
-    startCameraProcess();
-  }
-
-  function goToCameraToRetakeAll() {
-    capturedPhotos = [];
-    startCameraProcess();
-  }
-
-  function proceedToRenderStrip() {
-    renderPhotostripWithFigmaFrame();
-  }
-
-  function renderPhotostripWithFigmaFrame() {
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-
-    const loadImageSafe = (src) => {
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.crossOrigin = "anonymous";
-        img.onload = () => resolve(img);
-        img.onerror = () => {
-          const fallbackImg = new Image();
-          fallbackImg.onload = () => resolve(fallbackImg);
-          fallbackImg.src = src;
-        };
-        img.src = src;
-      });
-    };
-
-    const loadFramePromise = loadImageSafe(selectedFramePath);
-    const loadPhotosPromises = Promise.all(capturedPhotos.map(src => loadImageSafe(src)));
-
-    Promise.all([loadFramePromise, loadPhotosPromises]).then(([frameImg, userImages]) => {
-      const W = frameImg.naturalWidth || frameImg.width || 600;
-      const H = frameImg.naturalHeight || frameImg.height || 1800;
-
-      canvas.width = W;
-      canvas.height = H;
-
-      ctx.clearRect(0, 0, W, H);
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = 'high';
-
-      ctx.drawImage(frameImg, 0, 0, W, H);
-
-      const totalPhotos = userImages.length;
-      const targetAspect = getFrameTargetAspect();
-
-      const slotW = Math.round(W * 0.76); 
-      const slotH = Math.round(slotW / targetAspect);
-      const startX = Math.round((W - slotW) / 2);
-
-      const gapY = Math.round(H * 0.022); 
-      const totalBlockHeight = (totalPhotos * slotH) + ((totalPhotos - 1) * gapY);
-      const startY = Math.round((H - totalBlockHeight) / 2);
-
-      userImages.forEach((photo, i) => {
-        const currentY = startY + (i * (slotH + gapY));
-
-        ctx.save();
-        ctx.shadowColor = "rgba(0, 0, 0, 0.15)";
-        ctx.shadowBlur = 10;
-        ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 4;
-
-        ctx.drawImage(photo, 0, 0, photo.width, photo.height, startX, currentY, slotW, slotH);
-        ctx.restore();
-      });
-
-      try {
-        generatedDataUrl = canvas.toDataURL('image/jpeg', 0.95);
-      } catch (err) {
-        generatedDataUrl = canvas.toDataURL('image/png');
-      }
-      
-      document.querySelectorAll('.result-img-target').forEach(img => {
-        img.src = generatedDataUrl;
-      });
-
-      goToStep('step-result');
-    }).catch(err => {
-      console.error("Render error:", err);
-      goToStep('step-result');
-    });
-  }
-
-  function downloadImageToPhone(senderName) {
-    const nameGuest = senderName ? senderName.replace(/[^\w\s-]/gi, '').trim() : "Tamu";
-    const nameClient = eventTitle ? eventTitle.replace(/[^\w\s-]/gi, '').trim() : "FOTOME";
-    const fileName = `${nameGuest} - ${nameClient}.jpg`;
-
-    const a = document.createElement('a');
-    a.href = generatedDataUrl;
-    a.download = fileName;
-    a.click();
-  }
-
-  function saveAndShareToFeed() {
-    const senderName = document.getElementById('input-sender-name').value.trim() || currentGuestName || "Tamu Undangan";
-    const senderMessage = document.getElementById('input-sender-message').value.trim() || "Selamat untuk kebahagiaan kalian!";
-
-    downloadImageToPhone(senderName);
-
-    const tempPostId = 'local_' + Date.now();
-    const newPostData = {
-      id: tempPostId,
-      eventId: EVENT_DOC_ID,
-      name: senderName,
-      message: senderMessage,
-      photoData: generatedDataUrl,
-      createdAt: new Date()
-    };
-
-    globalPostsMap[tempPostId] = newPostData;
-    
-    const gridBox = document.getElementById('ig-grid-box');
-    if (gridBox) {
-      if (gridBox.innerText.includes('Belum ada foto')) {
-        gridBox.innerHTML = '';
-      }
-      gridBox.insertAdjacentHTML('afterbegin', renderPostCardHTML(newPostData));
-    }
-
-    totalPostsInDb++;
-    loadedPostsCount++;
-    const countSpan = document.getElementById('total-posts-count');
-    if (countSpan) countSpan.innerText = `${totalPostsInDb} Kiriman`;
-
-    if (typeof db !== 'undefined') {
-      db.collection('posts').add({
-        eventId: EVENT_DOC_ID,
-        name: senderName,
-        message: senderMessage,
-        photoData: generatedDataUrl,
-        createdAt: firebase.firestore.Timestamp.now()
-      }).then(() => {
-        showAlert("Foto berhasil diunduh dan diposting ke Galeri!", "BERHASIL DITAMBAHKAN", () => {
-          document.getElementById('input-sender-message').value = '';
-          resetGuestInfo();
-          goToStep('step-welcome');
-        });
-      }).catch(err => {
-        console.error("Gagal simpan ke database:", err);
-        showAlert("Foto berhasil diunduh ke HP!", "TERSIMPAN PRIVAT", () => {
-          resetGuestInfo();
-          goToStep('step-welcome');
-        });
-      });
-    } else {
-      resetGuestInfo();
-      goToStep('step-welcome');
-    }
-  }
-
-  function savePrivateOnly() {
-    const senderName = document.getElementById('input-sender-name').value.trim() || currentGuestName || "Tamu";
-    downloadImageToPhone(senderName);
-    showAlert("Foto berhasil disimpan secara privat ke HP kamu!", "TERSIMPAN PRIVAT", () => {
-      resetGuestInfo();
-      goToStep('step-welcome');
-    });
-  }
-
-  function formatTimestamp(timestamp) {
-    if (!timestamp) return 'Baru saja';
-    let dateObj;
-    if (timestamp.toDate) {
-      dateObj = timestamp.toDate();
-    } else if (timestamp.seconds) {
-      dateObj = new Date(timestamp.seconds * 1000);
-    } else if (timestamp instanceof Date) {
-      dateObj = timestamp;
-    } else {
-      dateObj = new Date();
-    }
-    
-    const day = String(dateObj.getDate()).padStart(2, '0');
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'];
-    const month = months[dateObj.getMonth()];
-    const year = dateObj.getFullYear();
-    const hours = String(dateObj.getHours()).padStart(2, '0');
-    const minutes = String(dateObj.getMinutes()).padStart(2, '0');
-
-    return `${day} ${month} ${year} • ${hours}:${minutes}`;
-  }
-
-  function updateLoadMoreButtonState() {
-    const loadMoreBtn = document.getElementById('btn-load-more');
-    if (!loadMoreBtn) return;
-
-    if (loadedPostsCount >= totalPostsInDb) {
-      loadMoreBtn.innerText = `SEMUA TERMUAT (${totalPostsInDb}/${totalPostsInDb})`;
-      loadMoreBtn.disabled = true;
-      loadMoreBtn.style.opacity = '0.6';
-      loadMoreBtn.classList.remove('hidden');
-    } else {
-      loadMoreBtn.innerHTML = `MUAT LEBIH BANYAK (${loadedPostsCount}/${totalPostsInDb})`;
-      loadMoreBtn.disabled = false;
-      loadMoreBtn.style.opacity = '1';
-      loadMoreBtn.classList.remove('hidden');
-    }
-  }
-
-  /* REFRESH KHUSUS GALERI (TANPA REFRESH HALAMAN WEB) */
-  function manualRefreshFeed() {
-    const iconElm = document.getElementById('refresh-icon-elm');
-    if (iconElm) iconElm.classList.add('spin-icon');
-
-    lastVisibleDoc = null;
-    isInitialLoad = true;
-
-    loadRealtimeFeedIG();
-
-    setTimeout(() => {
-      if (iconElm) iconElm.classList.remove('spin-icon');
-    }, 700);
-  }
-
-  /* REALTIME SYNC UNTUK SEMUA DEVICE TAMU */
-  function loadRealtimeFeedIG() {
-    if (feedUnsubscribe) feedUnsubscribe();
-
-    const gridBox = document.getElementById('ig-grid-box');
-
-    // 1. Ambil total kiriman
-    db.collection('posts')
-      .where('eventId', '==', EVENT_DOC_ID)
-      .get()
-      .then(snap => {
-        totalPostsInDb = snap.size;
-        const countSpan = document.getElementById('total-posts-count');
-        if (countSpan) countSpan.innerText = `${totalPostsInDb} Kiriman`;
-        updateLoadMoreButtonState();
-      })
-      .catch(err => console.warn(err));
-
-    // 2. Realtime listener aktif
-    feedUnsubscribe = db.collection('posts')
-      .where('eventId', '==', EVENT_DOC_ID)
-      .orderBy('createdAt', 'desc')
-      .limit(PAGE_SIZE)
-      .onSnapshot(snapshot => {
-        if (!snapshot || snapshot.empty) {
-          if (gridBox && gridBox.children.length === 0) {
-            gridBox.innerHTML = '<p style="font-size: 0.8rem; color: rgba(255,255,255,0.6); grid-column: span 3; text-align: center;">Belum ada foto di galeri. Tampil pertama di sini!</p>';
-          }
-          return;
-        }
-
-        if (isInitialLoad) {
-          isInitialLoad = false;
-          lastVisibleDoc = snapshot.docs[snapshot.docs.length - 1];
-          loadedPostsCount = snapshot.docs.length;
-
-          let html = '';
-          snapshot.docs.forEach(doc => {
-            const data = { id: doc.id, ...doc.data() };
-            globalPostsMap[doc.id] = data;
-            html += renderPostCardHTML(data);
-          });
-          gridBox.innerHTML = html;
-          updateLoadMoreButtonState();
-        } else {
-          // Deteksi kiriman baru dari HP orang lain secara otomatis
-          snapshot.docChanges().forEach(change => {
-            if (change.type === 'added') {
-              const data = { id: change.doc.id, ...change.doc.data() };
+      <div id="ideas-grid" class="grid-container">
+        <!-- Grid card akan dirender via JS -->
+      </div>
+    </div>
+
+
+    <!-- HALAMAN 2: DETAIL PROYEK & TASK -->
+    <div id="page-detail" class="hidden">
+      <button class="brutal-box brutal-btn btn-back" onclick="navigateTo('page-home')">
+        ← Kembali
+      </button>
+
+      <div class="brutal-box" style="padding: 24px; margin-bottom: 24px;">
+        <h2 id="detail-title" style="font-size: 1.8rem; font-weight: 800; margin-bottom: 20px; line-height: 1.2;"></h2>
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+          
+          <!-- Wrapper Tanggal -->
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+              <span id="detail-created" class="date-badge" style="font-size:0.85rem;"></span>
               
-              if (!globalPostsMap[data.id]) {
-                globalPostsMap[data.id] = data;
-                
-                if (gridBox.innerText.includes('Belum ada foto')) {
-                  gridBox.innerHTML = '';
-                }
-                
-                gridBox.insertAdjacentHTML('afterbegin', renderPostCardHTML(data));
-                
-                totalPostsInDb++;
-                loadedPostsCount++;
-                const countSpan = document.getElementById('total-posts-count');
-                if (countSpan) countSpan.innerText = `${totalPostsInDb} Kiriman`;
-                updateLoadMoreButtonState();
-              }
-            }
-          });
-        }
-      }, error => {
-        console.warn("Realtime listener error:", error);
-        fallbackClientSideLoad();
-      });
-  }
+              <div style="display: flex; align-items: flex-start; gap: 8px;">
+                  <div id="detail-due-container" style="display: flex; flex-direction: column; gap: 2px;">
+                      <!-- Isi Tanggal History via JS -->
+                  </div>
+                  <button class="brutal-btn btn-edit-date" onclick="openDateEditModal()">✏️ Ubah</button>
+              </div>
+          </div>
 
-  /* AMBIL BATCH BERIKUTNYA DENGAN ANIMASI SPINNER HALUS */
-  function loadMorePosts() {
-    const loadMoreBtn = document.getElementById('btn-load-more');
-    if (loadMoreBtn) {
-      loadMoreBtn.disabled = true;
-      loadMoreBtn.innerHTML = '<span class="spin-icon">⏳</span> MEMUAT FOTO...';
-    }
-
-    if (!lastVisibleDoc) {
-      fallbackClientSideLoad();
-      return;
-    }
-
-    db.collection('posts')
-      .where('eventId', '==', EVENT_DOC_ID)
-      .orderBy('createdAt', 'desc')
-      .startAfter(lastVisibleDoc)
-      .limit(PAGE_SIZE)
-      .get()
-      .then(snapshot => {
-        if (snapshot.empty) {
-          updateLoadMoreButtonState();
-          return;
-        }
-
-        lastVisibleDoc = snapshot.docs[snapshot.docs.length - 1];
-        loadedPostsCount += snapshot.docs.length;
-        const gridBox = document.getElementById('ig-grid-box');
-
-        snapshot.docs.forEach(doc => {
-          const data = { id: doc.id, ...doc.data() };
-          if (!globalPostsMap[data.id]) {
-            globalPostsMap[data.id] = data;
-            if (gridBox) {
-              gridBox.insertAdjacentHTML('beforeend', renderPostCardHTML(data));
-            }
-          }
-        });
-
-        updateLoadMoreButtonState();
-      })
-      .catch(err => {
-        console.warn("Cursor Error, fallback...", err);
-        fallbackClientSideLoad();
-      });
-  }
-
-  function fallbackClientSideLoad() {
-    db.collection('posts')
-      .where('eventId', '==', EVENT_DOC_ID)
-      .get()
-      .then(snapshot => {
-        const gridBox = document.getElementById('ig-grid-box');
-        if (snapshot.empty) return;
-
-        let posts = [];
-        snapshot.docs.forEach(doc => {
-          const data = { id: doc.id, ...doc.data() };
-          posts.push(data);
-          globalPostsMap[doc.id] = data;
-        });
-
-        posts.sort((a, b) => {
-          const timeA = a.createdAt ? (a.createdAt.toMillis ? a.createdAt.toMillis() : (a.createdAt.seconds ? a.createdAt.seconds * 1000 : 0)) : 0;
-          const timeB = b.createdAt ? (b.createdAt.toMillis ? b.createdAt.toMillis() : (b.createdAt.seconds ? b.createdAt.seconds * 1000 : 0)) : 0;
-          return timeB - timeA;
-        });
-
-        totalPostsInDb = posts.length;
-        loadedPostsCount = Math.min(loadedPostsCount + PAGE_SIZE, totalPostsInDb);
-
-        let html = '';
-        const displayBatch = posts.slice(0, loadedPostsCount);
-        displayBatch.forEach(data => {
-          html += renderPostCardHTML(data);
-        });
-
-        if (gridBox) gridBox.innerHTML = html;
-        updateLoadMoreButtonState();
-      });
-  }
-
-  function renderPostCardHTML(data) {
-    const timeFormatted = formatTimestamp(data.createdAt);
-    return `
-      <div class="ig-grid-item" onclick="openModal('${data.id}')">
-        <div class="ig-item-header">
-          <div class="ig-item-name">${data.name || 'Tamu'}</div>
-          <div class="ig-item-date">${timeFormatted}</div>
+          <!-- Status Dropdown -->
+          <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 0.9rem; font-weight: 700;">Status:</span>
+              <select id="detail-status" class="status-select brutal-btn" onchange="updateIdeaStatus(this.value)">
+                <option value="💡 Open">💡 Open</option>
+                <option value="🚀 Progress">🚀 Progress</option>
+                <option value="✅ Closed">✅ Closed</option>
+                <option value="⏸️ Pending">⏸️ Pending</option>
+              </select>
+          </div>
         </div>
-        <div class="ig-item-img-box">
-          <img src="${data.photoData}" alt="Foto Strip" loading="lazy">
-        </div>
-        <div class="ig-item-msg">"${data.message || ''}"</div>
       </div>
-    `;
-  }
 
-  function openModal(postId) {
-    const data = globalPostsMap[postId];
-    if (!data) return;
+      <div class="section-title">Langkah Eksekusi Selanjutnya</div>
+      <form class="input-row" style="margin-bottom: 24px;" onsubmit="addTodo(event)">
+        <input type="text" id="todo-text" class="brutal-box main-input" placeholder="Tulis action plan..." required autocomplete="off">
+        <button type="submit" class="brutal-box brutal-btn btn-add" style="background: var(--purple);">+</button>
+      </form>
 
-    const timeFormatted = formatTimestamp(data.createdAt);
+      <div id="todo-list"></div>
+    </div>
 
-    document.getElementById('modal-name').innerText = data.name || 'Tamu Undangan';
-    document.getElementById('modal-date').innerText = timeFormatted;
-    document.getElementById('modal-msg').innerText = `"${data.message || ''}"`;
-    document.getElementById('modal-img').src = data.photoData;
+    <!-- FOOTER -->
+    <div class="footer">
+      Riyan for 2027
+    </div>
 
-    document.getElementById('photo-modal').classList.remove('hidden');
-  }
+  </div>
 
-  function closeModal() {
-    document.getElementById('photo-modal').classList.add('hidden');
-  }
-</script>
+  <!-- MODAL EDIT TASK -->
+  <div id="task-modal" class="modal-overlay">
+    <div class="brutal-box modal-box">
+      <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 20px;">Detail Action Plan</h3>
+      
+      <div style="margin-bottom: 16px;">
+        <label class="modal-label">Aksi / Judul</label>
+        <input type="text" id="modal-task-title" class="brutal-box main-input" style="width: 100%; padding: 12px;">
+      </div>
+      
+      <div>
+        <label class="modal-label">Catatan Tambahan</label>
+        <textarea id="modal-task-note" class="brutal-box main-input" style="width: 100%; min-height: 120px; padding: 12px; resize: vertical;" placeholder="Rincian spesifik, link, dll..."></textarea>
+      </div>
 
+      <div class="modal-footer">
+        <button class="brutal-box brutal-btn btn-modal" style="background: var(--grey);" onclick="closeTaskModal()">Batal</button>
+        <button class="brutal-box brutal-btn btn-modal" style="background: var(--green);" onclick="saveTaskModal()">Simpan</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- MODAL ICON PICKER -->
+  <div id="icon-modal" class="modal-overlay">
+    <div class="brutal-box modal-box">
+      <h3 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 8px;">Pilih Ikon Baru</h3>
+      <p style="font-size: 0.9rem; color: #4B5563; font-weight: 600;">Sesuaikan ikon agar lebih representatif dengan ide.</p>
+      
+      <div class="icon-grid" id="icon-grid-container">
+          <!-- Icon dirender JS -->
+      </div>
+
+      <button class="brutal-box brutal-btn btn-modal" style="width: 100%; background: #FFFFFF;" onclick="closeIconModal()">Tutup</button>
+    </div>
+  </div>
+
+  <!-- MODAL KONFIRMASI HAPUS (CUSTOM) -->
+  <div id="delete-modal" class="modal-overlay">
+      <div class="brutal-box modal-box" style="text-align: center;">
+          <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 12px; color: var(--red);">Hapus Ide?</h3>
+          <p style="font-size: 0.95rem; font-weight: 600; color: #4B5563; margin-bottom: 24px;">Yakin ingin menghapus ide brilian ini selamanya? Data tidak bisa dikembalikan.</p>
+          <div class="modal-footer">
+            <button class="brutal-box brutal-btn btn-modal" style="background: var(--grey);" onclick="closeDeleteModal()">Batal</button>
+            <button class="brutal-box brutal-btn btn-modal" style="background: var(--pink);" onclick="executeDeleteIdea()">Ya, Hapus</button>
+          </div>
+      </div>
+  </div>
+
+  <!-- MODAL UBAH DUE DATE -->
+  <div id="date-modal" class="modal-overlay">
+      <div class="brutal-box modal-box">
+          <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 12px;">Ubah Target Selesai</h3>
+          <p style="font-size: 0.85rem; font-weight: 600; color: #4B5563; margin-bottom: 16px;">Target lama akan tercoret merah sebagai jejak historis penundaan/perubahan.</p>
+          
+          <input type="date" id="new-due-date" class="brutal-box main-input" style="width: 100%; margin-bottom: 20px;" required>
+
+          <div class="modal-footer">
+            <button class="brutal-box brutal-btn btn-modal" style="background: var(--grey);" onclick="closeDateEditModal()">Batal</button>
+            <button class="brutal-box brutal-btn btn-modal" style="background: var(--yellow);" onclick="saveNewDate()">Ubah Target</button>
+          </div>
+      </div>
+  </div>
+
+
+  <script>
+    // Palet warna untuk neo-brutalism randomizer
+    const palette = ['#FFD836', '#4ADE80', '#FF66A1', '#A78BFA', '#60A5FA', '#FB923C'];
+    
+    // Daftar Icon yang tersedia di modal
+    const allIcons = [
+        '💡','🚀','🎯','🛠️','🎨',
+        '🔥','⚡','📈','💸','🌍',
+        '🏆','🧩','✨','💻','📱',
+        '📸','🍔','☕','✈️','🎵',
+        '📚','🧠','💪','🌿','🏢',
+        '📝','⚙️','🛡️','💎','🎤'
+    ];
+
+    let ideas = JSON.parse(localStorage.getItem('riyan_brutalist_ideas')) || [];
+    let currentIdeaId = null;
+    let currentEditingTodoId = null;
+    let currentIconEditIdeaId = null;
+    let ideaToDeleteId = null;
+
+    // Helper Format Tanggal
+    function formatDate(dateString) {
+        if (!dateString) return "-";
+        const options = { day: 'numeric', month: 'short', year: 'numeric' };
+        return new Date(dateString).toLocaleDateString('id-ID', options);
+    }
+    
+    // Set default value due date ke besok
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    document.getElementById('idea-due-date').valueAsDate = tomorrow;
+
+    // Inisialisasi awal
+    renderIdeas();
+    renderIconGrid();
+
+    function saveToStorage() {
+      localStorage.setItem('riyan_brutalist_ideas', JSON.stringify(ideas));
+    }
+
+    function navigateTo(pageId) {
+      document.getElementById('page-home').classList.add('hidden');
+      document.getElementById('page-detail').classList.add('hidden');
+      document.getElementById(pageId).classList.remove('hidden');
+
+      if (pageId === 'page-home') renderIdeas();
+      window.scrollTo(0,0);
+    }
+
+    function addIdea(e) {
+      e.preventDefault();
+      const titleInput = document.getElementById('idea-title');
+      const dueDateInput = document.getElementById('idea-due-date');
+      
+      const randomColor = palette[Math.floor(Math.random() * palette.length)];
+      const defaultIcon = '💡';
+      const today = new Date().toISOString();
+
+      const newIdea = {
+        id: Date.now(),
+        title: titleInput.value,
+        status: '💡 Open',
+        color: randomColor,
+        icon: defaultIcon,
+        createdDate: today,
+        dueDatesHistory: [dueDateInput.value], 
+        todos: []
+      };
+      
+      ideas.unshift(newIdea);
+      saveToStorage();
+      titleInput.value = '';
+      document.getElementById('idea-due-date').valueAsDate = tomorrow;
+      renderIdeas();
+    }
+
+    function renderIdeas() {
+      const container = document.getElementById('ideas-grid');
+      container.innerHTML = '';
+      document.getElementById('total-ideas-count').innerText = ideas.length;
+
+      if (ideas.length === 0) {
+        container.style.display = 'block';
+        container.innerHTML = `
+          <div class="brutal-box" style="padding: 40px; text-align: center; border-style: dashed; background: transparent; box-shadow: none;">
+            <p style="font-weight: 700; color: #6B7280; font-size: 1.1rem;">Kosong! Ayo rancang masa depanmu.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.style.display = 'grid';
+
+      ideas.forEach(idea => {
+        const div = document.createElement('div');
+        div.className = 'brutal-box brutal-btn idea-card';
+        div.onclick = (e) => {
+          if(!e.target.closest('.btn-delete-card') && !e.target.closest('.card-icon-wrapper')) {
+             openDetail(idea.id);
+          }
+        };
+
+        const taskCount = idea.todos ? idea.todos.length : 0;
+        const createdDisplay = idea.createdDate ? formatDate(idea.createdDate) : "Terdahulu";
+        
+        let latestDue = "-";
+        let isRevised = false;
+
+        if (idea.dueDatesHistory && idea.dueDatesHistory.length > 0) {
+            latestDue = formatDate(idea.dueDatesHistory[idea.dueDatesHistory.length - 1]);
+            if (idea.dueDatesHistory.length > 1) isRevised = true;
+        } else if (idea.dueDate) {
+            latestDue = formatDate(idea.dueDate);
+        }
+
+        const dueColorClass = isRevised ? 'date-badge-new' : '';
+        const revisedIcon = isRevised ? '🔄' : '🎯';
+
+        div.innerHTML = `
+          <div class="card-header-row">
+              <div class="card-icon-wrapper brutal-box" style="background: ${idea.color};" onclick="openIconModal(${idea.id})" title="Ganti Ikon">
+                ${idea.icon || '💡'}
+              </div>
+              <div class="card-task-count">${taskCount} task</div>
+          </div>
+          
+          <div class="card-title">${escapeHtml(idea.title)}</div>
+          
+          <div class="card-dates">
+              <div class="date-badge">🕒 Dibuat: ${createdDisplay}</div>
+              <div class="date-badge ${dueColorClass}" style="${!isRevised ? 'color: #DC2626;' : ''}">
+                ${revisedIcon} Target: ${latestDue}
+              </div>
+          </div>
+          
+          <button class="btn-delete-card" onclick="promptDeleteIdea(event, ${idea.id})" title="Hapus Ide">✕</button>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    /* CUSTOM DELETE CONFIRMATION MODAL */
+    function promptDeleteIdea(e, id) {
+        e.stopPropagation();
+        ideaToDeleteId = id;
+        document.getElementById('delete-modal').classList.add('active');
+    }
+
+    function closeDeleteModal() {
+        document.getElementById('delete-modal').classList.remove('active');
+        ideaToDeleteId = null;
+    }
+
+    function executeDeleteIdea() {
+        if(ideaToDeleteId) {
+            ideas = ideas.filter(item => item.id !== ideaToDeleteId);
+            saveToStorage();
+            renderIdeas();
+        }
+        closeDeleteModal();
+    }
+
+
+    /* TAMPILAN DETAIL DENGAN HISTORY DUE DATE */
+    function openDetail(id) {
+      currentIdeaId = id;
+      const idea = ideas.find(item => item.id === id);
+      if (!idea) return;
+
+      document.getElementById('detail-title').innerText = idea.title;
+      document.getElementById('detail-status').value = idea.status;
+      
+      const createdDisplay = idea.createdDate ? formatDate(idea.createdDate) : "Terdahulu";
+      document.getElementById('detail-created').innerHTML = `🕒 Dibuat: ${createdDisplay}`;
+      
+      const dueContainer = document.getElementById('detail-due-container');
+      dueContainer.innerHTML = '';
+
+      if (idea.dueDatesHistory && idea.dueDatesHistory.length > 0) {
+          idea.dueDatesHistory.forEach((date, index) => {
+              const isLast = index === idea.dueDatesHistory.length - 1;
+              const span = document.createElement('span');
+              
+              if (isLast) {
+                  const color = idea.dueDatesHistory.length > 1 ? 'color: var(--dark-green);' : 'color: #DC2626;';
+                  span.className = 'date-badge';
+                  span.style = color + ' font-size: 0.9rem; margin-top: 2px;';
+                  span.innerHTML = `🎯 Target: ${formatDate(date)}`;
+              } else {
+                  span.className = 'date-badge date-badge-old';
+                  span.innerHTML = `🎯 Target: ${formatDate(date)}`;
+              }
+              dueContainer.appendChild(span);
+          });
+      } else if (idea.dueDate) {
+          const span = document.createElement('span');
+          span.className = 'date-badge';
+          span.style = 'color: #DC2626; font-size: 0.9rem;';
+          span.innerHTML = `🎯 Target: ${formatDate(idea.dueDate)}`;
+          dueContainer.appendChild(span);
+          
+          idea.dueDatesHistory = [idea.dueDate];
+          saveToStorage();
+      } else {
+          dueContainer.innerHTML = `<span class="date-badge">🎯 Target: -</span>`;
+      }
+
+      renderTodos();
+      navigateTo('page-detail');
+    }
+
+    /* MODAL UBAH DUE DATE */
+    function openDateEditModal() {
+        document.getElementById('new-due-date').valueAsDate = tomorrow; // Default besok
+        document.getElementById('date-modal').classList.add('active');
+    }
+    
+    function closeDateEditModal() {
+        document.getElementById('date-modal').classList.remove('active');
+    }
+
+    function saveNewDate() {
+        const newDateVal = document.getElementById('new-due-date').value;
+        if(!newDateVal) return alert('Pilih tanggal dulu!');
+
+        const idea = ideas.find(item => item.id === currentIdeaId);
+        if(idea) {
+            if(!idea.dueDatesHistory) {
+                idea.dueDatesHistory = idea.dueDate ? [idea.dueDate] : [];
+            }
+            idea.dueDatesHistory.push(newDateVal); 
+            saveToStorage();
+            
+            openDetail(currentIdeaId);
+        }
+        closeDateEditModal();
+    }
+
+
+    /* UPDATE STATUS */
+    function updateIdeaStatus(newStatus) {
+      const idea = ideas.find(item => item.id === currentIdeaId);
+      if (idea) {
+        idea.status = newStatus;
+        saveToStorage();
+      }
+    }
+
+
+    /* ACTION PLAN / TODOS LOGIC */
+    function addTodo(e) {
+      e.preventDefault();
+      const todoInput = document.getElementById('todo-text');
+      const idea = ideas.find(item => item.id === currentIdeaId);
+
+      if (idea) {
+        idea.todos.push({
+          id: Date.now(),
+          text: todoInput.value,
+          note: '',
+          completed: false
+        });
+        saveToStorage();
+        todoInput.value = '';
+        renderTodos();
+      }
+    }
+
+    function toggleTodo(e, todoId) {
+      e.stopPropagation();
+      const idea = ideas.find(item => item.id === currentIdeaId);
+      if (idea) {
+        const todo = idea.todos.find(t => t.id === todoId);
+        if (todo) {
+          todo.completed = !todo.completed;
+          saveToStorage();
+          renderTodos();
+        }
+      }
+    }
+
+    function deleteTodo(e, todoId) {
+      e.stopPropagation();
+      const idea = ideas.find(item => item.id === currentIdeaId);
+      if (idea) {
+        idea.todos = idea.todos.filter(t => t.id !== todoId);
+        saveToStorage();
+        renderTodos();
+      }
+    }
+
+    function renderTodos() {
+      const container = document.getElementById('todo-list');
+      container.innerHTML = '';
+      const idea = ideas.find(item => item.id === currentIdeaId);
+
+      if (!idea || idea.todos.length === 0) {
+        container.innerHTML = `
+          <div class="brutal-box" style="padding: 30px; text-align: center; border-style: dashed; background: transparent; box-shadow: none;">
+            <p style="font-weight: 700; color: #6B7280; font-size: 1rem;">Belum ada langkah eksekusi.</p>
+          </div>
+        `;
+        return;
+      }
+
+      idea.todos.forEach(todo => {
+        const div = document.createElement('div');
+        div.className = `brutal-box brutal-btn todo-item ${todo.completed ? 'completed' : ''}`;
+        div.onclick = () => openTaskModal(todo.id);
+
+        div.innerHTML = `
+          <input type="checkbox" class="todo-checkbox" ${todo.completed ? 'checked' : ''} onclick="toggleTodo(event, ${todo.id})">
+          <div class="todo-content">
+            <span class="todo-text">${escapeHtml(todo.text)}</span>
+            ${todo.note ? `<span class="todo-note">📝 ${escapeHtml(todo.note)}</span>` : '<span class="todo-note" style="opacity:0.5;">+ Tambah rincian</span>'}
+          </div>
+          <button class="btn-icon-delete brutal-btn" onclick="deleteTodo(event, ${todo.id})">🗑️</button>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    /* Modal Edit Task */
+    function openTaskModal(todoId) {
+      currentEditingTodoId = todoId;
+      const idea = ideas.find(item => item.id === currentIdeaId);
+      if (!idea) return;
+      const todo = idea.todos.find(t => t.id === todoId);
+      if (!todo) return;
+
+      document.getElementById('modal-task-title').value = todo.text;
+      document.getElementById('modal-task-note').value = todo.note || '';
+      document.getElementById('task-modal').classList.add('active');
+    }
+
+    function closeTaskModal() {
+      document.getElementById('task-modal').classList.remove('active');
+      currentEditingTodoId = null;
+    }
+
+    function saveTaskModal() {
+      const idea = ideas.find(item => item.id === currentIdeaId);
+      if (idea && currentEditingTodoId) {
+        const todo = idea.todos.find(t => t.id === currentEditingTodoId);
+        if (todo) {
+          todo.text = document.getElementById('modal-task-title').value || todo.text;
+          todo.note = document.getElementById('modal-task-note').value;
+          saveToStorage();
+          renderTodos();
+        }
+      }
+      closeTaskModal();
+    }
+    
+    /* Logic Modal Icon Picker */
+    function renderIconGrid() {
+        const container = document.getElementById('icon-grid-container');
+        container.innerHTML = '';
+        allIcons.forEach(icon => {
+            const div = document.createElement('div');
+            div.className = 'icon-option';
+            div.innerText = icon;
+            div.onclick = () => selectIcon(icon);
+            container.appendChild(div);
+        });
+    }
+    
+    function openIconModal(ideaId) {
+        currentIconEditIdeaId = ideaId;
+        document.getElementById('icon-modal').classList.add('active');
+    }
+    
+    function closeIconModal() {
+        document.getElementById('icon-modal').classList.remove('active');
+        currentIconEditIdeaId = null;
+    }
+    
+    function selectIcon(icon) {
+        if(currentIconEditIdeaId) {
+            const idea = ideas.find(item => item.id === currentIconEditIdeaId);
+            if(idea) {
+                idea.icon = icon;
+                saveToStorage();
+                renderIdeas();
+                if(currentIdeaId === idea.id) {
+                    openDetail(idea.id);
+                }
+            }
+        }
+        closeIconModal();
+    }
+
+    function escapeHtml(text) {
+      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+  </script>
 </body>
 </html>
